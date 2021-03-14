@@ -10,7 +10,7 @@ Creation date: 03/07/2021
 #include <iostream>    // cout.rdbuf
 #include "Logger.h"
 
-CS230::Logger::Logger(Logger::Severity severity, bool useConsole) : minLevel(severity), outStream("Trace.log") {
+CS230::Logger::Logger(Logger::Severity severity, bool useConsole, std::chrono::system_clock::time_point start) : minLevel(severity), outStream("Trace.log"), startTime(start){
 	if (useConsole == true) {
 		outStream.set_rdbuf(std::cout.rdbuf());
 	}
@@ -25,6 +25,9 @@ void CS230::Logger::Log(CS230::Logger::Severity severity, std::string message) {
 	
 	if (severity >= minLevel)
 	{
+		outStream.precision(4);
+		outStream << '[' << std::fixed << GetSecondsSinceStart() << "]\t";
+
 		switch (severity)
 		{
 		case Severity::Verbose:
@@ -38,4 +41,10 @@ void CS230::Logger::Log(CS230::Logger::Severity severity, std::string message) {
 		default:break;
 		}
 	}
+}
+
+double CS230::Logger::GetSecondsSinceStart()
+{
+	std::chrono::system_clock::time_point now = std::chrono::system_clock::now();
+	return std::chrono::duration<double>(now - startTime).count();
 }

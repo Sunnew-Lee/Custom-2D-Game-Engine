@@ -33,7 +33,7 @@ void CS230::GameStateManager::ReloadState()
 {
 	GameStateManager::state = State::UNLOAD;
 }
-void CS230::GameStateManager::Update()
+void CS230::GameStateManager::Update([[maybe_unused]]double dt)
 {
 	switch (GameStateManager::state)
 	{
@@ -66,7 +66,8 @@ void CS230::GameStateManager::Update()
 		else
 		{
 			Engine::GetLogger().LogVerbose("Update " + currGameState->GetName());
-			GameStateManager::currGameState->Update();
+			GameStateManager::currGameState->Update(dt);
+			GameStateManager::currGameState->Draw();
 		}
 		break;
 

@@ -11,6 +11,7 @@ Creation date: 2/10/2021
 #pragma once
 #include <string>
 #include <fstream>
+#include <chrono>
 
 namespace CS230 {
 	class Logger {
@@ -22,7 +23,7 @@ namespace CS230 {
 			Error,			// This is for an error, such as an asset is not found
 		};
 
-		Logger(Severity severity, bool useConsole);
+		Logger(Severity severity, bool useConsole, std::chrono::system_clock::time_point start);
 		~Logger();
 
 		void LogError(std::string text) { Log(Severity::Error, text); }
@@ -32,8 +33,10 @@ namespace CS230 {
 
 	private:
 		void Log(Severity, std::string displayText);
+		double GetSecondsSinceStart();
 
 		std::ofstream outStream;
 		Severity minLevel;
+		std::chrono::system_clock::time_point startTime;
 	};
 }

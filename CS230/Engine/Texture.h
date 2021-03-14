@@ -2,24 +2,24 @@
 Copyright (C) 2021 DigiPen Institute of Technology.
 Reproduction or disclosure of this file or its contents without the prior
 written consent of DigiPen Institute of Technology is prohibited.
-File Name: Window.h
+File Name: Texture.h
+Purpose: Wrapper class for doodle::Image
 Project: CS230
 Author: Kevin Wright
-Creation date: 2/10/2021
+Creation date: 2/11/2021
 -----------------------------------------------------------------*/
 #pragma once
-#include <string>
-#include "Vec2.h"   //math::ivec2
+#include <doodle/image.hpp>    //doodle::Image
+#include "Vec2.h"
 
 namespace CS230 {
-    class Window {
+    class Texture {
     public:
-        void Init(std::string windowName);
-        void Update();
-        void Resize(int newWidth, int newHeight);
+        Texture();
+        void Load(const std::filesystem::path& filePath);
+        void Draw(math::vec2 location);
         math::ivec2 GetSize();
-        void Clear(unsigned int color);
     private:
-        math::ivec2 windowSize;
+        doodle::Image image;
     };
 }

@@ -18,7 +18,7 @@ namespace CS230 {
 		GameStateManager();
 
 		void AddGameState(GameState& gameState);
-		void Update();
+		void Update(double dt);
 		void SetNextState(int initState);
 		void Shutdown();
 		void ReloadState();

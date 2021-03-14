@@ -2,28 +2,30 @@
 Copyright (C) 2021 DigiPen Institute of Technology.
 Reproduction or disclosure of this file or its contents without the prior
 written consent of DigiPen Institute of Technology is prohibited.
-File Name: Level2.h
+File Name: Ship.h
 Project: CS230
 Author: sunwoo.lee
-Creation date: 03/08/2021
+Creation date: 03/15/2021
 -----------------------------------------------------------------*/
 #pragma once
-#include "..\Engine\GameState.h"
+#include "..\Engine\Sprite.h"
 #include "..\Engine\Input.h"
-#include "Ship.h"
+#include "..\Engine\Vec2.h"
 
-class Level2 : public CS230::GameState {
+class Ship {
 public:
-	Level2();
-	void Load() override;
-	void Update(double dt) override;
-	void Unload() override;
-	std::string GetName() override { return "Level 2"; }
+    Ship(math::vec2 startPos);
+    void Load();
+    void Update();
+    void Draw();
 
-	void Draw() override;
 private:
-	CS230::InputKey levelNext;
-	CS230::InputKey levelReload;
-	Ship ship;
-	CS230::Texture background;
+    CS230::Sprite sprite;
+    math::vec2 startPos;
+    math::vec2 position;
+
+    CS230::InputKey moveLeftKey;
+    CS230::InputKey moveRightKey;
+    CS230::InputKey moveUpKey;
+    CS230::InputKey moveDownKey;
 };

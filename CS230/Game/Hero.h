@@ -2,26 +2,28 @@
 Copyright (C) 2021 DigiPen Institute of Technology.
 Reproduction or disclosure of this file or its contents without the prior
 written consent of DigiPen Institute of Technology is prohibited.
-File Name: Splash.h
+File Name: Hero.h
 Project: CS230
 Author: Kevin Wright
-Creation date: 2/10/2021
+Creation date: 2/11/2021
 -----------------------------------------------------------------*/
 #pragma once
-#include "..\Engine\GameState.h"
+#include "..\Engine\Sprite.h"
 #include "..\Engine\Input.h"
-#include "..\Engine\Texture.h"
+#include "..\Engine\Vec2.h"
 
-class Splash : public CS230::GameState {
+class Hero {
 public:
-	Splash();
-	void Load() override;
-	void Update(double dt) override;
-	void Unload() override;
-	void Draw() override;
+    Hero(math::vec2 startPos);
+    void Load();
+    void Update();
+    void Draw();
 
-	std::string GetName() override { return "Splash"; }
 private:
-	CS230::Texture texture;
+    CS230::Sprite sprite;
+    math::vec2 startPos;
+    math::vec2 position;
 
+    CS230::InputKey moveLeftKey;
+    CS230::InputKey moveRightKey;
 };

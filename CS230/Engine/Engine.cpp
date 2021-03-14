@@ -12,10 +12,11 @@ Creation date: 03/08/2021
 
 Engine::Engine() :
 #ifdef _DEBUG				
-	logger(CS230::Logger::Severity::Debug, true)
+	logger(CS230::Logger::Severity::Debug, true, lastTick)
 #else 						
-	logger(CS230::Logger::Severity::Event, false)
+	logger(CS230::Logger::Severity::Event, false, lastTick)
 #endif
+	,frameCount(0),lastTick(std::chrono::system_clock::now())
 {}
 Engine::~Engine() 
 {}
@@ -23,6 +24,7 @@ void Engine::Init(std::string windowName)
 {
 	logger.LogEvent("Engine Init");
 	window.Init(windowName);
+	fpsCalcTime = lastTick;
 }
 void Engine::Shutdown()
 {
@@ -30,10 +32,25 @@ void Engine::Shutdown()
 }
 void Engine::Update()
 {
-	logger.LogVerbose("Engine Update");
-	gameStateManager.Update();
-	input.Update();
-	window.Update();
+	std::chrono::system_clock::time_point now = std::chrono::system_clock::now();
+	double dt = std::chrono::duration<double>(now - lastTick).count();
+	if (dt > (1 / Engine::Target_FPS))
+	{
+		logger.LogVerbose("Engine Update");
+		gameStateManager.Update(dt);
+		input.Update();
+		window.Update();
+		if (++frameCount > Engine::FPS_IntervalFrameCount)
+		{
+			//Calculate the averageFrameRate for the given time interval
+			double averageFrameRate = frameCount / std::chrono::duration<double>(now - fpsCalcTime).count();
+
+			logger.LogEvent("FPS:  " + std::to_string(averageFrameRate));
+			frameCount = 0;
+			fpsCalcTime = now;
+		}
+		lastTick = now;
+	}
 }
 bool Engine::HasGameEnded()
 {

@@ -95,7 +95,7 @@ namespace math
 		return x * x + y * y;
 	}
 
-	[[nodiscard]]inline vec2& vec2::Normalize() noexcept
+	[[nodiscard]] inline vec2& vec2::Normalize() noexcept
 	{
 		double len = sqrt(x * x + y * y);
 		*this = *this / len;

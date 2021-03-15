@@ -79,7 +79,7 @@ namespace math
     [[nodiscard]] constexpr ivec2 operator-(ivec2 left, ivec2 right) noexcept;
     [[nodiscard]] constexpr ivec2 operator-(ivec2 right) noexcept;
 
-    [[nodiscard]] constexpr ivec2 operator*(ivec2 scale, ivec2 right) noexcept;
+    [[nodiscard]] constexpr ivec2 operator*(int scale, ivec2 right) noexcept;
     [[nodiscard]] constexpr ivec2 operator*(ivec2 left, int scale) noexcept;
     [[nodiscard]] constexpr ivec2 operator/(ivec2 left, int scale) noexcept;
 

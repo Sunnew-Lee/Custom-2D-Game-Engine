@@ -3,8 +3,8 @@ Copyright (C) 2021 DigiPen Institute of Technology.
 Reproduction or disclosure of this file or its contents without the prior
 written consent of DigiPen Institute of Technology is prohibited.
 File Name: Vec2.inl
-Author: TODO
-Creation date: TODO
+Author: sunwoo.lee
+Creation date: 03/15/2021
 -----------------------------------------------------------------*/
 
 namespace math

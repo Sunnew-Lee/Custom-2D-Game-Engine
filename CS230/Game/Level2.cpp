@@ -20,11 +20,11 @@ void Level2::Load() {
 }
 void Level2::Update([[maybe_unused]] double dt) {
 	ship.Update();
-	if (levelNext.IsKeyReleased()) {
+	if (levelNext.IsKeyReleased() == true) {
 		Engine::GetGameStateManager().Shutdown();
 	}
 #ifdef _DEBUG
-	if (levelReload.IsKeyReleased()) {
+	if (levelReload.IsKeyReleased() == true) {
 		Engine::GetGameStateManager().ReloadState();
 	}
 #endif

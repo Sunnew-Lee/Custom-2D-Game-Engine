@@ -33,7 +33,7 @@ void CS230::GameStateManager::ReloadState()
 {
 	GameStateManager::state = State::UNLOAD;
 }
-void CS230::GameStateManager::Update([[maybe_unused]]double dt)
+void CS230::GameStateManager::Update(double dt)
 {
 	switch (GameStateManager::state)
 	{
@@ -45,7 +45,7 @@ void CS230::GameStateManager::Update([[maybe_unused]]double dt)
 		}
 		else
 		{
-			GameStateManager::nextGameState=GameStateManager::gameStates[0];
+			GameStateManager::nextGameState = GameStateManager::gameStates[0];
 			GameStateManager::state = State::LOAD;
 		}
 		break;
@@ -83,7 +83,7 @@ void CS230::GameStateManager::Update([[maybe_unused]]double dt)
 			GameStateManager::state = State::LOAD;
 		}
 		break;
-	
+
 	case State::SHUTDOWN:
 		GameStateManager::state = State::EXIT; break;
 

@@ -22,6 +22,8 @@ public:
 
 	std::string GetName() override { return "Splash"; }
 private:
+	double Dt{ 0. };
+	
 	CS230::Texture texture;
 
 };

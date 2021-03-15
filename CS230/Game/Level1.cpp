@@ -20,13 +20,13 @@ void Level1::Load() {
 	hero.Load();
 	background.Load("assets/Background.png");
 }
-void Level1::Update([[maybe_unused]]double dt) {
+void Level1::Update([[maybe_unused]] double dt) {
 	hero.Update();
-	if (levelNext.IsKeyReleased()) {
+	if (levelNext.IsKeyReleased() == true) {
 		Engine::GetGameStateManager().SetNextState(static_cast<int>(Screens::Level2));
 	}
 #ifdef _DEBUG
-	if (levelReload.IsKeyReleased()) {
+	if (levelReload.IsKeyReleased() == true) {
 		Engine::GetGameStateManager().ReloadState();
 	}
 #endif

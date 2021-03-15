@@ -21,11 +21,11 @@ void Hero::Load()
 
 void Hero::Update()
 {
-	if (moveLeftKey.IsKeyDown())
+	if (moveLeftKey.IsKeyDown() == true)
 	{
 		position.x -= 5.;
 	}
-	if (moveRightKey.IsKeyDown())
+	if (moveRightKey.IsKeyDown() == true)
 	{
 		position.x += 5.;
 	}

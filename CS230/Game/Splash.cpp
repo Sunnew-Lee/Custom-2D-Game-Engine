@@ -11,17 +11,16 @@ Creation date: 2/10/2021
 #include "Screens.h"
 #include "Splash.h"
 
-//Splash::Splash() : levelNext(CS230::InputKey::Keyboard::Enter) {}
-Splash::Splash(){}
+Splash::Splash()
+{}
 
 void Splash::Load() {
 	texture.Load("assets/DigiPen_BLACK_1024px.png");
 }
-void Splash::Update([[maybe_unused]] double dt) {
-	static std::chrono::system_clock::time_point start =std::chrono::system_clock::now();
-	std::chrono::duration<double> sec = std::chrono::system_clock::now() - start;
+void Splash::Update(double dt) {
+	Dt += dt;
 
-	if (sec.count()>=3) {
+	if (Dt >= 3) {
 		Engine::GetGameStateManager().SetNextState(static_cast<int>(Screens::Level1));
 	}
 }

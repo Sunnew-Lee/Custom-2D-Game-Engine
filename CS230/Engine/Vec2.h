@@ -7,8 +7,8 @@ Author: sunwoo.lee
 Creation date: 03/15/2021
 -----------------------------------------------------------------*/
 #pragma once
-#include <cmath>
-#include <limits>
+#include <cmath>    //sqrt()
+#include <limits>   //numeric_limits-epsilon()
 
 namespace math
 {

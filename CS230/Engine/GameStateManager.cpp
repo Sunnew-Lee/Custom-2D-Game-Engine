@@ -8,8 +8,8 @@ Author: sunwoo.lee
 Creation date: 03/07/2021
 -----------------------------------------------------------------*/
 #include "GameStateManager.h"
-#include "GameState.h"	//GetName(), Load(), Update(), Unload()
-#include "Engine.h"	//GetLogger()
+#include "GameState.h"			// GetName(), Load(), Update(), Unload()
+#include "Engine.h"				// GetLogger()
 
 CS230::GameStateManager::GameStateManager()
 {

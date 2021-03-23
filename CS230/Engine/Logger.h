@@ -10,8 +10,8 @@ Creation date: 2/10/2021
 
 #pragma once
 #include <string>
-#include <fstream>
-#include <chrono>
+#include <fstream>		// ofstream
+#include <chrono>		// system_clock::time_point
 
 namespace CS230 {
 	class Logger {

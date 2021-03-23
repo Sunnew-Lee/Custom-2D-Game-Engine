@@ -8,8 +8,8 @@ Author: Kevin Wright
 Creation date: 2/11/2021
 -----------------------------------------------------------------*/
 #pragma once
-#include <string>
-#include "Vec2.h"
+#include <string>       // filesystem::path
+#include "Vec2.h"       // math::vec2, math::ivec2
 #include "Texture.h"
 
 namespace CS230 {

@@ -9,14 +9,14 @@ Creation date: 2/11/2021
 -----------------------------------------------------------------*/
 #pragma once
 #include "..\Engine\Sprite.h"
-#include "..\Engine\Input.h"
-#include "..\Engine\Vec2.h"
+#include "..\Engine\Input.h"    // InputKey
+#include "..\Engine\Vec2.h"     // math::vec2
 
 class Hero {
 public:
     Hero(math::vec2 startPos);
     void Load();
-    void Update();
+    void Update(double dt);
     void Draw();
 
 private:
@@ -26,4 +26,13 @@ private:
 
     CS230::InputKey moveLeftKey;
     CS230::InputKey moveRightKey;
+    CS230::InputKey moveJumpKey;
+    math::vec2 velocity;
+    bool isJumping;
+    bool isRising;
+
+    static constexpr double Acceleration_x{ 5 };
+    static constexpr double Drag_x{ 10 };
+    static constexpr double Max_Velocity_x{ 10 };
+    static constexpr double Jump_Velocity{ 12.3 };
 };

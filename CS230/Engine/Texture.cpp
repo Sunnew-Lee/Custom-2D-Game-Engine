@@ -8,7 +8,7 @@ Project: CS230
 Author: Kevin Wright
 Creation date: 2/11/2021
 -----------------------------------------------------------------*/
-#include <doodle/drawing.hpp>	//draw_image
+#include <doodle/drawing.hpp>	// draw_image()
 #include "Texture.h"
 
 CS230::Texture::Texture() {}

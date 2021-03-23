@@ -8,7 +8,7 @@ Author: sunwoo.lee
 Creation date: 03/08/2021
 -----------------------------------------------------------------*/
 #include "Input.h"
-#include "Engine.h"	//GetInput()
+#include "Engine.h"	// GetInput()
 
 CS230::InputKey::InputKey(Keyboard button)
 {

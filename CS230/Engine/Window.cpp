@@ -7,10 +7,10 @@ Project: CS230
 Author: Kevin Wright
 Creation date: 2/10/2021
 -----------------------------------------------------------------*/
-#include <doodle/window.hpp>
+#include <doodle/window.hpp>      // create_window(), update_window()
 #include "Window.h"
-#include <doodle/drawing.hpp>     // set_frame_of_reference, clear_background
-#include "Engine.h"			// GetWindow
+#include <doodle/drawing.hpp>     // set_frame_of_reference(), clear_background()
+#include "Engine.h"			      // GetWindow(), GetLogger()
 
 void CS230::Window::Init(std::string windowName) {
     doodle::create_window(windowName, 1440, 810);

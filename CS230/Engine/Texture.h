@@ -9,8 +9,8 @@ Author: Kevin Wright
 Creation date: 2/11/2021
 -----------------------------------------------------------------*/
 #pragma once
-#include <doodle/image.hpp>    //doodle::Image
-#include "Vec2.h"
+#include <doodle/image.hpp>    // doodle::Image, filesystem
+#include "Vec2.h"              // math::vec2, math::ivec
 
 namespace CS230 {
     class Texture {

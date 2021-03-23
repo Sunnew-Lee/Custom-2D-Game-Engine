@@ -9,8 +9,9 @@ Creation date: 03/08/2021
 -----------------------------------------------------------------*/
 #pragma once
 #include "..\Engine\GameState.h"
-#include "..\Engine\Input.h"
+#include "..\Engine\Input.h"		// InputKey
 #include "Hero.h"
+#include "Ball.h"
 
 class Level1 : public CS230::GameState {
 public:
@@ -21,10 +22,12 @@ public:
 	std::string GetName() override { return "Level 1"; }
 
 	static constexpr double floor = 126.0f;
+	static constexpr double gravity = 20;
 	void Draw() override;
 private:
 	CS230::InputKey levelNext;
 	CS230::InputKey levelReload;
 	Hero hero;
+	Ball ball;
 	CS230::Texture background;
 };

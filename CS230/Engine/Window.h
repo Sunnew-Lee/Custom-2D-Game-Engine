@@ -9,7 +9,7 @@ Creation date: 2/10/2021
 -----------------------------------------------------------------*/
 #pragma once
 #include <string>
-#include "Vec2.h"   //math::ivec2
+#include "Vec2.h"   // math::ivec2
 
 namespace CS230 {
     class Window {

@@ -7,21 +7,25 @@ Project: CS230
 Author: sunwoo.lee
 Creation date: 03/08/2021
 -----------------------------------------------------------------*/
-#include "../Engine/Engine.h"	//GetGameStateManager
-#include "Screens.h"
+#include "../Engine/Engine.h"	// GetWindow(), GetGameStateManager()
+#include "Screens.h"			// Screens::Level2
 #include "Level1.h"
 
 
 Level1::Level1() 
-	: levelNext(CS230::InputKey::Keyboard::Enter), levelReload(CS230::InputKey::Keyboard::R),hero(math::vec2(static_cast<double>(Engine::GetWindow().GetSize().x/2),floor))
+	: levelNext(CS230::InputKey::Keyboard::Enter), levelReload(CS230::InputKey::Keyboard::R),
+	hero(math::vec2(static_cast<double>(Engine::GetWindow().GetSize().x/2),floor)),
+	ball(math::vec2(600, floor))
 {}
 
 void Level1::Load() {
 	hero.Load();
+	ball.Load();
 	background.Load("assets/Background.png");
 }
-void Level1::Update([[maybe_unused]] double dt) {
-	hero.Update();
+void Level1::Update(double dt) {
+	hero.Update(dt);
+	ball.Update(dt);
 	if (levelNext.IsKeyReleased() == true) {
 		Engine::GetGameStateManager().SetNextState(static_cast<int>(Screens::Level2));
 	}
@@ -38,4 +42,5 @@ void Level1::Draw()
 {
 	background.Draw(0);
 	hero.Draw();
+	ball.Draw();
 }

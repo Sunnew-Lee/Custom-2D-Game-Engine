@@ -7,8 +7,8 @@ Project: CS230
 Author: Kevin Wright
 Creation date: 2/10/2021
 -----------------------------------------------------------------*/
-#include "../Engine/Engine.h"	//GetGameStateManager
-#include "Screens.h"
+#include "../Engine/Engine.h"	// GetGameStateManager()
+#include "Screens.h"			// Screens::Level1
 #include "Splash.h"
 
 Splash::Splash()

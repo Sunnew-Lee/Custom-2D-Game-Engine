@@ -7,7 +7,7 @@ Project: CS230
 Author: sunwoo.lee
 Creation date: 03/07/2021
 -----------------------------------------------------------------*/
-#include <iostream>    // cout.rdbuf
+#include <iostream>		// cout.rdbuf()
 #include "Logger.h"
 
 CS230::Logger::Logger(Logger::Severity severity, bool useConsole, std::chrono::system_clock::time_point start) : minLevel(severity), outStream("Trace.log"), startTime(start){

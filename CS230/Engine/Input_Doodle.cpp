@@ -8,9 +8,9 @@ Project: CS230
 Author: sunwoo.lee
 Creation date: 03/08/2021
 -----------------------------------------------------------------*/
-#include <doodle/input.hpp>	
-#include "Input.h"
-#include "Engine.h"			// GetLogger, GetInput
+#include <doodle/input.hpp>		// doodle::KeyboardButtons
+#include "Input.h"				// InputKey::Keyboard
+#include "Engine.h"				// GetLogger(), GetInput()
 
 CS230::InputKey::Keyboard DoodleKeyToCS230Key(doodle::KeyboardButtons button) {
 	if (button == doodle::KeyboardButtons::Enter) {

@@ -9,7 +9,7 @@ Creation date: 03/08/2021
 -----------------------------------------------------------------*/
 #pragma once
 #include "..\Engine\GameState.h"
-#include "..\Engine\Input.h"
+#include "..\Engine\Input.h"		// InputKey
 #include "Ship.h"
 
 class Level2 : public CS230::GameState {
@@ -25,5 +25,4 @@ private:
 	CS230::InputKey levelNext;
 	CS230::InputKey levelReload;
 	Ship ship;
-	CS230::Texture background;
 };

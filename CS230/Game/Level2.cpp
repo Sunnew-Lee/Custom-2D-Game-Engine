@@ -7,8 +7,7 @@ Project: CS230
 Author: sunwoo.lee
 Creation date: 03/08/2021
 -----------------------------------------------------------------*/
-#include "../Engine/Engine.h"	//GetGameStateManager
-#include "Screens.h"
+#include "../Engine/Engine.h"	// GetWindow(), GetGameStateManager()
 #include "Level2.h"
 
 Level2::Level2() 
@@ -18,8 +17,8 @@ Level2::Level2()
 void Level2::Load() {
 	ship.Load();
 }
-void Level2::Update([[maybe_unused]] double dt) {
-	ship.Update();
+void Level2::Update(double dt) {
+	ship.Update(dt);
 	if (levelNext.IsKeyReleased() == true) {
 		Engine::GetGameStateManager().Shutdown();
 	}

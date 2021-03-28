@@ -8,18 +8,19 @@ Author: sunwoo.lee
 Creation date: 03/15/2021
 -----------------------------------------------------------------*/
 #include "Hero.h"
-#include "..\Engine\Engine.h"	// GetLogger()
+#include "..\Engine\Engine.h"	// GetLogger(), GetWindow()
 #include "Level1.h"				// gravity, floor
 #include <string>				// to_string()
+#include "..\Engine\Camera.h"	// GetPosition()
 
-Hero::Hero(math::vec2 startPos)
-	:sprite(), startPos(startPos), position(startPos), velocity(0), isJumping(false), isRising(false),
+Hero::Hero(math::vec2 startPos, const CS230::Camera& camera)
+	:sprite(), startPos(startPos), camera(camera), position(startPos), velocity(0), isJumping(false), isRising(false),
 	moveLeftKey(CS230::InputKey::Keyboard::Left), moveRightKey(CS230::InputKey::Keyboard::Right), moveJumpKey(CS230::InputKey::Keyboard::Up)
 {}
 
 void Hero::Load()
 {
-	sprite.Load("assets/Hero.png", math::ivec2{56,14});
+	sprite.Load("assets/Hero.png", math::ivec2(56,14));
 	position = startPos;
 	velocity = 0;
 	isJumping = false;
@@ -134,10 +135,26 @@ void Hero::Update(double dt)
 		Engine::GetLogger().LogDebug("Ending Jump - YPos:" + std::to_string(position.y));
 	}
 
-	
+	if (position.x - sprite.GetTextureSize().x / 2 < camera.GetPosition().x)
+	{
+		velocity.x = 0;
+		position.x = camera.GetPosition().x + sprite.GetTextureSize().x / 2;
+	}
+	else if (position.x + sprite.GetTextureSize().x / 2 > Engine::GetWindow().GetSize().x + camera.GetPosition().x)
+	{
+		velocity.x = 0;
+		position.x = Engine::GetWindow().GetSize().x + camera.GetPosition().x - sprite.GetTextureSize().x / 2;
+	}
+
+	objectMatrix = math::TranslateMatrix::TranslateMatrix(position);
 }
 
-void Hero::Draw()
+void Hero::Draw(math::TransformMatrix cameraMatrix)
 {
-	sprite.Draw(position);
+	sprite.Draw(cameraMatrix*objectMatrix);
+}
+
+math::vec2 Hero::Get_Hero_Position()
+{
+	return position;
 }

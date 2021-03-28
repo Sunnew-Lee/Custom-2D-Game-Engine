@@ -9,6 +9,7 @@ Creation date: 03/23/2021
 -----------------------------------------------------------------*/
 #include "Ball.h"
 #include "Level1.h"				// gravity, floor
+#include "..\Engine\Camera.h"	// GetPosition()
 
 Ball::Ball(math::vec2 startPos)
 	:initPosition(startPos), position(startPos)
@@ -31,10 +32,12 @@ void Ball::Update([[maybe_unused]]double dt)
 		position.y = Level1::floor;
 		velocity.y = bounceVelocity;
 	}
+
+	objectMatrix = math::TranslateMatrix::TranslateMatrix(position);
 }
 
-void Ball::Draw()
+void Ball::Draw(math::TransformMatrix cameraMatrix)
 {
-	sprite.Draw(position);
+	sprite.Draw(cameraMatrix* objectMatrix);
 }
 

@@ -7,7 +7,7 @@ Project: CS230
 Author: Kevin Wright
 Creation date: 2/10/2021
 -----------------------------------------------------------------*/
-#include "../Engine/Engine.h"	// GetGameStateManager()
+#include "../Engine/Engine.h"	// GetGameStateManager(), GetWindow()
 #include "Screens.h"			// Screens::Level1
 #include "Splash.h"
 
@@ -30,5 +30,7 @@ void Splash::Unload() {
 void Splash::Draw()
 {
 	Engine::GetWindow().Clear(0xffffffff);
-	texture.Draw(static_cast<math::vec2>(math::ivec2(Engine::GetWindow().GetSize() / 2 - texture.GetSize() / 2)));
+	math::TranslateMatrix matrix(math::ivec2(Engine::GetWindow().GetSize() / 2 - texture.GetSize() / 2));
+	texture.Draw(matrix);
+
 }

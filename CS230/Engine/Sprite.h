@@ -8,9 +8,10 @@ Author: Kevin Wright
 Creation date: 2/11/2021
 -----------------------------------------------------------------*/
 #pragma once
-#include <string>       // filesystem::path
-#include "Vec2.h"       // math::vec2, math::ivec2
-#include "Texture.h"
+#include <string>               // filesystem::path
+#include "Vec2.h"               // math::vec2, math::ivec2
+#include "Texture.h"            // Texture
+#include "TransformMatrix.h"    // math::TransformMatrix
 
 namespace CS230 {
     class Sprite {
@@ -18,7 +19,7 @@ namespace CS230 {
         Sprite()=default;
         void Load(const std::filesystem::path& texturePath);
         void Load(const std::filesystem::path& texturePath, math::ivec2 hotSpotPosition);
-        void Draw(math::vec2 position);
+        void Draw(math::TransformMatrix displayMatrix);
         math::ivec2 GetTextureSize();
     private:
         Texture texture;

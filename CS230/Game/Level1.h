@@ -10,8 +10,10 @@ Creation date: 03/08/2021
 #pragma once
 #include "..\Engine\GameState.h"
 #include "..\Engine\Input.h"		// InputKey
-#include "Hero.h"
-#include "Ball.h"
+#include "Hero.h"					// Hero
+#include "Ball.h"					// Ball
+#include "Background.h"				// Background
+#include "..\Engine\Camera.h"		// Camera
 
 class Level1 : public CS230::GameState {
 public:
@@ -28,6 +30,9 @@ private:
 	CS230::InputKey levelNext;
 	CS230::InputKey levelReload;
 	Hero hero;
-	Ball ball;
-	CS230::Texture background;
+	Ball ball1;
+	Ball ball2;
+	Ball ball3;
+	CS230::Camera camera;
+	Background background;
 };

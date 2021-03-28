@@ -46,11 +46,13 @@ void Ship::Update(double dt)
 	Engine::GetLogger().LogDebug("Velocity = " + std::to_string(velocity.x) + "," + std::to_string(velocity.y));
 	position += velocity * dt;
 	TestForWrap();
+
+	objectMatrix = math::TranslateMatrix::TranslateMatrix(position);
 }
 
 void Ship::Draw()
 {
-	sprite.Draw(position);
+	sprite.Draw(objectMatrix);
 }
 
 void Ship::TestForWrap()

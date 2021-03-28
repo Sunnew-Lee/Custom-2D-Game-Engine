@@ -8,16 +8,22 @@ Author: Kevin Wright
 Creation date: 2/11/2021
 -----------------------------------------------------------------*/
 #pragma once
-#include "..\Engine\Sprite.h"
-#include "..\Engine\Input.h"    // InputKey
-#include "..\Engine\Vec2.h"     // math::vec2
+#include "..\Engine\Sprite.h"           // Sprite
+#include "..\Engine\Input.h"            // InputKey
+#include "..\Engine\Vec2.h"             // math::vec2
+#include "..\Engine\TransformMatrix.h"  // math::TransformMatrix
+
+namespace CS230 {
+    class Camera;
+}
 
 class Hero {
 public:
-    Hero(math::vec2 startPos);
+    Hero(math::vec2 startPos, const CS230::Camera& camera);
     void Load();
     void Update(double dt);
-    void Draw();
+    void Draw(math::TransformMatrix cameraMatrix);
+    math::vec2 Get_Hero_Position();
 
 private:
     CS230::Sprite sprite;
@@ -30,7 +36,9 @@ private:
     math::vec2 velocity;
     bool isJumping;
     bool isRising;
+    math::TransformMatrix objectMatrix;
 
+    const CS230::Camera& camera;
     static constexpr double Acceleration_x{ 5 };
     static constexpr double Drag_x{ 10 };
     static constexpr double Max_Velocity_x{ 10 };

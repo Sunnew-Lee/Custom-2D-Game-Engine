@@ -9,7 +9,7 @@ Creation date: 2/10/2021
 -----------------------------------------------------------------*/
 #pragma once
 #include "..\Engine\GameState.h"
-#include "..\Engine\Texture.h"
+#include "..\Engine\Texture.h"		// Texture
 
 class Splash : public CS230::GameState {
 public:
@@ -24,5 +24,4 @@ private:
 	double Dt{ 0. };
 	
 	CS230::Texture texture;
-
 };

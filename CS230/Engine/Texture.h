@@ -9,15 +9,18 @@ Author: Kevin Wright
 Creation date: 2/11/2021
 -----------------------------------------------------------------*/
 #pragma once
-#include <doodle/image.hpp>    // doodle::Image, filesystem
-#include "Vec2.h"              // math::vec2, math::ivec
+#include <doodle/image.hpp>     // doodle::Image, filesystem
+#include "Vec2.h"               // math::vec2, math::ivec
+#include "TransformMatrix.h"    // math::TransformMatrix
 
 namespace CS230 {
     class Texture {
     public:
         Texture();
+        Texture(const std::filesystem::path& filePath);
+
         void Load(const std::filesystem::path& filePath);
-        void Draw(math::vec2 location);
+        void Draw(math::TransformMatrix displayMatrix);
         math::ivec2 GetSize();
     private:
         doodle::Image image;

@@ -37,19 +37,19 @@ math::TransformMatrix& math::TransformMatrix::operator *= (math::TransformMatrix
 
 void math::TransformMatrix::Reset()
 {
-    constexpr int MATRIX_SIZE{ 3 };
+    const int size = sizeof(matrix[0]) / sizeof(matrix[0][0]);
 
-    for (int row{ 0 }; row < MATRIX_SIZE; row++)
+    for (int row{ 0 }; row < size; row++)
     {
-        for (int column{ 0 }; column < MATRIX_SIZE; column++)
+        for (int column{ 0 }; column < size; column++)
         {
             matrix[row][column] = 0;
         }
     }
 
-    for (int i{ 0 }; i < MATRIX_SIZE; i++)
+    for (int index{ 0 }; index < size; index++)
     {
-        matrix[i][i] = 1;
+        matrix[index][index] = 1;
     }
 }
 

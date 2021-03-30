@@ -26,5 +26,5 @@ private:
     math::vec2 velocity;
     math::TransformMatrix objectMatrix;
 
-    static constexpr double bounceVelocity = 9 ;
+    static constexpr double bounceVelocity{ 750 };
 };

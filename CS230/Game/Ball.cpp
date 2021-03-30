@@ -22,10 +22,10 @@ void Ball::Load()
 	velocity = 0;
 }
 
-void Ball::Update([[maybe_unused]]double dt)
+void Ball::Update(double dt)
 {
 	velocity.y -= Level1::gravity * dt;
-	position.y += velocity.y;
+	position.y += velocity.y * dt;
 
 	if (position.y < Level1::floor)
 	{

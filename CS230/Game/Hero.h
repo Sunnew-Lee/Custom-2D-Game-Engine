@@ -39,8 +39,8 @@ private:
     math::TransformMatrix objectMatrix;
 
     const CS230::Camera& camera;
-    static constexpr double Acceleration_x{ 5 };
-    static constexpr double Drag_x{ 10 };
-    static constexpr double Max_Velocity_x{ 10 };
-    static constexpr double Jump_Velocity{ 12.3 };
+    static constexpr double Acceleration_x{ 500 };
+    static constexpr double Drag_x{ 1000 };
+    static constexpr double Max_Velocity_x{ 1000 };
+    static constexpr double Jump_Velocity{ 1000 };
 };

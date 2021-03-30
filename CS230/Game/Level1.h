@@ -24,7 +24,7 @@ public:
 	std::string GetName() override { return "Level 1"; }
 
 	static constexpr double floor = 126.0f;
-	static constexpr double gravity = 20;
+	static constexpr double gravity = 2000;
 	void Draw() override;
 private:
 	CS230::InputKey levelNext;

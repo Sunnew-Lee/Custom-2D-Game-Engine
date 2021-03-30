@@ -125,7 +125,7 @@ void Hero::Update(double dt)
 		isRising = true;
 		Engine::GetLogger().LogDebug("Starting Jump - YPos:" + std::to_string(position.y));
 	}
-	position += velocity;
+	position += velocity * dt;
 
 	if (position.y < Level1::floor)
 	{

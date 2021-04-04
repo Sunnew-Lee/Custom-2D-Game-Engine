@@ -8,7 +8,7 @@ Author: Kevin Wright
 Creation date: 2/10/2021
 -----------------------------------------------------------------*/
 #pragma once
-#include <string>
+#include <string>   // string
 #include "Vec2.h"   // math::ivec2
 
 namespace CS230 {

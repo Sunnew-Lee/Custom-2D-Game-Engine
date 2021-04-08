@@ -30,5 +30,13 @@ void Background::Draw(const CS230::Camera& camera)
 	
 math::ivec2 Background::Size()
 {
-	return backgrounds[2].texture.GetSize();
+	for (Background::ParallaxInfo& p : backgrounds)
+	{
+		if (p.level == 1)
+		{
+			return p.texture.GetSize();
+		}
+	}
+
+	return math::ivec2(0);
 }

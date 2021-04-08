@@ -18,6 +18,8 @@ namespace math {
         const double* operator[](int index) const { return matrix[index]; }
         TransformMatrix operator * (TransformMatrix rhs) const;
         TransformMatrix& operator *= (TransformMatrix rhs);
+        vec2 operator * (vec2 rhs) const;
+
         void Reset();
     protected:
         double matrix[3][3];
@@ -27,5 +29,15 @@ namespace math {
     public:
         TranslateMatrix(ivec2 translate);
         TranslateMatrix(vec2 translate);
+    };
+
+    class RotateMatrix : public TransformMatrix {
+    public:
+        RotateMatrix(double radians);
+    };
+
+    class ScaleMatrix : public TransformMatrix {
+    public:
+        ScaleMatrix(vec2 scale);
     };
 }

@@ -25,16 +25,20 @@ private:
     void TestForWrap();
 
     CS230::Sprite sprite;
+    CS230::Sprite sprite_flame_1;
+    CS230::Sprite sprite_flame_2;
     math::vec2 startPos;
     math::vec2 position;
     math::vec2 velocity;
     math::TransformMatrix objectMatrix;
+    double cur_rotation;
+    bool is_accelerating;
 
-    CS230::InputKey moveLeftKey;
-    CS230::InputKey moveRightKey;
-    CS230::InputKey moveUpKey;
-    CS230::InputKey moveDownKey;
+    CS230::InputKey rotateCounterKey;
+    CS230::InputKey rotateClockKey;
+    CS230::InputKey accelerateKey;
 
     static constexpr double accel = 400;
     static constexpr double drag = 1.0f;
+    static constexpr double cur_speed = 2;
 };

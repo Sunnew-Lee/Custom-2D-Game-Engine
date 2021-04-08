@@ -10,7 +10,7 @@ Creation date: 03/26/2021
 #include "Camera.h"
 #include "TransformMatrix.h"	// math::TransformMatrix, math::TranslateMatrix
 
-CS230::Camera::Camera(math::rect2 movableRange):movableRange(movableRange)
+CS230::Camera::Camera(math::rect2 movableRange) : extent(math::ivec2(0)), position(math::vec2(0)), movableRange(movableRange)
 {}
 
 void CS230::Camera::SetPosition(math::vec2 newPosition)
@@ -39,6 +39,16 @@ void CS230::Camera::Update(const math::vec2& followObjPos)
 		position.x = followObjPos.x - movableRange.topRight.x;
 	}
 
+	if (followObjPos.y - position.y < movableRange.bottomLeft.y)
+	{
+		position.y = followObjPos.y - movableRange.bottomLeft.y;
+	}
+	else if (followObjPos.y - position.y > movableRange.topRight.y)
+	{
+		position.y = followObjPos.y - movableRange.topRight.y;
+	}
+
+
 	if (position.x < extent.bottomLeft.x)
 	{
 		position.x = extent.bottomLeft.x;
@@ -46,6 +56,15 @@ void CS230::Camera::Update(const math::vec2& followObjPos)
 	else if (position.x > extent.topRight.x)
 	{
 		position.x = extent.topRight.x;
+	}
+
+	if (position.y < extent.bottomLeft.y)
+	{
+		position.y = extent.bottomLeft.y;
+	}
+	else if (position.y > extent.topRight.y)
+	{
+		position.y = extent.topRight.y;
 	}
 }
 

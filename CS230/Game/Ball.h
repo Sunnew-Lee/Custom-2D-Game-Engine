@@ -20,11 +20,40 @@ public:
     void Draw(math::TransformMatrix cameraMatrix);
 
 private:
+    class State {
+    public:
+        virtual void Enter(Ball* ball) = 0;
+        virtual void Update(Ball* ball, double dt) = 0;
+        virtual void TestForExit(Ball* ball) = 0;
+        virtual std::string GetName() = 0;
+    };
+    class State_Bounce : public State {
+    public:
+        virtual void Enter(Ball* ball) override;
+        virtual void Update(Ball* ball, double dt) override;
+        virtual void TestForExit(Ball* ball) override;
+        std::string GetName() override { return "Bouncing"; }
+    };
+    class State_Land : public State {
+    public:
+        virtual void Enter(Ball* ball) override;
+        virtual void Update(Ball* ball, double dt) override;
+        virtual void TestForExit(Ball* ball) override;
+        std::string GetName() override { return "Land"; }
+    };
+
     CS230::Sprite sprite;
     math::vec2 initPosition;
     math::vec2 position;
     math::vec2 velocity;
     math::TransformMatrix objectMatrix;
+
+    State_Bounce stateBounce;
+    State_Land stateLand;
+
+    void ChangeState(State* newState);
+
+    State* currState;
 
     static constexpr double bounceVelocity{ 750 };
 };

@@ -11,47 +11,58 @@ Creation date: 03/15/2021
 #include "..\Engine\Engine.h"   // GetLogger()
 
 Ship::Ship(math::vec2 startPos)
-	:startPos(startPos), position(startPos), velocity(0),
-	moveLeftKey(CS230::InputKey::Keyboard::A), moveRightKey(CS230::InputKey::Keyboard::D), moveUpKey(CS230::InputKey::Keyboard::W), moveDownKey(CS230::InputKey::Keyboard::S)
+	:startPos(startPos), position(startPos), velocity(0), cur_rotation(0), is_accelerating{ false },
+	rotateCounterKey(CS230::InputKey::Keyboard::A), rotateClockKey(CS230::InputKey::Keyboard::D), accelerateKey(CS230::InputKey::Keyboard::W)
 {}
 
 void Ship::Load()
 {
-	sprite.Load("assets/Ship.png");
+	sprite.Load("assets/Ship.png", { math::ivec2(50,41), math::ivec2(-15,-41), math::ivec2(15,-41) });
+	sprite_flame_1.Load("assets/flame.png", math::ivec2(8, 16));
+	sprite_flame_2.Load("assets/flame.png", math::ivec2(8, 16));
 	position = startPos;
 	velocity = 0;
+	cur_rotation = 0;
 }
 
 void Ship::Update(double dt)
 {
-	if (moveLeftKey.IsKeyDown() == true)
+	if (rotateCounterKey.IsKeyDown() == true)
 	{
-		velocity.x -= accel * dt;
+		cur_rotation += cur_speed * dt;
 	}
-	if (moveRightKey.IsKeyDown() == true)
+	if (rotateClockKey.IsKeyDown() == true)
 	{
-		velocity.x += accel * dt;
+		cur_rotation += -cur_speed * dt;
 	}
-	if (moveUpKey.IsKeyDown() == true)
+	if (accelerateKey.IsKeyDown() == true)
 	{
-		velocity.y += accel * dt;
+		if (is_accelerating == false)
+		{
+			Engine::GetLogger().LogDebug("Accelerating");
+			is_accelerating = true;
+		}
+		velocity += math::RotateMatrix::RotateMatrix(cur_rotation) * math::vec2(0, accel * dt);
 	}
-	if (moveDownKey.IsKeyDown() == true)
+	else if (accelerateKey.IsKeyReleased() == true)
 	{
-		velocity.y -= accel * dt;
+		Engine::GetLogger().LogDebug("Stopped Accelerating");
+		is_accelerating = false;
 	}
 
+	
 	velocity -= (velocity * Ship::drag * dt);
 
-	Engine::GetLogger().LogDebug("Velocity = " + std::to_string(velocity.x) + "," + std::to_string(velocity.y));
 	position += velocity * dt;
 	TestForWrap();
 
-	objectMatrix = math::TranslateMatrix::TranslateMatrix(position);
+	objectMatrix = math::TranslateMatrix::TranslateMatrix(position) * math::RotateMatrix::RotateMatrix(cur_rotation) * math::ScaleMatrix::ScaleMatrix(math::vec2(0.75, 0.75));
 }
 
 void Ship::Draw()
 {
+	sprite_flame_1.Draw(objectMatrix * math::TranslateMatrix::TranslateMatrix(sprite.GetHotSpot(1)));
+	sprite_flame_2.Draw(objectMatrix * math::TranslateMatrix::TranslateMatrix(sprite.GetHotSpot(2)));
 	sprite.Draw(objectMatrix);
 }
 

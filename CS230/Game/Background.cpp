@@ -24,11 +24,19 @@ void Background::Draw(const CS230::Camera& camera)
 {
 	for (Background::ParallaxInfo& p : backgrounds)
 	{
-		p.texture.Draw(math::TranslateMatrix::TranslateMatrix(math::vec2{ -camera.GetPosition().x / p.level, camera.GetPosition().y }));
+		p.texture.Draw(math::TranslateMatrix::TranslateMatrix(math::vec2{ -camera.GetPosition().x / p.level, -camera.GetPosition().y }));
 	}
 }
 	
 math::ivec2 Background::Size()
 {
-	return backgrounds[2].texture.GetSize();
+	for (Background::ParallaxInfo& p : backgrounds)
+	{
+		if (p.level == 1)
+		{
+			return p.texture.GetSize();
+		}
+	}
+
+	return math::ivec2(0);
 }

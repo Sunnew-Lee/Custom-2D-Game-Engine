@@ -15,7 +15,7 @@ Creation date: 03/08/2021
 
 Level1::Level1()
 	: levelNext(CS230::InputKey::Keyboard::Enter), levelReload(CS230::InputKey::Keyboard::R),
-	camera(math::rect2(math::vec2(Engine::GetWindow().GetSize().x * 0.15, 0), math::vec2(Engine::GetWindow().GetSize().x * 0.35, Engine::GetWindow().GetSize().y))),
+	camera(math::rect2(math::vec2(Engine::GetWindow().GetSize().x * 0.15, 0), math::vec2(Engine::GetWindow().GetSize().x * 0.35, 0))),
 	hero(math::vec2(Engine::GetWindow().GetSize().x / 2., floor), camera),
 	ball1(math::vec2(600, floor)), ball2(math::vec2(2700, floor)), ball3(math::vec2(4800, floor))
 {}
@@ -29,7 +29,7 @@ void Level1::Load() {
 	background.Add("assets/Moutains.png", 2);
 	background.Add("assets/foreground.png", 1);
 	camera.SetPosition(math::vec2(0,0));
-	camera.SetExtent(math::irect2{ math::ivec2(0,0),math::ivec2(background.Size().x - Engine::GetWindow().GetSize().x,Engine::GetWindow().GetSize().y) });
+	camera.SetExtent(math::irect2{ math::ivec2(0,0),math::ivec2(background.Size() - Engine::GetWindow().GetSize()) });
 }
 void Level1::Update(double dt) {
 	hero.Update(dt);

@@ -29,11 +29,11 @@ void Ship::Update(double dt)
 {
 	if (rotateCounterKey.IsKeyDown() == true)
 	{
-		cur_rotation += cur_speed * dt;
+		cur_rotation += rotate_speed * dt;
 	}
 	if (rotateClockKey.IsKeyDown() == true)
 	{
-		cur_rotation += -cur_speed * dt;
+		cur_rotation += -rotate_speed * dt;
 	}
 	if (accelerateKey.IsKeyDown() == true)
 	{

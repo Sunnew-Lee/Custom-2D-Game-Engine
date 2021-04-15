@@ -32,12 +32,6 @@ void Ball::Update(double dt)
 	position.y += velocity.y * dt;
 	currState->TestForExit(this);
 
-	if (position.y < Level1::floor)
-	{
-		position.y = Level1::floor;
-		velocity.y = bounceVelocity;
-	}
-
 	objectMatrix = math::TranslateMatrix::TranslateMatrix(position);
 }
 

@@ -24,5 +24,6 @@ public:
 private:
 	CS230::InputKey levelNext;
 	CS230::InputKey levelReload;
+	CS230::InputKey slowMotion;
 	Ship ship;
 };

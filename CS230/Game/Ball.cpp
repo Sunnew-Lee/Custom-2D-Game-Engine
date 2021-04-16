@@ -10,7 +10,8 @@ Creation date: 03/23/2021
 #include "Ball.h"
 #include "Level1.h"				// gravity, floor
 #include "..\Engine\Camera.h"	// GetPosition()
-#include "..\Engine\Engine.h"
+#include "..\Engine\Engine.h"	// GetLogger()
+#include "Ball_Anims.h"			// Ball_Anim
 
 Ball::Ball(math::vec2 startPos)
 	:initPosition(startPos), position(startPos)
@@ -18,7 +19,7 @@ Ball::Ball(math::vec2 startPos)
 
 void Ball::Load()
 {
-	sprite.Load("assets/Ball.png", math::ivec2{ 44,0 });
+	sprite.Load("assets/Ball.spt");
 	position = initPosition;
 	velocity = 0;
 
@@ -31,12 +32,7 @@ void Ball::Update(double dt)
 	currState->Update(this, dt);
 	position.y += velocity.y * dt;
 	currState->TestForExit(this);
-
-	if (position.y < Level1::floor)
-	{
-		position.y = Level1::floor;
-		velocity.y = bounceVelocity;
-	}
+	sprite.Update(dt);
 
 	objectMatrix = math::TranslateMatrix::TranslateMatrix(position);
 }
@@ -55,6 +51,7 @@ void Ball::ChangeState(State* newState)
 
 void Ball::State_Bounce::Enter(Ball* ball)
 {
+	ball->sprite.PlayAnimation(static_cast<int>(Ball_Anim::None_Anim));
 	ball->velocity = ball->bounceVelocity;
 }
 void Ball::State_Bounce::Update(Ball* ball, double dt)
@@ -71,13 +68,17 @@ void Ball::State_Bounce::TestForExit(Ball* ball)
 
 void Ball::State_Land::Enter(Ball* ball)
 {
+	ball->sprite.PlayAnimation(static_cast<int>(Ball_Anim::Squish_Anim));
 	ball->velocity.y = 0;
 	ball->position.y = Level1::floor;
 }
-void Ball::State_Land::Update([[maybe_unused]] Ball* ball, [[maybe_unused]] double dt)
+void Ball::State_Land::Update(Ball* , double )
 {
 }
 void Ball::State_Land::TestForExit(Ball* ball)
 {
-	ball->ChangeState(&ball->stateBounce);
+	if (ball->sprite.IsAnimationDone() == true)
+	{
+		ball->ChangeState(&ball->stateBounce);
+	}
 }

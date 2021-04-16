@@ -11,13 +11,17 @@ Creation date: 03/08/2021
 #include "Level2.h"
 
 Level2::Level2() 
-	: levelNext(CS230::InputKey::Keyboard::Enter), levelReload(CS230::InputKey::Keyboard::R), ship(math::vec2(Engine::GetWindow().GetSize() / 2))
+	: levelNext(CS230::InputKey::Keyboard::Enter), levelReload(CS230::InputKey::Keyboard::R), slowMotion(CS230::InputKey::Keyboard::Space),
+	ship(math::vec2(Engine::GetWindow().GetSize() / 2))
 {}
 
 void Level2::Load() {
 	ship.Load();
 }
 void Level2::Update(double dt) {
+#ifdef _DEBUG
+	(slowMotion.IsKeyDown() == true) ? (dt /= 8) : (dt);
+#endif
 	ship.Update(dt);
 	if (levelNext.IsKeyReleased() == true) {
 		Engine::GetGameStateManager().Shutdown();

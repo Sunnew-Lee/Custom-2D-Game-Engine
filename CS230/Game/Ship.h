@@ -40,5 +40,5 @@ private:
 
     static constexpr double accel = 400;
     static constexpr double drag = 1.0f;
-    static constexpr double cur_speed = 2;
+    static constexpr double rotate_speed = 2;
 };

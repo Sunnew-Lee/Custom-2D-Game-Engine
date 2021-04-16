@@ -12,6 +12,7 @@ Creation date: 03/15/2021
 #include "Level1.h"				// gravity, floor
 #include <string>				// to_string()
 #include "..\Engine\Camera.h"	// GetPosition()
+#include "Hero_Anims.h"			// Hero_Anim
 
 Hero::Hero(math::vec2 startPos, const CS230::Camera& camera)
 	:sprite(), startPos(startPos), camera(camera), position(startPos), velocity(0), isRunningLeft(false), currState(&stateIdle),
@@ -20,7 +21,7 @@ Hero::Hero(math::vec2 startPos, const CS230::Camera& camera)
 
 void Hero::Load()
 {
-	sprite.Load("assets/Hero.png", math::ivec2(56,14));
+	sprite.Load("assets/Hero.spt");
 	position = startPos;
 	velocity = 0;
 	isRunningLeft = false;
@@ -34,16 +35,17 @@ void Hero::Update(double dt)
 	currState->Update(this, dt);
 	position += velocity * dt;
 	currState->TestForExit(this);
+	sprite.Update(dt);
 
-	if (position.x - sprite.GetTextureSize().x / 2 < camera.GetPosition().x)
+	if (position.x - sprite.GetFrameSize().x / 2 < camera.GetPosition().x)
 	{
 		velocity.x = 0;
-		position.x = camera.GetPosition().x + sprite.GetTextureSize().x / 2;
+		position.x = camera.GetPosition().x + sprite.GetFrameSize().x / 2;
 	}
-	else if (position.x + sprite.GetTextureSize().x / 2 > Engine::GetWindow().GetSize().x + camera.GetPosition().x)
+	else if (position.x + sprite.GetFrameSize().x / 2 > Engine::GetWindow().GetSize().x + camera.GetPosition().x)
 	{
 		velocity.x = 0;
-		position.x = Engine::GetWindow().GetSize().x + camera.GetPosition().x - sprite.GetTextureSize().x / 2;
+		position.x = Engine::GetWindow().GetSize().x + camera.GetPosition().x - sprite.GetFrameSize().x / 2;
 	}
 
 	if (isRunningLeft == true)
@@ -112,10 +114,11 @@ void Hero::ChangeState(State* newState) {
 	currState->Enter(this);
 }
 
-void Hero::State_Idle::Enter([[maybe_unused]] Hero* hero)
+void Hero::State_Idle::Enter(Hero* hero)
 {
+	hero->sprite.PlayAnimation(static_cast<int>(Hero_Anim::Hero_Idle_Anim));
 }
-void Hero::State_Idle::Update([[maybe_unused]] Hero* hero, [[maybe_unused]] double dt)
+void Hero::State_Idle::Update(Hero* , double )
 {
 }
 void Hero::State_Idle::TestForExit(Hero* hero)
@@ -132,6 +135,7 @@ void Hero::State_Idle::TestForExit(Hero* hero)
 
 void Hero::State_Running::Enter(Hero* hero)
 {
+	hero->sprite.PlayAnimation(static_cast<int>(Hero_Anim::Hero_Run_Anim));
 	if (hero->moveLeftKey.IsKeyDown() == true)
 	{
 		hero->isRunningLeft = true;
@@ -171,8 +175,9 @@ void Hero::State_Running::TestForExit(Hero* hero)
 	}
 }
 
-void Hero::State_Skidding::Enter([[maybe_unused]] Hero* hero)
+void Hero::State_Skidding::Enter(Hero* hero)
 {
+	hero->sprite.PlayAnimation(static_cast<int>(Hero_Anim::Hero_Skid_Anim));
 }
 void Hero::State_Skidding::Update(Hero* hero, double dt)
 {
@@ -212,6 +217,7 @@ void Hero::State_Skidding::TestForExit(Hero* hero)
 }
 
 void Hero::State_Jumping::Enter(Hero* hero) {
+	hero->sprite.PlayAnimation(static_cast<int>(Hero_Anim::Hero_Jump_Anim));
 	hero->velocity.y = Hero::Jump_Velocity;   //Set the velocity.y
 }
 void Hero::State_Jumping::Update(Hero* hero, double dt) {
@@ -227,8 +233,9 @@ void Hero::State_Jumping::TestForExit(Hero* hero) {
 	}
 }
 
-void Hero::State_Falling::Enter([[maybe_unused]] Hero* hero)
+void Hero::State_Falling::Enter(Hero* hero)
 {
+	hero->sprite.PlayAnimation(static_cast<int>(Hero_Anim::Hero_Fall_Anim));
 }
 void Hero::State_Falling::Update(Hero* hero, double dt)
 {

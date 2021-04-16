@@ -1,0 +1,10 @@
+PlayFrame 1 1
+PlayFrame 2 1
+PlayFrame 1 1.5
+PlayFrame 2 1.5
+PlayFrame 1 2
+PlayFrame 2 1.5
+PlayFrame 3 .5
+PlayFrame 4 .5
+PlayFrame 5 .5
+Loop 7

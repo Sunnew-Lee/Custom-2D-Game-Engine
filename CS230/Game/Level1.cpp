@@ -11,20 +11,33 @@ Creation date: 03/08/2021
 #include "Screens.h"					// Screens::Level2
 #include "Level1.h"
 #include "..\Engine\TransformMatrix.h"	// math::TransformMatrix
+#include "Hero.h"						// Hero
+#include "Ball.h"						// Ball
+#include "Bunny.h"						// Bunny
+#include "TreeStump.h"					// TreeStump
 
 
 Level1::Level1()
-	: levelNext(CS230::InputKey::Keyboard::Enter), levelReload(CS230::InputKey::Keyboard::R), slowMotion(CS230::InputKey::Keyboard::Space),
-	camera(math::rect2(math::vec2(Engine::GetWindow().GetSize().x * 0.15, 0), math::vec2(Engine::GetWindow().GetSize().x * 0.35, 0))),
-	hero(math::vec2(150., floor), camera),
-	ball1(math::vec2(600, floor)), ball2(math::vec2(2700, floor)), ball3(math::vec2(4800, floor))
+	: levelNext(CS230::InputKey::Keyboard::Enter), levelReload(CS230::InputKey::Keyboard::R), slowMotion(CS230::InputKey::Keyboard::Space), heroPtr(nullptr),
+	camera(math::rect2(math::vec2(Engine::GetWindow().GetSize().x * 0.15, 0), math::vec2(Engine::GetWindow().GetSize().x * 0.35, 0)))
 {}
 
 void Level1::Load() {
-	hero.Load();
-	ball1.Load();
-	ball2.Load();
-	ball3.Load();
+	heroPtr = new Hero({ 150, Level1::floor }, camera);
+	gameObjectManager.Add(heroPtr);
+	gameObjectManager.Add(new Ball({ 600, Level1::floor }));
+	gameObjectManager.Add(new Ball({ 2700, Level1::floor }));
+	gameObjectManager.Add(new Ball({ 4800, Level1::floor }));
+	gameObjectManager.Add(new Bunny({ 1000, Level1::floor }));
+	gameObjectManager.Add(new Bunny({ 2000, Level1::floor }));
+	gameObjectManager.Add(new Bunny({ 3200, Level1::floor }));
+	gameObjectManager.Add(new Bunny({ 3800, Level1::floor }));
+	gameObjectManager.Add(new TreeStump({ 300, Level1::floor }, 3));
+	gameObjectManager.Add(new TreeStump({ 1200, Level1::floor }, 2));
+	gameObjectManager.Add(new TreeStump({ 2200, Level1::floor }, 1));
+	gameObjectManager.Add(new TreeStump({ 2800, Level1::floor }, 5));
+	gameObjectManager.Add(new TreeStump({ 5100, Level1::floor }, 5));
+
 	background.Add("assets/clouds.png",4);
 	background.Add("assets/Moutains.png", 2);
 	background.Add("assets/foreground.png", 1);
@@ -35,12 +48,9 @@ void Level1::Update(double dt) {
 #ifdef _DEBUG
 	(slowMotion.IsKeyDown() == true) ? (dt /= 8) : (dt);
 #endif
-	hero.Update(dt);
-	ball1.Update(dt);
-	ball2.Update(dt);
-	ball3.Update(dt);
+	gameObjectManager.UpdateAll(dt);
 
-	camera.Update(hero.Get_Hero_Position());
+	camera.Update(heroPtr->Get_Hero_Position());
 
 	if (levelNext.IsKeyReleased() == true) {
 		Engine::GetGameStateManager().SetNextState(static_cast<int>(Screens::Level2));
@@ -52,7 +62,9 @@ void Level1::Update(double dt) {
 #endif
 }
 void Level1::Unload() {
+	gameObjectManager.Unload();
 	background.Unload();
+	heroPtr = nullptr;
 }
 
 void Level1::Draw()
@@ -61,8 +73,5 @@ void Level1::Draw()
 	background.Draw(camera);
 
 	math::TransformMatrix cameraMatrix = camera.GetMatrix();
-	hero.Draw(cameraMatrix);
-	ball1.Draw(cameraMatrix);
-	ball2.Draw(cameraMatrix);
-	ball3.Draw(cameraMatrix);
+	gameObjectManager.DrawAll(cameraMatrix);
 }

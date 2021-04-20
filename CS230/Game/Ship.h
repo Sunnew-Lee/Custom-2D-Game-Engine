@@ -8,30 +8,21 @@ Author: sunwoo.lee
 Creation date: 03/15/2021
 -----------------------------------------------------------------*/
 #pragma once
-#include "..\Engine\Sprite.h"           // Sprite
 #include "..\Engine\Input.h"            // InputKey
-#include "..\Engine\Vec2.h"             // math::vec2
-#include "..\Engine\TransformMatrix.h"  // math::TransformMatrix
+#include "..\Engine\GameObject.h"
 
 
-class Ship {
+class Ship : public CS230::GameObject {
 public:
     Ship(math::vec2 startPos);
-    void Load();
-    void Update(double dt);
-    void Draw();
+    void Update(double dt) override;
+    void Draw(math::TransformMatrix cameraMatrix) override;
 
 private:
     void TestForWrap();
 
-    CS230::Sprite sprite;
     CS230::Sprite sprite_flame_1;
     CS230::Sprite sprite_flame_2;
-    math::vec2 startPos;
-    math::vec2 position;
-    math::vec2 velocity;
-    math::TransformMatrix objectMatrix;
-    double cur_rotation;
     bool is_accelerating;
 
     CS230::InputKey rotateCounterKey;

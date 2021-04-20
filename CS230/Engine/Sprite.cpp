@@ -7,10 +7,13 @@ Project: CS230
 Author: sunwoo.lee
 Creation date: 03/15/2021
 -----------------------------------------------------------------*/
-#include "Sprite.h"
-#include "Engine.h"		// GetLogger()
+#include "Sprite.h"		// Sprite
+#include "Engine.h"		// GetLogger(), GetTextureManager()
+#include "Animation.h"	// Animation
+#include "Texture.h"	// texturePtr
 
-CS230::Sprite::Sprite() : currAnim(0)
+
+CS230::Sprite::Sprite() : currAnim(0), texturePtr(nullptr)
 {}
 
 CS230::Sprite::~Sprite() {
@@ -35,8 +38,8 @@ void CS230::Sprite::Load(const std::filesystem::path& spriteInfoFile) {
 
 	std::string text;
 	inFile >> text;
-	texture.Load(text);
-	frameSize = texture.GetSize();
+	texturePtr = Engine::GetTextureManager().Load(text);
+	frameSize = texturePtr->GetSize();
 
 	inFile >> text;
 	while (inFile.eof() == false) {
@@ -83,7 +86,7 @@ void CS230::Sprite::Load(const std::filesystem::path& spriteInfoFile) {
 }
 
 void CS230::Sprite::Draw(math::TransformMatrix displayMatrix) {
-	texture.Draw(displayMatrix * math::TranslateMatrix(-GetHotSpot(0)), GetFrameTexel(animations[currAnim]->GetDisplayFrame()), GetFrameSize());
+	texturePtr->Draw(displayMatrix * math::TranslateMatrix(-GetHotSpot(0)), GetFrameTexel(animations[currAnim]->GetDisplayFrame()), GetFrameSize());
 }
 
 void CS230::Sprite::PlayAnimation(int anim)

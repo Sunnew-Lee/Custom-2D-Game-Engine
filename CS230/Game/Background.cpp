@@ -9,10 +9,12 @@ Creation date: 03/23/2021
 -----------------------------------------------------------------*/
 #include "Background.h"
 #include "..\Engine\Camera.h"		// GetPosition()
+#include "..\Engine\Texture.h"      // texturePtr
+#include "..\Engine\Engine.h"      // GetTextureManager()
 
 void Background::Add(const std::filesystem::path& texturePath, int level)
 {
-	backgrounds.push_back(ParallaxInfo{ texturePath,level });
+	backgrounds.push_back(ParallaxInfo{ Engine::GetTextureManager().Load(texturePath),level });
 }
 
 void Background::Unload()
@@ -24,17 +26,17 @@ void Background::Draw(const CS230::Camera& camera)
 {
 	for (Background::ParallaxInfo& p : backgrounds)
 	{
-		p.texture.Draw(math::TranslateMatrix::TranslateMatrix(math::vec2{ -camera.GetPosition().x / p.level, camera.GetPosition().y }));
+		p.texturePtr->Draw(math::TranslateMatrix::TranslateMatrix(math::vec2{ -camera.GetPosition().x / p.level, camera.GetPosition().y }));
 	}
 }
 	
-math::ivec2 Background::Size()
+math::ivec2 Background::Size(void)
 {
 	for (Background::ParallaxInfo& p : backgrounds)
 	{
 		if (p.level == 1)
 		{
-			return p.texture.GetSize();
+			return p.texturePtr->GetSize();
 		}
 	}
 

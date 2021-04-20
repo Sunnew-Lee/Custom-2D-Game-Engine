@@ -9,7 +9,7 @@ Creation date: 03/07/2021
 -----------------------------------------------------------------*/
 #include "GameStateManager.h"
 #include "GameState.h"			// GetName(), Load(), Update(), Unload()
-#include "Engine.h"				// GetLogger()
+#include "Engine.h"				// GetLogger(), GetTextureManager()
 
 CS230::GameStateManager::GameStateManager()
 {
@@ -74,6 +74,12 @@ void CS230::GameStateManager::Update(double dt)
 	case State::UNLOAD:
 		Engine::GetLogger().LogEvent("Unload " + currGameState->GetName());
 		GameStateManager::currGameState->Unload();
+
+		if (GameStateManager::currGameState != GameStateManager::nextGameState)
+		{
+			Engine::GetTextureManager().Unload();
+		}
+
 		if (GameStateManager::nextGameState == nullptr)
 		{
 			GameStateManager::state = State::SHUTDOWN;

@@ -8,10 +8,12 @@ Author: Kevin Wright
 Creation date: 2/11/2021
 -----------------------------------------------------------------*/
 #pragma once
-#include "..\Engine\Texture.h"      // texture
+#include <filesystem>
+#include "..\Engine\Vec2.h"
 
 namespace CS230 {
     class Camera;
+    class Texture;
 }
 
 class Background {
@@ -19,10 +21,10 @@ public:
     void Add(const std::filesystem::path& texturePath, int level);
     void Unload();
     void Draw(const CS230::Camera& camera);
-    math::ivec2 Size();
+    math::ivec2 Size(void);
 private:
     struct ParallaxInfo {
-        CS230::Texture texture;
+        CS230::Texture* texturePtr{ nullptr };
         int level;
     };
     std::vector<ParallaxInfo> backgrounds;

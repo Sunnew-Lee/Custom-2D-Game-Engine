@@ -9,8 +9,8 @@ Creation date: 03/08/2021
 -----------------------------------------------------------------*/
 #pragma once
 #include "..\Engine\GameState.h"
-#include "..\Engine\Input.h"		// InputKey
-#include "Ship.h"
+#include "..\Engine\Input.h"				// InputKey
+#include "..\Engine\GameObjectManager.h"	// GameObjectManager
 
 class Level2 : public CS230::GameState {
 public:
@@ -25,5 +25,5 @@ private:
 	CS230::InputKey levelNext;
 	CS230::InputKey levelReload;
 	CS230::InputKey slowMotion;
-	Ship ship;
+	CS230::GameObjectManager gameObjectManager;
 };

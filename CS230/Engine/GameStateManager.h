@@ -8,7 +8,7 @@ Author: Kevin Wright
 Creation date: 2/10/2021
 -----------------------------------------------------------------*/
 #pragma once
-#include <vector>
+#include <vector>		// vector
 
 namespace CS230 {
 	class GameState;

@@ -25,6 +25,9 @@ void Engine::Init(std::string windowName)
 	logger.LogEvent("Engine Init");
 	window.Init(windowName);
 	fpsCalcTime = lastTick;
+	unsigned int seed{ static_cast<unsigned int>(time(nullptr)) };
+	srand(seed);
+	logger.LogEvent("Seed = "+ std::to_string(seed));
 }
 void Engine::Shutdown()
 {

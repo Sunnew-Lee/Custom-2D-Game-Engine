@@ -8,52 +8,30 @@ Author: Kevin Wright
 Creation date: 2/14/2021
 -----------------------------------------------------------------*/
 #pragma once
-#include "..\Engine\Sprite.h"           // Sprite
-#include "..\Engine\Vec2.h"             // math::vec2
-#include "..\Engine\TransformMatrix.h"  // math::TransformMatrix
+#include "..\Engine\GameObject.h"
 
-class Ball {
+class Ball : public CS230::GameObject {
 public:
     Ball(math::vec2 startPos);
-    void Load();
-    void Update(double dt);
-    void Draw(math::TransformMatrix cameraMatrix);
 
 private:
-    class State {
-    public:
-        virtual void Enter(Ball* ball) = 0;
-        virtual void Update(Ball* ball, double dt) = 0;
-        virtual void TestForExit(Ball* ball) = 0;
-        virtual std::string GetName() = 0;
-    };
     class State_Bounce : public State {
     public:
-        virtual void Enter(Ball* ball) override;
-        virtual void Update(Ball* ball, double dt) override;
-        virtual void TestForExit(Ball* ball) override;
+        void Enter(GameObject* object) override;
+        void Update(GameObject* object, double dt) override;
+        void TestForExit(GameObject* object) override;
         std::string GetName() override { return "Bouncing"; }
     };
     class State_Land : public State {
     public:
-        virtual void Enter(Ball* ball) override;
-        virtual void Update(Ball* ball, double dt) override;
-        virtual void TestForExit(Ball* ball) override;
+        void Enter(GameObject* object) override;
+        void Update(GameObject* object, double dt) override;
+        void TestForExit(GameObject* object) override;
         std::string GetName() override { return "Land"; }
     };
 
-    CS230::Sprite sprite;
-    math::vec2 initPosition;
-    math::vec2 position;
-    math::vec2 velocity;
-    math::TransformMatrix objectMatrix;
-
     State_Bounce stateBounce;
     State_Land stateLand;
-
-    void ChangeState(State* newState);
-
-    State* currState;
 
     static constexpr double bounceVelocity{ 750 };
 };

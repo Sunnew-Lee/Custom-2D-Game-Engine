@@ -8,11 +8,14 @@ Author: Kevin Wright
 Creation date: 2/11/2021
 -----------------------------------------------------------------*/
 #pragma once
-#include <string>               // filesystem::path
 #include "Vec2.h"               // math::vec2, math::ivec2
-#include "Texture.h"            // Texture
 #include "TransformMatrix.h"    // math::TransformMatrix
-#include "Animation.h"          // Animation
+#include <filesystem>           // filesystem::path
+
+namespace CS230 {
+    class Texture;
+    class Animation;
+}
 
 namespace CS230 {
     class Sprite {
@@ -33,7 +36,7 @@ namespace CS230 {
     private:
         math::ivec2 GetFrameTexel(int frameNum) const;
 
-        Texture texture;
+        Texture* texturePtr;
         int currAnim;
         std::vector<Animation*> animations;
         math::ivec2 frameSize;

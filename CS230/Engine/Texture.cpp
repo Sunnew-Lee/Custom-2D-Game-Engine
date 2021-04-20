@@ -11,13 +11,7 @@ Creation date: 2/11/2021
 #include <doodle/drawing.hpp>	// draw_image()
 #include "Texture.h"
 
-CS230::Texture::Texture() {}
-
 CS230::Texture::Texture(const std::filesystem::path& filePath) :image{ doodle::Image{ filePath } } {}
-
-void CS230::Texture::Load(const std::filesystem::path& filePath) {
-	image = doodle::Image{ filePath };
-}
 
 void CS230::Texture::Draw(math::TransformMatrix displayMatrix)
 {
@@ -34,4 +28,7 @@ void CS230::Texture::Draw(math::TransformMatrix displayMatrix, math::ivec2 texel
 	doodle::pop_settings();
 }
 
-math::ivec2 CS230::Texture::GetSize() { return { image.GetWidth(), image.GetHeight() }; }
+math::ivec2 CS230::Texture::GetSize() 
+{ 
+	return { image.GetWidth(), image.GetHeight() }; 
+}

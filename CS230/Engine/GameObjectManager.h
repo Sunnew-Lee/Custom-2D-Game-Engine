@@ -2,29 +2,27 @@
 Copyright (C) 2021 DigiPen Institute of Technology.
 Reproduction or disclosure of this file or its contents without the prior
 written consent of DigiPen Institute of Technology is prohibited.
-File Name: Splash.h
+File Name: GameObjectManager.h
 Project: CS230
 Author: Kevin Wright
-Creation date: 2/10/2021
+Creation date: 2/14/2021
 -----------------------------------------------------------------*/
 #pragma once
-#include "..\Engine\GameState.h"
+#include <vector>
+
+namespace math { class TransformMatrix; }
 
 namespace CS230 {
-	class Texture;
+	class GameObject;
+
+	class GameObjectManager {
+	public:
+		void Add(GameObject* obj);
+		void Unload();
+
+		void UpdateAll(double dt);
+		void DrawAll(math::TransformMatrix& cameraMatrix);
+	private:
+		std::vector<GameObject*> gameObjects;
+	};
 }
-
-class Splash : public CS230::GameState {
-public:
-	Splash();
-	void Load() override;
-	void Update(double dt) override;
-	void Unload() override;
-	void Draw() override;
-
-	std::string GetName() override { return "Splash"; }
-private:
-	double Dt{ 0. };
-	
-	CS230::Texture* texturePtr;
-};

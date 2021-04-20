@@ -9,20 +9,26 @@ Creation date: 03/08/2021
 -----------------------------------------------------------------*/
 #include "../Engine/Engine.h"	// GetWindow(), GetGameStateManager()
 #include "Level2.h"
+#include "Ship.h"				// Ship
+#include "Meteor.h"				// Meteor
 
 Level2::Level2() 
-	: levelNext(CS230::InputKey::Keyboard::Enter), levelReload(CS230::InputKey::Keyboard::R), slowMotion(CS230::InputKey::Keyboard::Space),
-	ship(math::vec2(Engine::GetWindow().GetSize() / 2))
+	: levelNext(CS230::InputKey::Keyboard::Enter), levelReload(CS230::InputKey::Keyboard::R), slowMotion(CS230::InputKey::Keyboard::Space)
 {}
 
 void Level2::Load() {
-	ship.Load();
+	gameObjectManager.Add(new Ship({ Engine::GetWindow().GetSize() / 2.0 }));
+	gameObjectManager.Add(new Meteor());
+	gameObjectManager.Add(new Meteor());
+	gameObjectManager.Add(new Meteor());
+	gameObjectManager.Add(new Meteor());
+	gameObjectManager.Add(new Meteor());
 }
 void Level2::Update(double dt) {
 #ifdef _DEBUG
 	(slowMotion.IsKeyDown() == true) ? (dt /= 8) : (dt);
 #endif
-	ship.Update(dt);
+	gameObjectManager.UpdateAll(dt);
 	if (levelNext.IsKeyReleased() == true) {
 		Engine::GetGameStateManager().Shutdown();
 	}
@@ -33,10 +39,12 @@ void Level2::Update(double dt) {
 #endif
 }
 void Level2::Unload() {
+	gameObjectManager.Unload();
 }
 
 void Level2::Draw()
 {
 	Engine::GetWindow().Clear(0x000000ff);
-	ship.Draw();
+	math::TransformMatrix I_Matrix{};
+	gameObjectManager.DrawAll(I_Matrix);
 }

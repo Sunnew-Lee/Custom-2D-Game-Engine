@@ -15,6 +15,7 @@ Creation date: 2/10/2021
 #include "Input.h"
 #include "Window.h"
 #include "Logger.h"
+#include "TextureManager.h"
 
 class Engine {
 public:
@@ -23,6 +24,7 @@ public:
     static CS230::Input& GetInput() { return Instance().input; }
     static CS230::Window& GetWindow() { return Instance().window; }
     static CS230::GameStateManager& GetGameStateManager() { return Instance().gameStateManager; }
+    static CS230::TextureManager& GetTextureManager() { return Instance().texture; }
 
     void Init(std::string windowName);
     void Shutdown();
@@ -40,6 +42,7 @@ private:
     CS230::GameStateManager gameStateManager;
     CS230::Input input;
     CS230::Window window;
+    CS230::TextureManager texture;
 
     static constexpr double Target_FPS = 60.0;
     static constexpr int FPS_IntervalSec = 5;

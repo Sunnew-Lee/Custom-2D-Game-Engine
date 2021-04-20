@@ -12,19 +12,12 @@ Creation date: 03/15/2021
 #include "Flame_Anims.h"		// Flame_Anim
 
 Ship::Ship(math::vec2 startPos)
-	:startPos(startPos), position(startPos), velocity(0), cur_rotation(0), is_accelerating{ false },
+	:GameObject(startPos, 0, {0.75,0.75}), is_accelerating{ false },
 	rotateCounterKey(CS230::InputKey::Keyboard::A), rotateClockKey(CS230::InputKey::Keyboard::D), accelerateKey(CS230::InputKey::Keyboard::W)
-{}
-
-void Ship::Load()
 {
 	sprite.Load("assets/Ship.spt");
 	sprite_flame_1.Load("assets/flame.spt");
 	sprite_flame_2.Load("assets/flame.spt");
-	position = startPos;
-	velocity = 0;
-	cur_rotation = 0;
-	is_accelerating = false;
 }
 
 void Ship::Update(double dt)
@@ -32,13 +25,14 @@ void Ship::Update(double dt)
 	sprite.Update(dt);
 	sprite_flame_1.Update(dt);
 	sprite_flame_2.Update(dt);
+
 	if (rotateCounterKey.IsKeyDown() == true)
 	{
-		cur_rotation += rotate_speed * dt;
+		UpdateRotation(rotate_speed * dt);
 	}
 	if (rotateClockKey.IsKeyDown() == true)
 	{
-		cur_rotation += -rotate_speed * dt;
+		UpdateRotation(-(rotate_speed * dt));
 	}
 	if (accelerateKey.IsKeyDown() == true)
 	{
@@ -48,7 +42,7 @@ void Ship::Update(double dt)
 			sprite_flame_2.PlayAnimation(static_cast<int>(Flame_Anim::Flame_Anim));
 			is_accelerating = true;
 		}
-		velocity += math::RotateMatrix::RotateMatrix(cur_rotation) * math::vec2(0, accel * dt);
+		UpdateVelocity(math::RotateMatrix::RotateMatrix(GetRotation()) * math::vec2(0, accel * dt));
 	}
 	else if (accelerateKey.IsKeyReleased() == true)
 	{
@@ -57,20 +51,17 @@ void Ship::Update(double dt)
 		is_accelerating = false;
 	}
 
-	
-	velocity -= (velocity * Ship::drag * dt);
+	UpdateVelocity(-(GetVelocity() * Ship::drag * dt));
 
-	position += velocity * dt;
+	UpdatePosition(GetVelocity() * dt);
 	TestForWrap();
-
-	objectMatrix = math::TranslateMatrix::TranslateMatrix(position) * math::RotateMatrix::RotateMatrix(cur_rotation) * math::ScaleMatrix::ScaleMatrix(math::vec2(0.75, 0.75));
 }
 
-void Ship::Draw()
+void Ship::Draw(math::TransformMatrix cameraMatrix)
 {
-	sprite_flame_1.Draw(objectMatrix * math::TranslateMatrix::TranslateMatrix(sprite.GetHotSpot(1)));
-	sprite_flame_2.Draw(objectMatrix * math::TranslateMatrix::TranslateMatrix(sprite.GetHotSpot(2)));
-	sprite.Draw(objectMatrix);
+	sprite_flame_1.Draw(cameraMatrix * GetMatrix() * math::TranslateMatrix::TranslateMatrix(sprite.GetHotSpot(1)));
+	sprite_flame_2.Draw(cameraMatrix * GetMatrix() * math::TranslateMatrix::TranslateMatrix(sprite.GetHotSpot(2)));
+	sprite.Draw(cameraMatrix * GetMatrix());
 }
 
 void Ship::TestForWrap()
@@ -78,23 +69,23 @@ void Ship::TestForWrap()
 	const double hotspot_x = sprite.GetFrameSize().x / 2;
 	const double hotspot_y = sprite.GetFrameSize().y / 2;
 
-	if (position.x + hotspot_x < 0)
+	if (GetPosition().x + hotspot_x < 0)
 	{
-		position.x = Engine::GetWindow().GetSize().x + hotspot_x;
+		SetPosition(math::vec2{ Engine::GetWindow().GetSize().x + hotspot_x ,GetPosition().y});
 	}
 
-	if (position.x > Engine::GetWindow().GetSize().x + hotspot_x)
+	if (GetPosition().x > Engine::GetWindow().GetSize().x + hotspot_x)
 	{
-		position.x = -hotspot_x;
+		SetPosition(math::vec2{ -hotspot_x ,GetPosition().y });
 	}
 
-	if (position.y + hotspot_y < 0)
+	if (GetPosition().y + hotspot_y < 0)
 	{
-		position.y = Engine::GetWindow().GetSize().y + hotspot_y;
+		SetPosition(math::vec2{ GetPosition().x,Engine::GetWindow().GetSize().y + hotspot_y });
 	}
 
-	if (position.y > Engine::GetWindow().GetSize().y + hotspot_y)
+	if (GetPosition().y > Engine::GetWindow().GetSize().y + hotspot_y)
 	{
-		position.y = -hotspot_y;
+		SetPosition(math::vec2{ GetPosition().x,-hotspot_y });
 	}
 }

@@ -10,7 +10,7 @@ Creation date: 03/26/2021
 #include "Camera.h"
 #include "TransformMatrix.h"	// math::TransformMatrix, math::TranslateMatrix
 
-CS230::Camera::Camera(math::rect2 movableRange) : extent(math::ivec2(0)), position(math::vec2(0)), movableRange(movableRange)
+CS230::Camera::Camera(math::rect2 movableRange) : extent(math::irect2{ math::ivec2(0) }), position(math::vec2(0)), movableRange(movableRange)
 {}
 
 void CS230::Camera::SetPosition(math::vec2 newPosition)

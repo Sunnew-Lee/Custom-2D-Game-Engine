@@ -59,3 +59,8 @@ bool Engine::HasGameEnded()
 {
 	return gameStateManager.HasGameEnded();
 }
+
+void Engine::AddSpriteFont(const std::filesystem::path& fileName)
+{
+	fonts.push_back(CS230::SpriteFont{fileName});
+}

@@ -13,6 +13,7 @@ Creation date: 03/08/2021
 #include "Background.h"						// Background
 #include "..\Engine\Camera.h"				// Camera
 #include "..\Engine\GameObjectManager.h"	// GameObjectManager
+#include "..\Engine\Texture.h"
 
 class Hero;
 
@@ -28,7 +29,14 @@ public:
 	static constexpr double gravity = 2000;
 	void Draw() override;
 private:
-	CS230::InputKey levelNext;
+	int score;
+	int lives;
+	double timer;
+	CS230::Texture scoreTexture;
+	CS230::Texture livesTexture;
+	CS230::Texture timerTexture;
+
+	CS230::InputKey mainMenu;
 	CS230::InputKey levelReload;
 	CS230::InputKey slowMotion;
 	CS230::GameObjectManager gameObjectManager;

@@ -22,7 +22,10 @@ public:
 
 	void Draw() override;
 private:
-	CS230::InputKey levelNext;
+	int Score;
+	CS230::Texture scoreTexture;
+
+	CS230::InputKey mainMenu;
 	CS230::InputKey levelReload;
 	CS230::InputKey slowMotion;
 	CS230::GameObjectManager gameObjectManager;

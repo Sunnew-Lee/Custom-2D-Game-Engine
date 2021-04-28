@@ -13,6 +13,10 @@ Creation date: 2/11/2021
 
 CS230::Texture::Texture(const std::filesystem::path& filePath) :image{ doodle::Image{ filePath } } {}
 
+CS230::Texture::Texture(doodle::Image&& doodleImage) {
+	image = std::move(doodleImage);
+}
+
 void CS230::Texture::Draw(math::TransformMatrix displayMatrix)
 {
 	doodle::push_settings();
@@ -31,4 +35,12 @@ void CS230::Texture::Draw(math::TransformMatrix displayMatrix, math::ivec2 texel
 math::ivec2 CS230::Texture::GetSize() 
 { 
 	return { image.GetWidth(), image.GetHeight() }; 
+}
+
+unsigned int CS230::Texture::GetPixel(math::ivec2 texel) {
+	int index = texel.y * GetSize().x + texel.x;
+	return (static_cast<int>(image[index].red)) << 24 |
+		(static_cast<int>(image[index].green)) << 16 |
+		(static_cast<int>(image[index].blue)) << 8 |
+		(static_cast<int>(image[index].alpha));
 }

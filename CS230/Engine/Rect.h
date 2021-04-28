@@ -11,25 +11,17 @@ Creation date: 03/26/2021
 
 namespace math
 {
-    struct [[nodiscard]] rect2
-    {
-        vec2 bottomLeft{ 0. };
-        vec2 topRight{ 0. };
+    struct [[nodiscard]] rect2 {
+        vec2 bottomLeft{ 0.0, 0.0 };
+        vec2 topRight{ 0.0, 0.0 };
 
-        constexpr rect2() noexcept = default;
-        constexpr rect2(vec2 vec) noexcept :rect2(vec, vec) {};
-        constexpr rect2(vec2 bottomLeft_vec, vec2 topRight_vec) noexcept :bottomLeft(bottomLeft_vec), topRight(topRight_vec) {};
+        constexpr vec2 Size() const noexcept { return { topRight.x - bottomLeft.x, std::abs(topRight.y - bottomLeft.y) }; }
+    };
+    struct [[nodiscard]] irect2 {
+        ivec2 bottomLeft{ 0, 0 };
+        ivec2 topRight{ 0, 0 };
 
+        constexpr ivec2 Size() const noexcept { return { topRight.x - bottomLeft.x, std::abs(topRight.y - bottomLeft.y) }; }
     };
 
-    struct [[nodiscard]] irect2
-    {
-        ivec2 bottomLeft{ 0 };
-        ivec2 topRight{ 0 };
-
-        constexpr irect2() noexcept = default;
-        constexpr irect2(ivec2 ivec) noexcept :irect2(ivec, ivec) {};
-        constexpr irect2(ivec2 bottomLeft_ivec, ivec2 topRight_ivec) noexcept :bottomLeft(bottomLeft_ivec), topRight(topRight_ivec) {};
-
-    };
 }

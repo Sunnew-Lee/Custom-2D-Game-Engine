@@ -22,7 +22,7 @@ void Splash::Update(double dt) {
 	Dt += dt;
 
 	if (Dt >= 3) {
-		Engine::GetGameStateManager().SetNextState(static_cast<int>(Screens::Level1));
+		Engine::GetGameStateManager().SetNextState(static_cast<int>(Screens::MainMenu));
 	}
 }
 void Splash::Unload() {

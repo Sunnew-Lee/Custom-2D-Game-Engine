@@ -185,6 +185,7 @@ xcopy /d /y Assets\* "$(OutputPath)Assets"</Command>
     <ClCompile Include="Engine\Input_Doodle.cpp" />
     <ClCompile Include="Engine\Logger.cpp" />
     <ClCompile Include="Engine\Sprite.cpp" />
+    <ClCompile Include="Engine\SpriteFont.cpp" />
     <ClCompile Include="Engine\Texture.cpp" />
     <ClCompile Include="Engine\TextureManager.cpp" />
     <ClCompile Include="Engine\TransformMatrix.cpp" />
@@ -195,6 +196,7 @@ xcopy /d /y Assets\* "$(OutputPath)Assets"</Command>
     <ClCompile Include="Game\Hero.cpp" />
     <ClCompile Include="Game\Level1.cpp" />
     <ClCompile Include="Game\Level2.cpp" />
+    <ClCompile Include="Game\MainMenu.cpp" />
     <ClCompile Include="Game\Meteor.cpp" />
     <ClCompile Include="Game\Ship.cpp" />
     <ClCompile Include="Game\Splash.cpp" />
@@ -213,6 +215,7 @@ xcopy /d /y Assets\* "$(OutputPath)Assets"</Command>
     <ClInclude Include="Engine\Logger.h" />
     <ClInclude Include="Engine\Rect.h" />
     <ClInclude Include="Engine\Sprite.h" />
+    <ClInclude Include="Engine\SpriteFont.h" />
     <ClInclude Include="Engine\Texture.h" />
     <ClInclude Include="Engine\TextureManager.h" />
     <ClInclude Include="Engine\TransformMatrix.h" />
@@ -223,10 +226,12 @@ xcopy /d /y Assets\* "$(OutputPath)Assets"</Command>
     <ClInclude Include="Game\Ball_Anims.h" />
     <ClInclude Include="Game\Bunny.h" />
     <ClInclude Include="Game\Flame_Anims.h" />
+    <ClInclude Include="Game\Fonts.h" />
     <ClInclude Include="Game\Hero.h" />
     <ClInclude Include="Game\Hero_Anims.h" />
     <ClInclude Include="Game\Level1.h" />
     <ClInclude Include="Game\Level2.h" />
+    <ClInclude Include="Game\MainMenu.h" />
     <ClInclude Include="Game\Meteor.h" />
     <ClInclude Include="Game\Screens.h" />
     <ClInclude Include="Game\Ship.h" />

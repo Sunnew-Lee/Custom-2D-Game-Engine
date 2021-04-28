@@ -16,12 +16,16 @@ Creation date: 2/11/2021
 namespace CS230 {
     class Texture {
         friend class TextureManager;
+        friend class SpriteFont;
     public:
+        Texture() {}
         void Draw(math::TransformMatrix displayMatrix);
         void Draw(math::TransformMatrix displayMatrix, math::ivec2 texelPos, math::ivec2 frameSize);
         math::ivec2 GetSize();
+        unsigned int GetPixel(math::ivec2 texel);
     private:
         Texture(const std::filesystem::path& filePath);
+        Texture(doodle::Image&& doodleImage);
         doodle::Image image;
     };
 }

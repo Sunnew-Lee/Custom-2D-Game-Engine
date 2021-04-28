@@ -11,9 +11,11 @@ Creation date: 03/08/2021
 #include "Level2.h"
 #include "Ship.h"				// Ship
 #include "Meteor.h"				// Meteor
+#include "Fonts.h"
+#include "Screens.h"
 
 Level2::Level2() 
-	: levelNext(CS230::InputKey::Keyboard::Enter), levelReload(CS230::InputKey::Keyboard::R), slowMotion(CS230::InputKey::Keyboard::Space)
+	: Score(0), mainMenu(CS230::InputKey::Keyboard::Escape), levelReload(CS230::InputKey::Keyboard::R), slowMotion(CS230::InputKey::Keyboard::Space)
 {}
 
 void Level2::Load() {
@@ -23,14 +25,18 @@ void Level2::Load() {
 	gameObjectManager.Add(new Meteor());
 	gameObjectManager.Add(new Meteor());
 	gameObjectManager.Add(new Meteor());
+
+	Score = 0;
+	std::string scoreString = "Score: " + std::to_string(Score / 100) + std::to_string((Score % 100) / 10) + std::to_string(Score % 10);
+	scoreTexture = Engine::GetSpriteFont(static_cast<int>(Fonts::Font2)).DrawTextToTexture(scoreString, 0xFFFFFFFF, false);
 }
 void Level2::Update(double dt) {
 #ifdef _DEBUG
 	(slowMotion.IsKeyDown() == true) ? (dt /= 8) : (dt);
 #endif
 	gameObjectManager.UpdateAll(dt);
-	if (levelNext.IsKeyReleased() == true) {
-		Engine::GetGameStateManager().Shutdown();
+	if (mainMenu.IsKeyReleased() == true) {
+		Engine::GetGameStateManager().SetNextState(static_cast<int>(Screens::MainMenu));
 	}
 #ifdef _DEBUG
 	if (levelReload.IsKeyReleased() == true) {
@@ -45,6 +51,8 @@ void Level2::Unload() {
 void Level2::Draw()
 {
 	Engine::GetWindow().Clear(0x000000ff);
+	math::ivec2 winSize = Engine::GetWindow().GetSize();
+	scoreTexture.Draw(math::TranslateMatrix(math::ivec2{ 10, winSize.y - scoreTexture.GetSize().y - 5 }));
 	math::TransformMatrix I_Matrix{};
 	gameObjectManager.DrawAll(I_Matrix);
 }

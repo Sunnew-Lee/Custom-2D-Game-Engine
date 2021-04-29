@@ -8,11 +8,11 @@ Author: Kevin Wright
 Creation date: 2/16/2021
 -----------------------------------------------------------------*/
 #pragma once
-#include <string>
+#include <string>					// string
 #include "..\Engine\GameState.h"
-#include "..\Engine\Vec2.h"
-#include "..\Engine\Input.h"
-#include "..\Engine\Texture.h"
+#include "..\Engine\Vec2.h"			// math::vec2
+#include "..\Engine\Input.h"		// CS230::InputKey
+#include "..\Engine\Texture.h"		// CS230::Texture
 
 class MainMenu : public CS230::GameState {
 public:

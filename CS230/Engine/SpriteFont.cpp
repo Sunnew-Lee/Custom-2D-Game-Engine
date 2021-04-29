@@ -9,10 +9,9 @@ Creation date: 2/15/2021
 -----------------------------------------------------------------*/
 
 #include "doodle/drawing.hpp"	//set_tint_color
-
-#include "Engine.h"
+#include "Engine.h"				// Get_Logger()
 #include "SpriteFont.h"
-#include "TransformMatrix.h"
+#include "TransformMatrix.h"	// math::TranslateMatrix
 
 CS230::SpriteFont::SpriteFont(const std::filesystem::path& fileName) : texture(fileName) {
 	unsigned int white = 0xFFFFFFFF;
@@ -36,7 +35,6 @@ void CS230::SpriteFont::SetupCharRects() {
 
 	int xPos = 1;
 	for (int index = 0; index < numOfChars; index++) {
-		// Todo: count the number of pixels until the nextColor is not the same as the testColor
 		while ((nextColor = texture.GetPixel({ xPos,0 })) == testColor)
 		{
 			xPos++;
@@ -44,7 +42,6 @@ void CS230::SpriteFont::SetupCharRects() {
 		// Test color becomes our next color, so this we be the color we are using to count
 		testColor = nextColor;
 
-		// Todo: Set the bottomLeft and topRight for each of our rectangles
 		charTexels[index].topRight = math::ivec2{ xPos - 1,1 };
 		if (index > 0)
 		{
@@ -69,7 +66,6 @@ math::irect2& CS230::SpriteFont::GetCharRect(char c) {
 
 math::ivec2 CS230::SpriteFont::MeasureText(std::string text) {
 	math::ivec2 size = { 0,0 };
-	// Todo: For each character use it's charTexel information to find the width/height of the string
 	for (char c : text) {
 		size.x += GetCharRect(c).Size().x;
 	}

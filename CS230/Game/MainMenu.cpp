@@ -8,9 +8,9 @@ Author: sunwoo.lee
 Creation date: 4/27/2021
 -----------------------------------------------------------------*/
 #include "MainMenu.h"
-#include "..\Engine\Engine.h"
-#include "Fonts.h"
-#include "Screens.h"//?
+#include "..\Engine\Engine.h"	// GetSpriteFont(), GetGameStateManager()
+#include "Fonts.h"				// Fonts::Font1
+#include "Screens.h"			// Screens::Level1
 
 MainMenu::MainMenu():selectedIndex(0), upKey(CS230::InputKey::Keyboard::Up), downKey(CS230::InputKey::Keyboard::Down), selectKey(CS230::InputKey::Keyboard::Enter)
 {}
@@ -69,13 +69,13 @@ void MainMenu::Unload()
 
 void MainMenu::Draw()
 {
-	math::ivec2 a = Engine::GetWindow().GetSize();
+	math::ivec2 Win_Size = Engine::GetWindow().GetSize();
 
 	Engine::GetWindow().Clear(0x3399daff);
-	title.Draw(math::TranslateMatrix(math::vec2{ a.x / 2. - title.GetSize().x,a.y * 0.7 }) * math::ScaleMatrix(math::vec2{ 2,2 }));
-	for (MainMenu::OptionData t : optionsData)
+	title.Draw(math::TranslateMatrix(math::vec2{ Win_Size.x / 2. - title.GetSize().x,Win_Size.y * 0.7 }) * math::ScaleMatrix(math::vec2{ 2,2 }));
+	for (MainMenu::OptionData text : optionsData)
 	{
-		t.texture.Draw(math::TranslateMatrix(math::vec2{ a.x * t.positionPercent.x - t.texture.GetSize().x / 2,a.y * t.positionPercent.y }));
+		text.texture.Draw(math::TranslateMatrix(math::vec2{ Win_Size.x * text.positionPercent.x - text.texture.GetSize().x / 2,Win_Size.y * text.positionPercent.y }));
 	}
 }
 

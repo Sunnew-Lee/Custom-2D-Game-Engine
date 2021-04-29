@@ -8,10 +8,10 @@ Author: Kevin Wright
 Creation date: 2/15/2021
 -----------------------------------------------------------------*/
 #pragma once
-#include <string>
-#include "Texture.h"
-#include "Vec2.h"
-#include "Rect.h"
+#include <string>		// string
+#include "Texture.h"	// Texture
+#include "Vec2.h"		// math::ivec2
+#include "Rect.h"		// math::irvec2
 
 namespace CS230 {
 	class SpriteFont {

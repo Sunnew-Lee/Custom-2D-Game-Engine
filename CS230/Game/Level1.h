@@ -13,7 +13,7 @@ Creation date: 03/08/2021
 #include "Background.h"						// Background
 #include "..\Engine\Camera.h"				// Camera
 #include "..\Engine\GameObjectManager.h"	// GameObjectManager
-#include "..\Engine\Texture.h"
+#include "..\Engine\Texture.h"				// Texture
 
 class Hero;
 

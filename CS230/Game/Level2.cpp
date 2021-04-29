@@ -11,8 +11,8 @@ Creation date: 03/08/2021
 #include "Level2.h"
 #include "Ship.h"				// Ship
 #include "Meteor.h"				// Meteor
-#include "Fonts.h"
-#include "Screens.h"
+#include "Fonts.h"				// Fonts::Font2
+#include "Screens.h"			// Screens::MainMenu
 
 Level2::Level2() 
 	: Score(0), mainMenu(CS230::InputKey::Keyboard::Escape), levelReload(CS230::InputKey::Keyboard::R), slowMotion(CS230::InputKey::Keyboard::Space)

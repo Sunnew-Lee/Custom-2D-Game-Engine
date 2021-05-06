@@ -8,6 +8,10 @@ Author: sunwoo.lee
 Creation date: 04/18/2021
 -----------------------------------------------------------------*/
 #include "GameObject.h"
+#include "Sprite.h"             // Sprite
+#include "ShowCollision.h"      // ShowCollision
+#include "Collision.h"          // RectCollision, CircleCollision
+#include "Engine.h"             // GetGSComponent()
 
 CS230::GameObject::GameObject(math::vec2 position) : GameObject(position, 0, { 1, 1 }) {}
 
@@ -18,15 +22,29 @@ CS230::GameObject::GameObject(math::vec2 position, double rotation, math::vec2 s
 
 void CS230::GameObject::Update(double dt) {
     currState->Update(this, dt);
-    sprite.Update(dt);
     if (velocity.x != 0 || velocity.y != 0) {
         UpdatePosition(velocity * dt);
     }
+    UpdateGOComponents(dt);
     currState->TestForExit(this);
 }
 
 void CS230::GameObject::Draw(math::TransformMatrix cameraMatrix) {
-    sprite.Draw(cameraMatrix * GetMatrix());
+    Sprite* spritePtr = GetGOComponent<Sprite>();
+    if (spritePtr != nullptr) {
+        spritePtr->Draw(cameraMatrix * GetMatrix());
+    }
+
+    if (Engine::GetGSComponent<ShowCollision>() != nullptr)
+    {
+        if (Engine::GetGSComponent<ShowCollision>()->IsEnabled() == true)
+        {
+            if (GetGOComponent<Collision>() != nullptr)
+            {
+                GetGOComponent<Collision>()->Draw(cameraMatrix);
+            }
+        }
+    }
 }
 
 const math::TransformMatrix& CS230::GameObject::GetMatrix() {

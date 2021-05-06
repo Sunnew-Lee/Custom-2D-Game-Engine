@@ -35,6 +35,7 @@ void CS230::SpriteFont::SetupCharRects() {
 
 	int xPos = 1;
 	for (int index = 0; index < numOfChars; index++) {
+		// Todo: count the number of pixels until the nextColor is not the same as the testColor
 		while ((nextColor = texture.GetPixel({ xPos,0 })) == testColor)
 		{
 			xPos++;
@@ -42,14 +43,14 @@ void CS230::SpriteFont::SetupCharRects() {
 		// Test color becomes our next color, so this we be the color we are using to count
 		testColor = nextColor;
 
-		charTexels[index].topRight = math::ivec2{ xPos - 1,1 };
+		charTexels[index].point2 = math::ivec2{ xPos - 1,1 };
 		if (index > 0)
 		{
-			charTexels[index].bottomLeft = math::ivec2{ charTexels[index - 1].topRight.x + 1,height };
+			charTexels[index].point1 = math::ivec2{ charTexels[index - 1].point2.x + 1,height };
 		}
 		else
 		{
-			charTexels[index].bottomLeft = math::ivec2{ 0,height };
+			charTexels[index].point1 = math::ivec2{ 0,height };
 		}
 	}
 }
@@ -68,8 +69,11 @@ math::ivec2 CS230::SpriteFont::MeasureText(std::string text) {
 	math::ivec2 size = { 0,0 };
 	for (char c : text) {
 		size.x += GetCharRect(c).Size().x;
+		if (size.y < GetCharRect(c).Size().y)
+		{
+			size.y = GetCharRect(c).Size().y;
+		}
 	}
-	size.y = GetCharRect(text[0]).Size().y;
 	return size;
 }
 
@@ -104,7 +108,7 @@ CS230::Texture CS230::SpriteFont::DrawTextToTexture(std::string text, unsigned i
 
 void CS230::SpriteFont::DrawChar(math::TransformMatrix& matrix, char c) {
 	math::irect2& displayRect = GetCharRect(c);
-	math::ivec2 topLeftTexel = { displayRect.bottomLeft.x, displayRect.topRight.y };
+	math::ivec2 topLeftTexel = { displayRect.point1.x, displayRect.point2.y };
 	if (c != ' ') {
 		texture.Draw(matrix, topLeftTexel, displayRect.Size());
 	}

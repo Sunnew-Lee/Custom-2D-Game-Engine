@@ -16,7 +16,7 @@ Creation date: 2/10/2021
 #include "Window.h"
 #include "Logger.h"
 #include "TextureManager.h"
-#include "SpriteFont.h"
+#include "SpriteFont.h"             // GetGameStateManager()
 
 class Engine {
 public:
@@ -27,6 +27,8 @@ public:
     static CS230::GameStateManager& GetGameStateManager() { return Instance().gameStateManager; }
     static CS230::TextureManager& GetTextureManager() { return Instance().texture; }
     static CS230::SpriteFont& GetSpriteFont(int index) { return Instance().fonts[index]; }
+    template<typename T>
+    static T* GetGSComponent() { return GetGameStateManager().GetGSComponent<T>(); }
 
     void Init(std::string windowName);
     void Shutdown();

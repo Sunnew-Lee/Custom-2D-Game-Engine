@@ -10,6 +10,7 @@ Creation date: 03/15/2021
 #pragma once
 #include "..\Engine\Input.h"            // InputKey
 #include "..\Engine\GameObject.h"
+#include "..\Engine\Sprite.h"           // Sprite
 
 
 class Ship : public CS230::GameObject {
@@ -19,8 +20,6 @@ public:
     void Draw(math::TransformMatrix cameraMatrix) override;
 
 private:
-    void TestForWrap();
-
     CS230::Sprite sprite_flame_1;
     CS230::Sprite sprite_flame_2;
     bool is_accelerating;

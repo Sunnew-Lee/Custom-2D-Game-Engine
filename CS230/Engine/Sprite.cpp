@@ -11,10 +11,13 @@ Creation date: 03/15/2021
 #include "Engine.h"		// GetLogger(), GetTextureManager()
 #include "Animation.h"	// Animation
 #include "Texture.h"	// texturePtr
+#include "GameObject.h"	// AddGOComponent()
+#include "Collision.h"	// RectCollision, CircleCollision
 
-
-CS230::Sprite::Sprite() : currAnim(0), texturePtr(nullptr)
-{}
+CS230::Sprite::Sprite(const std::filesystem::path& spriteInfoFile, GameObject* object)
+{
+	Load(spriteInfoFile, object);
+}
 
 CS230::Sprite::~Sprite() {
 	for (Animation* anim : animations) {
@@ -23,7 +26,8 @@ CS230::Sprite::~Sprite() {
 	animations.clear();
 }
 
-void CS230::Sprite::Load(const std::filesystem::path& spriteInfoFile) {
+void CS230::Sprite::Load(const std::filesystem::path& spriteInfoFile, GameObject* object)
+{
 	hotSpotList.clear();
 	frameTexel.clear();
 
@@ -70,6 +74,26 @@ void CS230::Sprite::Load(const std::filesystem::path& spriteInfoFile) {
 			inFile >> hotSpotX;
 			inFile >> hotSpotY;
 			hotSpotList.push_back({ hotSpotX, hotSpotY });
+		}
+		else if (text == "CollisionRect") {
+			math::irect2 rect;
+			inFile >> rect.point1.x >> rect.point1.y >> rect.point2.x >> rect.point2.y;
+			if (object == nullptr) {
+				Engine::GetLogger().LogError("Trying to add collision to a nullobject");
+			}
+			else {
+				object->AddGOComponent(new RectCollision(rect, object));
+			}
+		}
+		else if (text == "CollisionCircle") {
+			double radius;
+			inFile >> radius;
+			if (object == nullptr) {
+				Engine::GetLogger().LogError("Trying to add collision to a nullobject");
+			}
+			else {
+				object->AddGOComponent(new CircleCollision(radius, object));
+			}
 		}
 		else {
 			Engine::GetLogger().LogError("Unknown spt command " + text);

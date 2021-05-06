@@ -11,12 +11,7 @@ Creation date: 04/18/2021
 #include "..\Engine\TransformMatrix.h"  // math::TransformMatrix
 #include "GameObject.h"					// GameObject
 
-void CS230::GameObjectManager::Add(GameObject* obj)
-{
-	gameObjects.push_back(obj);
-}
-
-void CS230::GameObjectManager::Unload()
+CS230::GameObjectManager::~GameObjectManager()
 {
 	for (GameObject* gameobject : gameObjects)
 	{
@@ -26,7 +21,12 @@ void CS230::GameObjectManager::Unload()
 	gameObjects.clear();
 }
 
-void CS230::GameObjectManager::UpdateAll(double dt)
+void CS230::GameObjectManager::Add(GameObject* obj)
+{
+	gameObjects.push_back(obj);
+}
+
+void CS230::GameObjectManager::Update(double dt)
 {
 	for (GameObject* gameobject : gameObjects)
 	{

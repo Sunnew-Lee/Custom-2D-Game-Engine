@@ -8,21 +8,24 @@ Author: sunwoo.lee
 Creation date: 03/15/2021
 -----------------------------------------------------------------*/
 #include "Ship.h"
-#include "..\Engine\Engine.h"   // GetWindow()
-#include "Flame_Anims.h"		// Flame_Anim
+#include "..\Engine\Engine.h"			// GetWindow(), GetGSComponent()
+#include "Flame_Anims.h"				// Flame_Anim
+#include "ScreenWrap.h"					// ScreenWrap
+#include "..\Engine\Collision.h"		// CircleCollision
+#include "..\Engine\ShowCollision.h"	// ShowCollision
 
 Ship::Ship(math::vec2 startPos)
-	:GameObject(startPos, 0, {0.75,0.75}), is_accelerating{ false },
+	:GameObject(startPos, 0, {0.75,0.75}), is_accelerating{ false }, sprite_flame_1("assets/flame.spt", this), sprite_flame_2("assets/flame.spt", this),
 	rotateCounterKey(CS230::InputKey::Keyboard::A), rotateClockKey(CS230::InputKey::Keyboard::D), accelerateKey(CS230::InputKey::Keyboard::W)
 {
-	sprite.Load("assets/Ship.spt");
-	sprite_flame_1.Load("assets/flame.spt");
-	sprite_flame_2.Load("assets/flame.spt");
+	AddGOComponent(new CS230::Sprite("assets/Ship.spt", this));
+	AddGOComponent(new ScreenWrap(*this));
 }
 
 void Ship::Update(double dt)
 {
-	sprite.Update(dt);
+	GameObject::Update(dt);
+
 	sprite_flame_1.Update(dt);
 	sprite_flame_2.Update(dt);
 
@@ -54,38 +57,22 @@ void Ship::Update(double dt)
 	UpdateVelocity(-(GetVelocity() * Ship::drag * dt));
 
 	UpdatePosition(GetVelocity() * dt);
-	TestForWrap();
 }
 
 void Ship::Draw(math::TransformMatrix cameraMatrix)
 {
-	sprite_flame_1.Draw(cameraMatrix * GetMatrix() * math::TranslateMatrix::TranslateMatrix(sprite.GetHotSpot(1)));
-	sprite_flame_2.Draw(cameraMatrix * GetMatrix() * math::TranslateMatrix::TranslateMatrix(sprite.GetHotSpot(2)));
-	sprite.Draw(cameraMatrix * GetMatrix());
-}
+	sprite_flame_1.Draw(cameraMatrix * GetMatrix() * math::TranslateMatrix::TranslateMatrix(GetGOComponent<CS230::Sprite>()->GetHotSpot(1)));
+	sprite_flame_2.Draw(cameraMatrix * GetMatrix() * math::TranslateMatrix::TranslateMatrix(GetGOComponent<CS230::Sprite>()->GetHotSpot(2)));
+	GetGOComponent<CS230::Sprite>()->Draw(cameraMatrix * GetMatrix());
 
-void Ship::TestForWrap()
-{
-	const double hotspot_x = sprite.GetFrameSize().x / 2;
-	const double hotspot_y = sprite.GetFrameSize().y / 2;
-
-	if (GetPosition().x + hotspot_x < 0)
+	if (Engine::GetGSComponent<ShowCollision>() != nullptr)
 	{
-		SetPosition(math::vec2{ Engine::GetWindow().GetSize().x + hotspot_x ,GetPosition().y});
-	}
-
-	if (GetPosition().x > Engine::GetWindow().GetSize().x + hotspot_x)
-	{
-		SetPosition(math::vec2{ -hotspot_x ,GetPosition().y });
-	}
-
-	if (GetPosition().y + hotspot_y < 0)
-	{
-		SetPosition(math::vec2{ GetPosition().x,Engine::GetWindow().GetSize().y + hotspot_y });
-	}
-
-	if (GetPosition().y > Engine::GetWindow().GetSize().y + hotspot_y)
-	{
-		SetPosition(math::vec2{ GetPosition().x,-hotspot_y });
+		if (Engine::GetGSComponent<ShowCollision>()->IsEnabled() == true)
+		{
+			if (GetGOComponent<CS230::Collision>() != nullptr)
+			{
+				GetGOComponent<CS230::Collision>()->Draw(cameraMatrix);
+			}
+		}
 	}
 }

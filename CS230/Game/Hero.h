@@ -11,13 +11,9 @@ Creation date: 2/11/2021
 #include "..\Engine\Input.h"            // InputKey
 #include "..\Engine\GameObject.h"
 
-namespace CS230 {
-    class Camera;
-}
-
 class Hero : public CS230::GameObject {
 public:
-    Hero(math::vec2 startPos, const CS230::Camera& camera);
+    Hero(math::vec2 startPos);
     void Update(double dt) override;
     math::vec2 Get_Hero_Position();
 
@@ -62,7 +58,6 @@ private:
     CS230::InputKey moveRightKey;
     CS230::InputKey moveJumpKey;
 
-    const CS230::Camera& camera;
     static constexpr double Acceleration_x{ 500 };
     static constexpr double Drag_x{ 1000 };
     static constexpr double Max_Velocity_x{ 1000 };

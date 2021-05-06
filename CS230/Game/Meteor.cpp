@@ -9,10 +9,13 @@ Creation date: 4/18/2021
 -----------------------------------------------------------------*/
 #include "Meteor.h"
 #include "..\Engine\Engine.h"	// GetWindow()
+#include "ScreenWrap.h"			// ScreenWrap
+#include "..\Engine\Sprite.h"	// Sprite
 
 Meteor::Meteor() : GameObject({ 0, 0 }) {
 	constexpr double PI{3.1415926535};
-	sprite.Load("assets/Meteor.spt");
+	AddGOComponent(new CS230::Sprite("assets/Meteor.spt", this));
+	AddGOComponent(new ScreenWrap(*this));
 
 	// vec2{ (0~window_size.x), (0~window_size.y) }
 	SetPosition(math::vec2{ static_cast<double>(rand() % (Engine::GetWindow().GetSize().x + 1)), static_cast<double>(rand() % (Engine::GetWindow().GetSize().y + 1)) });
@@ -28,31 +31,4 @@ Meteor::Meteor() : GameObject({ 0, 0 }) {
 void Meteor::Update(double dt)
 {
 	GameObject::Update(dt);
-	TestForWrap();
-}
-
-void Meteor::TestForWrap()
-{
-	const double hotspot_x = sprite.GetFrameSize().x / 2;
-	const double hotspot_y = sprite.GetFrameSize().y / 2;
-
-	if (GetPosition().x + hotspot_x < 0)
-	{
-		SetPosition(math::vec2{ Engine::GetWindow().GetSize().x + hotspot_x ,GetPosition().y });
-	}
-
-	if (GetPosition().x > Engine::GetWindow().GetSize().x + hotspot_x)
-	{
-		SetPosition(math::vec2{ -hotspot_x ,GetPosition().y });
-	}
-
-	if (GetPosition().y + hotspot_y < 0)
-	{
-		SetPosition(math::vec2{ GetPosition().x,Engine::GetWindow().GetSize().y + hotspot_y });
-	}
-
-	if (GetPosition().y > Engine::GetWindow().GetSize().y + hotspot_y)
-	{
-		SetPosition(math::vec2{ GetPosition().x,-hotspot_y });
-	}
 }

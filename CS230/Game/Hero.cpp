@@ -13,12 +13,14 @@ Creation date: 03/15/2021
 #include <string>				// to_string()
 #include "..\Engine\Camera.h"	// GetPosition()
 #include "Hero_Anims.h"			// Hero_Anim
+#include "Gravity.h"			// Gravity
+#include "..\Engine\Sprite.h"	// Sprite
 
-Hero::Hero(math::vec2 startPos, const CS230::Camera& camera)
-	:GameObject(startPos), camera(camera),
+Hero::Hero(math::vec2 startPos)
+	:GameObject(startPos),
 	moveLeftKey(CS230::InputKey::Keyboard::Left), moveRightKey(CS230::InputKey::Keyboard::Right), moveJumpKey(CS230::InputKey::Keyboard::Up)
 {
-	sprite.Load("assets/Hero.spt");
+	AddGOComponent(new CS230::Sprite("assets/Hero.spt", this));
 	currState = &stateIdle;
 	currState->Enter(this);
 }
@@ -27,15 +29,15 @@ void Hero::Update(double dt)
 {
 	GameObject::Update(dt);
 
-	if (GetPosition().x - sprite.GetFrameSize().x / 2 < camera.GetPosition().x)
+	if (GetPosition().x - GetGOComponent<CS230::Sprite>()->GetFrameSize().x / 2 < Engine::GetGSComponent<CS230::Camera>()->GetPosition().x)
 	{
 		SetVelocity(math::vec2{ 0, GetVelocity().y });
-		SetPosition(math::vec2{ camera.GetPosition().x + sprite.GetFrameSize().x / 2,GetPosition().y });
+		SetPosition(math::vec2{ Engine::GetGSComponent<CS230::Camera>()->GetPosition().x + GetGOComponent<CS230::Sprite>()->GetFrameSize().x / 2,GetPosition().y });
 	}
-	else if (GetPosition().x + sprite.GetFrameSize().x / 2 > Engine::GetWindow().GetSize().x + camera.GetPosition().x)
+	else if (GetPosition().x + GetGOComponent<CS230::Sprite>()->GetFrameSize().x / 2 > Engine::GetWindow().GetSize().x + Engine::GetGSComponent<CS230::Camera>()->GetPosition().x)
 	{
 		SetVelocity(math::vec2{ 0, GetVelocity().y });
-		SetPosition(math::vec2{ Engine::GetWindow().GetSize().x + camera.GetPosition().x - sprite.GetFrameSize().x / 2,GetPosition().y });
+		SetPosition(math::vec2{ Engine::GetWindow().GetSize().x + Engine::GetGSComponent<CS230::Camera>()->GetPosition().x - GetGOComponent<CS230::Sprite>()->GetFrameSize().x / 2,GetPosition().y });
 	}
 }
 
@@ -87,7 +89,7 @@ void Hero::UpdateXVelocity(double dt)
 void Hero::State_Idle::Enter(GameObject* object)
 {
 	Hero* hero = static_cast<Hero*>(object);
-	hero->sprite.PlayAnimation(static_cast<int>(Hero_Anim::Hero_Idle_Anim));
+	hero->GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Hero_Anim::Hero_Idle_Anim));
 }
 void Hero::State_Idle::Update(GameObject*, double )
 {
@@ -108,7 +110,7 @@ void Hero::State_Idle::TestForExit(GameObject* object)
 void Hero::State_Running::Enter(GameObject* object)
 {
 	Hero* hero = static_cast<Hero*>(object);
-	hero->sprite.PlayAnimation(static_cast<int>(Hero_Anim::Hero_Run_Anim));
+	hero->GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Hero_Anim::Hero_Run_Anim));
 	if (hero->moveLeftKey.IsKeyDown() == true)
 	{
 		hero->SetScale(math::vec2{ -1,1 });
@@ -153,7 +155,7 @@ void Hero::State_Running::TestForExit(GameObject* object)
 void Hero::State_Skidding::Enter(GameObject* object)
 {
 	Hero* hero = static_cast<Hero*>(object);
-	hero->sprite.PlayAnimation(static_cast<int>(Hero_Anim::Hero_Skid_Anim));
+	hero->GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Hero_Anim::Hero_Skid_Anim));
 }
 void Hero::State_Skidding::Update(GameObject* object, double dt)
 {
@@ -196,12 +198,12 @@ void Hero::State_Skidding::TestForExit(GameObject* object)
 
 void Hero::State_Jumping::Enter(GameObject* object) {
 	Hero* hero = static_cast<Hero*>(object);
-	hero->sprite.PlayAnimation(static_cast<int>(Hero_Anim::Hero_Jump_Anim));
+	hero->GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Hero_Anim::Hero_Jump_Anim));
 	hero->SetVelocity(math::vec2{ hero->GetVelocity().x, Hero::Jump_Velocity });//Set the velocity.y
 }
 void Hero::State_Jumping::Update(GameObject* object, double dt) {
 	Hero* hero = static_cast<Hero*>(object);
-	hero->UpdateVelocity(math::vec2{ 0, -(Level1::gravity * dt) });//Apply Gravity
+	hero->UpdateVelocity(math::vec2{ 0, -(Engine::GetGSComponent<Gravity>()->GetValue() * dt) });//Apply Gravity
 	hero->UpdateXVelocity(dt);  //Change X Velocity stuff
 }
 void Hero::State_Jumping::TestForExit(GameObject* object) {
@@ -217,12 +219,12 @@ void Hero::State_Jumping::TestForExit(GameObject* object) {
 void Hero::State_Falling::Enter(GameObject* object)
 {
 	Hero* hero = static_cast<Hero*>(object);
-	hero->sprite.PlayAnimation(static_cast<int>(Hero_Anim::Hero_Fall_Anim));
+	hero->GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Hero_Anim::Hero_Fall_Anim));
 }
 void Hero::State_Falling::Update(GameObject* object, double dt)
 {
 	Hero* hero = static_cast<Hero*>(object);
-	hero->UpdateVelocity(math::vec2{ 0, -(Level1::gravity * dt) });
+	hero->UpdateVelocity(math::vec2{ 0, -(Engine::GetGSComponent<Gravity>()->GetValue() * dt) });
 	hero->UpdateXVelocity(dt);
 }
 void Hero::State_Falling::TestForExit(GameObject* object)

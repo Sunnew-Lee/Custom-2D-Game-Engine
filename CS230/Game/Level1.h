@@ -26,21 +26,13 @@ public:
 	std::string GetName() override { return "Level 1"; }
 
 	static constexpr double floor = 126.0f;
-	static constexpr double gravity = 2000;
 	void Draw() override;
 private:
-	int score;
 	int lives;
-	double timer;
-	CS230::Texture scoreTexture;
 	CS230::Texture livesTexture;
-	CS230::Texture timerTexture;
 
 	CS230::InputKey mainMenu;
 	CS230::InputKey levelReload;
 	CS230::InputKey slowMotion;
-	CS230::GameObjectManager gameObjectManager;
 	Hero* heroPtr;
-	CS230::Camera camera;
-	Background background;
 };

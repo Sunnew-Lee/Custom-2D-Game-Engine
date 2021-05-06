@@ -9,10 +9,9 @@ Creation date: 2/10/2021
 -----------------------------------------------------------------*/
 #pragma once
 #include <vector>		// vector
+#include "GameState.h"	// GameState
 
 namespace CS230 {
-	class GameState;
-
 	class GameStateManager {
 	public:
 		GameStateManager();
@@ -23,6 +22,8 @@ namespace CS230 {
 		void Shutdown();
 		void ReloadState();
 		bool HasGameEnded() { return state == State::EXIT; }
+		template<typename T>
+		T* GetGSComponent() { return currGameState->GetGSComponent<T>(); }
 
 	private:
 		enum class State {

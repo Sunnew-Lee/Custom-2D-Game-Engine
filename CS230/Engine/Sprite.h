@@ -11,22 +11,24 @@ Creation date: 2/11/2021
 #include "Vec2.h"               // math::vec2, math::ivec2
 #include "TransformMatrix.h"    // math::TransformMatrix
 #include <filesystem>           // filesystem::path
+#include "Component.h"
 
 namespace CS230 {
     class Texture;
     class Animation;
+    class GameObject;
 }
 
 namespace CS230 {
-    class Sprite {
+    class Sprite :public Component {
     public:
-        Sprite();
+        Sprite(const std::filesystem::path& spriteInfoFile, GameObject* object);
         ~Sprite();
 
-        void Load(const std::filesystem::path& spriteInfoFile);
+        void Load(const std::filesystem::path& spriteInfoFile, GameObject* object);
         void Draw(math::TransformMatrix displayMatrix);
         void PlayAnimation(int anim);
-        void Update(double dt);
+        void Update(double dt) override;
         bool IsAnimationDone();
 
 

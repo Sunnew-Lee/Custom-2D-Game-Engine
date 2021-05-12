@@ -24,8 +24,7 @@ Ship::Ship(math::vec2 startPos)
 
 void Ship::Update(double dt)
 {
-	sprite_flame_1.Update(dt);
-	sprite_flame_2.Update(dt);
+
 
 	if (rotateCounterKey.IsKeyDown() == true)
 	{
@@ -53,7 +52,11 @@ void Ship::Update(double dt)
 	}
 
 	UpdateVelocity(-(GetVelocity() * Ship::drag * dt));
-	GameObject::Update(dt);
+	UpdatePosition(GetVelocity() * dt);
+
+	sprite_flame_1.Update(dt);
+	sprite_flame_2.Update(dt);
+	UpdateGOComponents(dt);
 }
 
 void Ship::Draw(math::TransformMatrix cameraMatrix)

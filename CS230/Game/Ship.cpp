@@ -24,8 +24,6 @@ Ship::Ship(math::vec2 startPos)
 
 void Ship::Update(double dt)
 {
-	GameObject::Update(dt);
-
 	sprite_flame_1.Update(dt);
 	sprite_flame_2.Update(dt);
 
@@ -55,8 +53,7 @@ void Ship::Update(double dt)
 	}
 
 	UpdateVelocity(-(GetVelocity() * Ship::drag * dt));
-
-	UpdatePosition(GetVelocity() * dt);
+	GameObject::Update(dt);
 }
 
 void Ship::Draw(math::TransformMatrix cameraMatrix)

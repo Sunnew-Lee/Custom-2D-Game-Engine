@@ -27,8 +27,3 @@ Meteor::Meteor() : GameObject({ 0, 0 }) {
 	SetScale(math::vec2{ (rand() % (1024+1) / 4096.0) + 0.75 });
 
 }
-
-void Meteor::Update(double dt)
-{
-	GameObject::Update(dt);
-}

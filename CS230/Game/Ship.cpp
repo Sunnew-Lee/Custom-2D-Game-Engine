@@ -13,8 +13,8 @@ Creation date: 03/15/2021
 #include "ScreenWrap.h"					// ScreenWrap
 #include "..\Engine\Collision.h"		// CircleCollision
 #include "..\Engine\ShowCollision.h"	// ShowCollision
-#include "GameObjectTypes.h"
-#include "Ship_Anims.h"
+#include "GameObjectTypes.h"			// GameObjectType::Ship
+#include "Ship_Anims.h"					// Ship_Anim::Explode_Anim
 
 Ship::Ship(math::vec2 startPos)
 	:GameObject(startPos, 0, {0.75,0.75}), is_accelerating{ false }, sprite_flame_1("assets/flame.spt", this), sprite_flame_2("assets/flame.spt", this), isDead(false),

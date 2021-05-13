@@ -8,15 +8,15 @@ Author: sunwoo.lee
 Creation date: 03/15/2021
 -----------------------------------------------------------------*/
 #include "Hero.h"
-#include "..\Engine\Engine.h"	// GetLogger(), GetWindow()
-#include "Level1.h"				// gravity, floor
-#include <string>				// to_string()
-#include "..\Engine\Camera.h"	// GetPosition()
-#include "Hero_Anims.h"			// Hero_Anim
-#include "Gravity.h"			// Gravity
-#include "..\Engine\Sprite.h"	// Sprite
-#include "GameObjectTypes.h"
-#include "..\Engine\Collision.h"
+#include "..\Engine\Engine.h"		// GetLogger(), GetWindow()
+#include "Level1.h"					// gravity, floor
+#include <string>					// to_string()
+#include "..\Engine\Camera.h"		// GetPosition()
+#include "Hero_Anims.h"				// Hero_Anim
+#include "Gravity.h"				// Gravity
+#include "..\Engine\Sprite.h"		// Sprite
+#include "GameObjectTypes.h"		// GameObjectType::Hero
+#include "..\Engine\Collision.h"	// RectCollision
 
 Hero::Hero(math::vec2 startPos)
 	:GameObject(startPos), hurtTimer(0), drawHero(true), 

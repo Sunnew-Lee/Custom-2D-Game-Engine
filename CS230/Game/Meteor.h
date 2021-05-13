@@ -15,6 +15,7 @@ Creation date: 2/15/2021
 class Meteor : public CS230::GameObject {
 public:
 	Meteor();
-	void Update(double dt) override;
+	GameObjectType GetObjectType() override;
+	std::string GetObjectTypeName() override;
 private:
 };

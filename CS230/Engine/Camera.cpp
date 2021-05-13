@@ -11,7 +11,7 @@ Creation date: 03/26/2021
 #include "TransformMatrix.h"	// math::TransformMatrix, math::TranslateMatrix
 
 CS230::Camera::Camera(math::rect2 movableRange) : extent(math::irect2{ math::ivec2(0) }), position(math::vec2(0)), movableRange(movableRange)
-{}
+{}//카메라 익스텐트 고치기!extent is the area in which the camera can move.  The camera should not go beyond this range (it's minimum and maximum values)
 
 void CS230::Camera::SetPosition(math::vec2 newPosition)
 {

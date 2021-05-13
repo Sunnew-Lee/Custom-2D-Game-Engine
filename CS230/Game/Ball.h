@@ -13,6 +13,8 @@ Creation date: 2/14/2021
 class Ball : public CS230::GameObject {
 public:
     Ball(math::vec2 startPos);
+    GameObjectType GetObjectType() override;
+    std::string GetObjectTypeName() override;
 
 private:
     class State_Bounce : public State {

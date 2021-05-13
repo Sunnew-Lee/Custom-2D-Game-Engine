@@ -10,6 +10,7 @@ Creation date: 04/18/2021
 #include "GameObjectManager.h"
 #include "..\Engine\TransformMatrix.h"  // math::TransformMatrix
 #include "GameObject.h"					// GameObject
+#include "Engine.h"						// GetLogger()
 
 CS230::GameObjectManager::~GameObjectManager()
 {
@@ -39,5 +40,23 @@ void CS230::GameObjectManager::DrawAll(math::TransformMatrix& cameraMatrix)
 	for (GameObject* gameobject : gameObjects)
 	{
 		gameobject->Draw(cameraMatrix);
+	}
+}
+
+void CS230::GameObjectManager::CollideTest()
+{
+	for (GameObject* gameobjectA : gameObjects)
+	{
+		for (GameObject* gameobjectB : gameObjects)
+		{
+			if (gameobjectA->CanCollideWith(gameobjectB->GetObjectType()) == true)
+			{
+				if (gameobjectA->DoesCollideWith(gameobjectB) == true)
+				{
+					Engine::GetLogger().LogEvent("Collision Detected: " + gameobjectA->GetObjectTypeName() + " and " + gameobjectB->GetObjectTypeName());
+					gameobjectA->ResolveCollision(gameobjectB);
+				}
+			}
+		}
 	}
 }

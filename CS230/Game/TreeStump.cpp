@@ -10,6 +10,7 @@ Creation date: 2/15/2021
 
 #include "TreeStump.h"
 #include "..\Engine\Sprite.h"	// Sprite
+#include "GameObjectTypes.h"
 
 TreeStump::TreeStump(math::vec2 pos, int size) : GameObject(pos) {
 	switch (size) {
@@ -26,4 +27,14 @@ TreeStump::TreeStump(math::vec2 pos, int size) : GameObject(pos) {
 		AddGOComponent(new CS230::Sprite("assets/treeStump5.spt", this));
 		break;
 	}
+}
+
+GameObjectType TreeStump::GetObjectType()
+{
+	return GameObjectType::TreeStump;
+}
+
+std::string TreeStump::GetObjectTypeName()
+{
+	return std::string("Tree Stump");
 }

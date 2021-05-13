@@ -240,6 +240,7 @@ xcopy /d /y Assets\* "$(OutputPath)Assets"</Command>
     <ClInclude Include="Game\Bunny.h" />
     <ClInclude Include="Game\Flame_Anims.h" />
     <ClInclude Include="Game\Fonts.h" />
+    <ClInclude Include="Game\GameObjectTypes.h" />
     <ClInclude Include="Game\Gravity.h" />
     <ClInclude Include="Game\Hero.h" />
     <ClInclude Include="Game\Hero_Anims.h" />
@@ -251,6 +252,7 @@ xcopy /d /y Assets\* "$(OutputPath)Assets"</Command>
     <ClInclude Include="Game\Screens.h" />
     <ClInclude Include="Game\ScreenWrap.h" />
     <ClInclude Include="Game\Ship.h" />
+    <ClInclude Include="Game\Ship_Anims.h" />
     <ClInclude Include="Game\Splash.h" />
     <ClInclude Include="Game\Timer.h" />
     <ClInclude Include="Game\TreeStump.h" />

@@ -11,6 +11,7 @@ Creation date: 4/18/2021
 #include "..\Engine\Engine.h"	// GetWindow()
 #include "ScreenWrap.h"			// ScreenWrap
 #include "..\Engine\Sprite.h"	// Sprite
+#include "GameObjectTypes.h"
 
 Meteor::Meteor() : GameObject({ 0, 0 }) {
 	constexpr double PI{3.1415926535};
@@ -28,7 +29,12 @@ Meteor::Meteor() : GameObject({ 0, 0 }) {
 
 }
 
-void Meteor::Update(double dt)
+GameObjectType Meteor::GetObjectType()
 {
-	GameObject::Update(dt);
+	return GameObjectType::Meteor;
+}
+
+std::string Meteor::GetObjectTypeName()
+{
+	return std::string("Meteor");
 }

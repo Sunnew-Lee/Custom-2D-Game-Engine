@@ -20,6 +20,26 @@ CS230::GameObject::GameObject(math::vec2 position, double rotation, math::vec2 s
     scale(scale), rotation(rotation), currState(&state_nothing) {
 }
 
+bool CS230::GameObject::CanCollideWith(GameObjectType )
+{
+    return false;
+}
+
+bool CS230::GameObject::DoesCollideWith(GameObject* objectB)
+{
+    if (GetGOComponent<Collision>() == nullptr)
+    {
+        return false;
+    }
+
+    return GetGOComponent<Collision>()->DoesCollideWith(objectB);
+}
+
+void CS230::GameObject::ResolveCollision(GameObject*)
+{
+    Engine::GetLogger().LogError("No Resolve Collision!!");
+}
+
 void CS230::GameObject::Update(double dt) {
     currState->Update(this, dt);
     if (velocity.x != 0 || velocity.y != 0) {

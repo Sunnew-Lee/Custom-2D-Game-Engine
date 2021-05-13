@@ -15,5 +15,7 @@ Creation date: 2/15/2021
 class TreeStump : public CS230::GameObject {
 public:
 	TreeStump(math::vec2 pos, int size);
+	GameObjectType GetObjectType() override;
+	std::string GetObjectTypeName() override;
 private:
 };

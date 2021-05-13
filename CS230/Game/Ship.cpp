@@ -13,9 +13,11 @@ Creation date: 03/15/2021
 #include "ScreenWrap.h"					// ScreenWrap
 #include "..\Engine\Collision.h"		// CircleCollision
 #include "..\Engine\ShowCollision.h"	// ShowCollision
+#include "GameObjectTypes.h"
+#include "Ship_Anims.h"
 
 Ship::Ship(math::vec2 startPos)
-	:GameObject(startPos, 0, {0.75,0.75}), is_accelerating{ false }, sprite_flame_1("assets/flame.spt", this), sprite_flame_2("assets/flame.spt", this),
+	:GameObject(startPos, 0, {0.75,0.75}), is_accelerating{ false }, sprite_flame_1("assets/flame.spt", this), sprite_flame_2("assets/flame.spt", this), isDead(false),
 	rotateCounterKey(CS230::InputKey::Keyboard::A), rotateClockKey(CS230::InputKey::Keyboard::D), accelerateKey(CS230::InputKey::Keyboard::W)
 {
 	AddGOComponent(new CS230::Sprite("assets/Ship.spt", this));
@@ -24,39 +26,40 @@ Ship::Ship(math::vec2 startPos)
 
 void Ship::Update(double dt)
 {
-	GameObject::Update(dt);
-
-	sprite_flame_1.Update(dt);
-	sprite_flame_2.Update(dt);
-
-	if (rotateCounterKey.IsKeyDown() == true)
+	if (IsDead() == false)
 	{
-		UpdateRotation(rotate_speed * dt);
-	}
-	if (rotateClockKey.IsKeyDown() == true)
-	{
-		UpdateRotation(-(rotate_speed * dt));
-	}
-	if (accelerateKey.IsKeyDown() == true)
-	{
-		if (is_accelerating == false)
+		if (rotateCounterKey.IsKeyDown() == true)
 		{
-			sprite_flame_1.PlayAnimation(static_cast<int>(Flame_Anim::Flame_Anim));
-			sprite_flame_2.PlayAnimation(static_cast<int>(Flame_Anim::Flame_Anim));
-			is_accelerating = true;
+			UpdateRotation(rotate_speed * dt);
 		}
-		UpdateVelocity(math::RotateMatrix::RotateMatrix(GetRotation()) * math::vec2(0, accel * dt));
-	}
-	else if (accelerateKey.IsKeyReleased() == true)
-	{
-		sprite_flame_1.PlayAnimation(static_cast<int>(Flame_Anim::None_Anim));
-		sprite_flame_2.PlayAnimation(static_cast<int>(Flame_Anim::None_Anim));
-		is_accelerating = false;
+		if (rotateClockKey.IsKeyDown() == true)
+		{
+			UpdateRotation(-(rotate_speed * dt));
+		}
+		if (accelerateKey.IsKeyDown() == true)
+		{
+			if (is_accelerating == false)
+			{
+				sprite_flame_1.PlayAnimation(static_cast<int>(Flame_Anim::Flame_Anim));
+				sprite_flame_2.PlayAnimation(static_cast<int>(Flame_Anim::Flame_Anim));
+				is_accelerating = true;
+			}
+			UpdateVelocity(math::RotateMatrix::RotateMatrix(GetRotation()) * math::vec2(0, accel * dt));
+		}
+		else if (accelerateKey.IsKeyReleased() == true)
+		{
+			sprite_flame_1.PlayAnimation(static_cast<int>(Flame_Anim::None_Anim));
+			sprite_flame_2.PlayAnimation(static_cast<int>(Flame_Anim::None_Anim));
+			is_accelerating = false;
+		}
 	}
 
 	UpdateVelocity(-(GetVelocity() * Ship::drag * dt));
-
 	UpdatePosition(GetVelocity() * dt);
+
+	sprite_flame_1.Update(dt);
+	sprite_flame_2.Update(dt);
+	UpdateGOComponents(dt);
 }
 
 void Ship::Draw(math::TransformMatrix cameraMatrix)
@@ -75,4 +78,33 @@ void Ship::Draw(math::TransformMatrix cameraMatrix)
 			}
 		}
 	}
+}
+
+GameObjectType Ship::GetObjectType()
+{
+	return GameObjectType::Ship;
+}
+
+std::string Ship::GetObjectTypeName()
+{
+	return std::string("Ship");
+}
+
+bool Ship::CanCollideWith(GameObjectType objectBType)
+{
+	if (this->GetObjectType() == objectBType)
+	{
+		return false;
+	}
+	return true;
+}
+
+void Ship::ResolveCollision(CS230::GameObject* )
+{
+	Ship* ship = static_cast<Ship*>(this);
+	ship->GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Ship_Anim::Explode_Anim));
+	RemoveGOComponent<CS230::Collision>();
+	sprite_flame_1.PlayAnimation(static_cast<int>(Flame_Anim::None_Anim));
+	sprite_flame_2.PlayAnimation(static_cast<int>(Flame_Anim::None_Anim));
+	isDead = true;
 }

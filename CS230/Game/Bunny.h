@@ -15,5 +15,7 @@ Creation date: 4/18/2021
 class Bunny : public CS230::GameObject {
 public:
 	Bunny(math::vec2 pos);
+	GameObjectType GetObjectType() override;
+	std::string GetObjectTypeName() override;
 private:
 };

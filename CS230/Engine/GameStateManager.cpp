@@ -10,6 +10,7 @@ Creation date: 03/07/2021
 #include "GameStateManager.h"
 #include "GameState.h"			// GetName(), Load(), Update(), Unload()
 #include "Engine.h"				// GetLogger(), GetTextureManager()
+#include "GameObjectManager.h"	// GameObjectManager
 
 CS230::GameStateManager::GameStateManager()
 {
@@ -67,6 +68,10 @@ void CS230::GameStateManager::Update(double dt)
 		{
 			Engine::GetLogger().LogVerbose("Update " + currGameState->GetName());
 			GameStateManager::currGameState->Update(dt);
+			if (currGameState->GetGSComponent<GameObjectManager>() != nullptr)
+			{
+				currGameState->GetGSComponent<GameObjectManager>()->CollideTest();
+			}
 			GameStateManager::currGameState->Draw();
 		}
 		break;

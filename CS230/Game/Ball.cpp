@@ -14,11 +14,22 @@ Creation date: 03/23/2021
 #include "Ball_Anims.h"			// Ball_Anim
 #include "Gravity.h"			// Gravity
 #include "..\Engine\Sprite.h"	// Sprite
+#include "GameObjectTypes.h"
 
 Ball::Ball(math::vec2 startPos) : GameObject(startPos) {
 	AddGOComponent(new CS230::Sprite("assets/Ball.spt", this));
 	currState = &stateBounce;
 	currState->Enter(this);
+}
+
+GameObjectType Ball::GetObjectType()
+{
+	return GameObjectType::Ball;
+}
+
+std::string Ball::GetObjectTypeName()
+{
+	return std::string("Ball");
 }
 
 void Ball::State_Bounce::Enter(GameObject* object)

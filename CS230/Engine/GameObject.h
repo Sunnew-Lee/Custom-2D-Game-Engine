@@ -14,6 +14,8 @@ Creation date: 2/14/2021
 #include "ComponentManager.h"				// GetGOComponent(), AddGOComponent(), UpdateGOComponents(), ClearGOComponents(), RemoveGOComponent()
 #include <string>							// string
 
+enum class GameObjectType;
+
 namespace CS230 {
 	class Component;
 
@@ -23,6 +25,11 @@ namespace CS230 {
 		GameObject(math::vec2 position);
 		GameObject(math::vec2 position, double rotation, math::vec2 scale);
 		virtual ~GameObject() { ClearGOComponents(); }
+		virtual GameObjectType GetObjectType() = 0;
+		virtual std::string GetObjectTypeName() = 0;
+		virtual bool CanCollideWith(GameObjectType objectBType);
+		bool DoesCollideWith(GameObject* objectB);
+		virtual void ResolveCollision(GameObject*);
 		
 		virtual void Update(double dt);
 		virtual void Draw(math::TransformMatrix cameraMatrix);

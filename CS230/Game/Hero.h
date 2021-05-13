@@ -14,8 +14,13 @@ Creation date: 2/11/2021
 class Hero : public CS230::GameObject {
 public:
     Hero(math::vec2 startPos);
+    void Draw(math::TransformMatrix displayMatrix);
     void Update(double dt) override;
     math::vec2 Get_Hero_Position();
+    GameObjectType GetObjectType() override;
+    std::string GetObjectTypeName() override;
+    bool CanCollideWith(GameObjectType objectBType) override;
+    void ResolveCollision(GameObject* objectB) override;
 
 private:
     class State_Idle : public State {
@@ -62,6 +67,9 @@ private:
     static constexpr double Drag_x{ 1000 };
     static constexpr double Max_Velocity_x{ 1000 };
     static constexpr double Jump_Velocity{ 1000 };
+    static constexpr double hurtTime = 2;
+    double hurtTimer;
+    bool drawHero;
 
     State_Idle stateIdle;
     State_Running stateRunning;

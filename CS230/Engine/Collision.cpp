@@ -8,10 +8,9 @@ Author: sunwoo.lee
 Creation date: 5/5/2021
 -----------------------------------------------------------------*/
 #include "Collision.h"
-#include "TransformMatrix.h"
-#include "doodle/drawing.hpp"
-#include "GameObject.h"
-#include <iostream>
+#include "TransformMatrix.h"        // math::TransformMatrix
+#include "doodle/drawing.hpp"       // draw_rectangle()
+#include "GameObject.h"             // GetGOComponent<>()
 
 void CS230::RectCollision::Draw(math::TransformMatrix cameraMatrix)
 {
@@ -30,6 +29,17 @@ math::rect2 CS230::RectCollision::GetWorldCoorRect()
     return math::rect2{ objectPtr->GetMatrix() * rect.point1 ,objectPtr->GetMatrix() * rect.point2 };
 }
 
+bool CS230::RectCollision::DoesCollideWith(GameObject* testAgainstObject)
+{
+    math::rect2 test = testAgainstObject->GetGOComponent<RectCollision>()->GetWorldCoorRect();
+    if (GetWorldCoorRect().Left() < test.Right() && GetWorldCoorRect().Right() > test.Left() && GetWorldCoorRect().Bottom() < test.Top() && GetWorldCoorRect().Top() > test.Bottom())
+    {
+        return true;
+    }
+
+    return false;
+}
+
 void CS230::CircleCollision::Draw(math::TransformMatrix cameraMatrix) {
     doodle::no_fill();
     doodle::set_outline_width(2);
@@ -43,4 +53,16 @@ void CS230::CircleCollision::Draw(math::TransformMatrix cameraMatrix) {
 double CS230::CircleCollision::GetRadius()
 {
     return radius * objectPtr->GetScale().x;
+}
+
+bool CS230::CircleCollision::DoesCollideWith(GameObject* testAgainstObject)
+{
+    math::vec2 objPos = objectPtr->GetPosition();
+    math::vec2 textPos = testAgainstObject->GetPosition();
+    double textRad = testAgainstObject->GetGOComponent<CircleCollision>()->GetRadius();
+    if ((objPos.x - textPos.x) * (objPos.x - textPos.x) + (objPos.y - textPos.y) * (objPos.y - textPos.y) < (GetRadius() + textRad) * (GetRadius() + textRad))
+    {
+        return true;
+    }
+    return false;
 }

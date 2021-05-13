@@ -18,11 +18,17 @@ public:
     Ship(math::vec2 startPos);
     void Update(double dt) override;
     void Draw(math::TransformMatrix cameraMatrix) override;
+    GameObjectType GetObjectType() override;
+    std::string GetObjectTypeName() override;
+    bool CanCollideWith(GameObjectType objectBType) override;
+    void ResolveCollision(CS230::GameObject* objectB) override;
+    bool IsDead() { return isDead; }
 
 private:
     CS230::Sprite sprite_flame_1;
     CS230::Sprite sprite_flame_2;
     bool is_accelerating;
+    bool isDead;
 
     CS230::InputKey rotateCounterKey;
     CS230::InputKey rotateClockKey;

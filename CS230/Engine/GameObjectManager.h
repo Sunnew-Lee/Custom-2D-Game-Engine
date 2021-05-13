@@ -23,6 +23,7 @@ namespace CS230 {
 
 		void Update(double dt) override;
 		void DrawAll(math::TransformMatrix& cameraMatrix);
+		void CollideTest();
 	private:
 		std::vector<GameObject*> gameObjects;
 	};

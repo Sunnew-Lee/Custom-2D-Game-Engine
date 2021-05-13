@@ -9,7 +9,7 @@ Creation date: 2/12/2021
 -----------------------------------------------------------------*/
 #pragma once
 
-#include "Rect.h"
+#include "Rect.h"           // math::rect2
 #include "Component.h"
 
 namespace math {
@@ -27,7 +27,7 @@ namespace CS230 {
         };
         virtual void Draw(math::TransformMatrix cameraMatrix) = 0;
         virtual CollideType GetCollideType() = 0;
-
+        virtual bool DoesCollideWith(GameObject* gameObject) = 0;
     };
 
     class RectCollision : public Collision {
@@ -36,6 +36,7 @@ namespace CS230 {
         void Draw(math::TransformMatrix cameraMatrix) override;
         CollideType GetCollideType() override { return Collision::CollideType::Rect_Collide; };
         math::rect2 GetWorldCoorRect();
+        bool DoesCollideWith(GameObject* testAgainstObject) override;
     private:
         GameObject* objectPtr;
         math::irect2 rect;
@@ -47,6 +48,7 @@ namespace CS230 {
         void Draw(math::TransformMatrix cameraMatrix) override;
         CollideType GetCollideType() override { return Collision::CollideType::Circle_Collide; };
         double GetRadius();
+        bool DoesCollideWith(GameObject* testAgainstObject) override;
     private:
         GameObject* objectPtr;
         double radius;

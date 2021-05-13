@@ -15,9 +15,11 @@ Creation date: 03/15/2021
 #include "Hero_Anims.h"			// Hero_Anim
 #include "Gravity.h"			// Gravity
 #include "..\Engine\Sprite.h"	// Sprite
+#include "GameObjectTypes.h"
+#include "..\Engine\Collision.h"
 
 Hero::Hero(math::vec2 startPos)
-	:GameObject(startPos),
+	:GameObject(startPos), hurtTimer(0), drawHero(true), 
 	moveLeftKey(CS230::InputKey::Keyboard::Left), moveRightKey(CS230::InputKey::Keyboard::Right), moveJumpKey(CS230::InputKey::Keyboard::Up)
 {
 	AddGOComponent(new CS230::Sprite("assets/Hero.spt", this));
@@ -25,25 +27,105 @@ Hero::Hero(math::vec2 startPos)
 	currState->Enter(this);
 }
 
+void Hero::Draw(math::TransformMatrix displayMatrix)
+{
+	if (drawHero == true)
+	{
+		GameObject::Draw(displayMatrix);
+	}
+}
+
 void Hero::Update(double dt)
 {
 	GameObject::Update(dt);
 
-	if (GetPosition().x - GetGOComponent<CS230::Sprite>()->GetFrameSize().x / 2 < Engine::GetGSComponent<CS230::Camera>()->GetPosition().x)
+	if (GetPosition().x - GetGOComponent<CS230::RectCollision>()->GetWorldCoorRect().Size().x / 2 < Engine::GetGSComponent<CS230::Camera>()->GetPosition().x)
 	{
 		SetVelocity(math::vec2{ 0, GetVelocity().y });
-		SetPosition(math::vec2{ Engine::GetGSComponent<CS230::Camera>()->GetPosition().x + GetGOComponent<CS230::Sprite>()->GetFrameSize().x / 2,GetPosition().y });
+		SetPosition(math::vec2{ Engine::GetGSComponent<CS230::Camera>()->GetPosition().x + GetGOComponent<CS230::RectCollision>()->GetWorldCoorRect().Size().x / 2,GetPosition().y });
 	}
-	else if (GetPosition().x + GetGOComponent<CS230::Sprite>()->GetFrameSize().x / 2 > Engine::GetWindow().GetSize().x + Engine::GetGSComponent<CS230::Camera>()->GetPosition().x)
+	else if (GetPosition().x + GetGOComponent<CS230::RectCollision>()->GetWorldCoorRect().Size().x / 2 > Engine::GetWindow().GetSize().x + Engine::GetGSComponent<CS230::Camera>()->GetPosition().x)
 	{
 		SetVelocity(math::vec2{ 0, GetVelocity().y });
-		SetPosition(math::vec2{ Engine::GetWindow().GetSize().x + Engine::GetGSComponent<CS230::Camera>()->GetPosition().x - GetGOComponent<CS230::Sprite>()->GetFrameSize().x / 2,GetPosition().y });
+		SetPosition(math::vec2{ Engine::GetWindow().GetSize().x + Engine::GetGSComponent<CS230::Camera>()->GetPosition().x - GetGOComponent<CS230::RectCollision>()->GetWorldCoorRect().Size().x / 2,GetPosition().y });
 	}
+
+	if (hurtTimer != 0)
+	{
+		hurtTimer -= dt;
+		if (hurtTimer <= 0)
+		{
+			hurtTimer = 0;
+		}
+		drawHero = !drawHero;
+	}
+	if (hurtTimer == 0)
+	{
+		drawHero = true;
+	}
+
 }
 
 math::vec2 Hero::Get_Hero_Position()
 {
 	return GameObject::GetPosition();
+}
+
+GameObjectType Hero::GetObjectType()
+{
+	return GameObjectType::Hero;
+}
+
+std::string Hero::GetObjectTypeName()
+{
+	return std::string("Hero");
+}
+
+bool Hero::CanCollideWith(GameObjectType objectBType)
+{
+	if (this->GetObjectType() == objectBType)
+	{
+		return false;
+	}
+	return true;
+}
+
+void Hero::ResolveCollision(GameObject* objectB)
+{
+	math::rect2 collideRect = objectB->GetGOComponent<CS230::RectCollision>()->GetWorldCoorRect();
+	math::rect2 heroRect = GetGOComponent<CS230::RectCollision>()->GetWorldCoorRect();
+	Hero* hero = static_cast<Hero*>(this);
+	switch (objectB->GetObjectType())
+	{
+	case GameObjectType::TreeStump:
+		if (this->GetPosition().x <= objectB->GetPosition().x)
+		{
+			hero->SetPosition(math::vec2{ hero->GetPosition().x + (collideRect.Left() - heroRect.Right()), hero->GetPosition().y });
+			hero->SetVelocity(math::vec2{ 0,hero->GetVelocity().y });
+		}
+		else if (this->GetPosition().x >= objectB->GetPosition().x)
+		{
+			hero->SetPosition(math::vec2{ hero->GetPosition().x + (collideRect.Right() - heroRect.Left()),hero->GetPosition().y });
+			hero->SetVelocity(math::vec2{ 0,hero->GetVelocity().y });
+		}
+		break;
+	case GameObjectType::Ball:
+	case GameObjectType::Bunny:
+		hero->ChangeState(&hero->stateJumping);
+
+		if (this->GetPosition().x <= objectB->GetPosition().x)
+		{
+			hero->SetPosition(math::vec2{ hero->GetPosition().x + (collideRect.Left() - heroRect.Right()), hero->GetPosition().y });
+			hero->SetVelocity(math::vec2{ -Acceleration_x, Jump_Velocity });
+		}
+		else if (this->GetPosition().x >= objectB->GetPosition().x)
+		{
+			hero->SetPosition(math::vec2{ hero->GetPosition().x + (collideRect.Right() - heroRect.Left()),hero->GetPosition().y });
+			hero->SetVelocity(math::vec2{ Acceleration_x, Jump_Velocity });
+		}
+		hurtTimer = hurtTime;
+		break;
+	}
 }
 
 void Hero::UpdateXVelocity(double dt)

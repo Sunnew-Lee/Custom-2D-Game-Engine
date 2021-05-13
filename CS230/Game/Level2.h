@@ -12,6 +12,8 @@ Creation date: 03/08/2021
 #include "..\Engine\Input.h"				// InputKey
 #include "..\Engine\GameObjectManager.h"	// GameObjectManager
 
+class Ship;
+
 class Level2 : public CS230::GameState {
 public:
 	Level2();
@@ -22,10 +24,11 @@ public:
 
 	void Draw() override;
 private:
-	//int Score;
-	//CS230::Texture scoreTexture;
+	Ship* shipPtr;
 
 	CS230::InputKey mainMenu;
 	CS230::InputKey levelReload;
 	CS230::InputKey slowMotion;
+	CS230::Texture GameOverTexture;
+	CS230::Texture RestartTexture;
 };

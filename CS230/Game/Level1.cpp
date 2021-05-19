@@ -102,6 +102,7 @@ void Level1::Update(double dt) {
 }
 void Level1::Unload() {
 	ClearGSComponent();
+	heroPtr = nullptr;
 }
 
 void Level1::Draw()

@@ -49,7 +49,7 @@ void CS230::GameObjectManager::CollideTest()
 	{
 		for (GameObject* gameobjectB : gameObjects)
 		{
-			if (gameobjectA->CanCollideWith(gameobjectB->GetObjectType()) == true)
+			if (gameobjectA != gameobjectB && gameobjectA->CanCollideWith(gameobjectB->GetObjectType()) == true)
 			{
 				if (gameobjectA->DoesCollideWith(gameobjectB) == true)
 				{

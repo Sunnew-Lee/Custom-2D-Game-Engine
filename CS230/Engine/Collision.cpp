@@ -31,12 +31,14 @@ math::rect2 CS230::RectCollision::GetWorldCoorRect()
 
 bool CS230::RectCollision::DoesCollideWith(GameObject* testAgainstObject)
 {
-    math::rect2 test = testAgainstObject->GetGOComponent<RectCollision>()->GetWorldCoorRect();
-    if (GetWorldCoorRect().Left() < test.Right() && GetWorldCoorRect().Right() > test.Left() && GetWorldCoorRect().Bottom() < test.Top() && GetWorldCoorRect().Top() > test.Bottom())
+    if (testAgainstObject->GetGOComponent<Collision>() != nullptr && testAgainstObject->GetGOComponent<Collision>()->GetCollideType() == Collision::CollideType::Rect_Collide)
     {
-        return true;
+        math::rect2 test = testAgainstObject->GetGOComponent<RectCollision>()->GetWorldCoorRect();
+        if (GetWorldCoorRect().Left() < test.Right() && GetWorldCoorRect().Right() > test.Left() && GetWorldCoorRect().Bottom() < test.Top() && GetWorldCoorRect().Top() > test.Bottom())
+        {
+            return true;
+        }
     }
-
     return false;
 }
 
@@ -57,12 +59,15 @@ double CS230::CircleCollision::GetRadius()
 
 bool CS230::CircleCollision::DoesCollideWith(GameObject* testAgainstObject)
 {
-    math::vec2 objPos = objectPtr->GetPosition();
-    math::vec2 textPos = testAgainstObject->GetPosition();
-    double textRad = testAgainstObject->GetGOComponent<CircleCollision>()->GetRadius();
-    if ((objPos.x - textPos.x) * (objPos.x - textPos.x) + (objPos.y - textPos.y) * (objPos.y - textPos.y) < (GetRadius() + textRad) * (GetRadius() + textRad))
+    if (testAgainstObject->GetGOComponent<Collision>() != nullptr && testAgainstObject->GetGOComponent<Collision>()->GetCollideType() == Collision::CollideType::Circle_Collide)
     {
-        return true;
+        math::vec2 objPos = objectPtr->GetPosition();
+        math::vec2 textPos = testAgainstObject->GetPosition();
+        double textRad = testAgainstObject->GetGOComponent<CircleCollision>()->GetRadius();
+        if ((objPos.x - textPos.x) * (objPos.x - textPos.x) + (objPos.y - textPos.y) * (objPos.y - textPos.y) < (GetRadius() + textRad) * (GetRadius() + textRad))
+        {
+            return true;
+        }
     }
     return false;
 }

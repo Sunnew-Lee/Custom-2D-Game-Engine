@@ -81,12 +81,8 @@ std::string Hero::GetObjectTypeName()
 	return std::string("Hero");
 }
 
-bool Hero::CanCollideWith(GameObjectType objectBType)
+bool Hero::CanCollideWith(GameObjectType )
 {
-	if (this->GetObjectType() == objectBType)
-	{
-		return false;
-	}
 	return true;
 }
 

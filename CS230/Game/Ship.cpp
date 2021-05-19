@@ -22,6 +22,7 @@ Ship::Ship(math::vec2 startPos)
 {
 	AddGOComponent(new CS230::Sprite("assets/Ship.spt", this));
 	AddGOComponent(new ScreenWrap(*this));
+	GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Ship_Anim::None_Anim));
 }
 
 void Ship::Update(double dt)
@@ -90,19 +91,15 @@ std::string Ship::GetObjectTypeName()
 	return std::string("Ship");
 }
 
-bool Ship::CanCollideWith(GameObjectType objectBType)
+bool Ship::CanCollideWith(GameObjectType )
 {
-	if (this->GetObjectType() == objectBType)
-	{
-		return false;
-	}
 	return true;
 }
 
 void Ship::ResolveCollision(CS230::GameObject* )
 {
-	Ship* ship = static_cast<Ship*>(this);
-	ship->GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Ship_Anim::Explode_Anim));
+
+	GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Ship_Anim::Explode_Anim));
 	RemoveGOComponent<CS230::Collision>();
 	sprite_flame_1.PlayAnimation(static_cast<int>(Flame_Anim::None_Anim));
 	sprite_flame_2.PlayAnimation(static_cast<int>(Flame_Anim::None_Anim));

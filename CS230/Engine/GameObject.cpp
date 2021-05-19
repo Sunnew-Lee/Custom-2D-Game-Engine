@@ -27,7 +27,7 @@ bool CS230::GameObject::CanCollideWith(GameObjectType )
 
 bool CS230::GameObject::DoesCollideWith(GameObject* objectB)
 {
-    if (GetGOComponent<Collision>() == nullptr)
+    if (GetGOComponent<Collision>() == nullptr || objectB->GetGOComponent<Collision>() == nullptr)
     {
         return false;
     }

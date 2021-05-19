@@ -64,6 +64,7 @@ void Level2::Update(double dt) {
 }
 void Level2::Unload() {
 	ClearGSComponent();
+	shipPtr = nullptr;
 }
 
 void Level2::Draw()

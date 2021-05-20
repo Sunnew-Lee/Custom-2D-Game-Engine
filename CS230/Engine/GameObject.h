@@ -29,6 +29,7 @@ namespace CS230 {
 		virtual std::string GetObjectTypeName() = 0;
 		virtual bool CanCollideWith(GameObjectType objectBType);
 		bool DoesCollideWith(GameObject* objectB);
+		bool DoesCollideWith(math::vec2 point);
 		virtual void ResolveCollision(GameObject*);
 		
 		virtual void Update(double dt);
@@ -42,6 +43,8 @@ namespace CS230 {
 		void SetPosition(math::vec2 newPosition);
 		template<typename T>
 		T* GetGOComponent() { return components.GetComponent<T>(); }
+		bool Is_Using_Object();
+		void Set_Using_Object(bool set_object);
 
 	protected:
 		void UpdatePosition(math::vec2 adjustPosition);
@@ -77,6 +80,7 @@ namespace CS230 {
 	private:
 		math::TransformMatrix objectMatrix;
 		bool updateMatrix;
+		bool is_using_object;
 
 		double rotation;
 		math::vec2 scale;

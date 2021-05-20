@@ -29,6 +29,22 @@ void CS230::GameObjectManager::Add(GameObject* obj)
 
 void CS230::GameObjectManager::Update(double dt)
 {
+	std::list<GameObject*> to_remove;
+
+	for (GameObject* gameobject : gameObjects)
+	{
+		if (gameobject->Is_Using_Object() == false)
+		{
+			to_remove.push_back(gameobject);
+		}
+	}
+
+	for (GameObject* gameobject : to_remove)
+	{
+		gameObjects.remove(gameobject);
+		delete gameobject;
+	}
+
 	for (GameObject* gameobject : gameObjects)
 	{
 		gameobject->Update(dt);
@@ -49,7 +65,7 @@ void CS230::GameObjectManager::CollideTest()
 	{
 		for (GameObject* gameobjectB : gameObjects)
 		{
-			if (gameobjectA->CanCollideWith(gameobjectB->GetObjectType()) == true)
+			if (gameobjectA != gameobjectB && gameobjectA->CanCollideWith(gameobjectB->GetObjectType()) == true)
 			{
 				if (gameobjectA->DoesCollideWith(gameobjectB) == true)
 				{

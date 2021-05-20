@@ -136,6 +136,11 @@ bool CS230::Sprite::IsAnimationDone()
 	return animations[currAnim]->IsAnimationDone();
 }
 
+int CS230::Sprite::GetCurrentAnim()
+{
+	return currAnim;
+}
+
 math::ivec2 CS230::Sprite::GetHotSpot(int index)
 {
 	if (index > -1 && index < hotSpotList.size())

@@ -37,12 +37,12 @@ void Engine::Update()
 {
 	std::chrono::system_clock::time_point now = std::chrono::system_clock::now();
 	double dt = std::chrono::duration<double>(now - lastTick).count();
-//#ifdef _DEBUG
-//	if (dt > 2 / Engine::Target_FPS) {
-//		dt = 1 / Engine::Target_FPS;
-//		Engine::GetLogger().LogEvent("Long Frame detected!");
-//	}
-//#endif
+#ifdef _DEBUG
+	//if (dt > 2 / Engine::Target_FPS) {
+	//	dt = 1 / Engine::Target_FPS;
+	//	Engine::GetLogger().LogEvent("Long Frame detected!");
+	//}
+#endif
 	if (dt > (1 / Engine::Target_FPS))
 	{
 		logger.LogVerbose("Engine Update");

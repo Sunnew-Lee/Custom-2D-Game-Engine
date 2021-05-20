@@ -33,6 +33,7 @@ private:
     CS230::InputKey rotateCounterKey;
     CS230::InputKey rotateClockKey;
     CS230::InputKey accelerateKey;
+    CS230::InputKey shootLaserKey;
 
     static constexpr double accel = 400;
     static constexpr double drag = 1.0f;

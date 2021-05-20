@@ -21,6 +21,7 @@ public:
     std::string GetObjectTypeName() override;
     bool CanCollideWith(GameObjectType objectBType) override;
     void ResolveCollision(GameObject* objectB) override;
+    bool IsDead() { return isDead; }
 
 private:
     class State_Idle : public State {
@@ -70,6 +71,8 @@ private:
     static constexpr double hurtTime = 2;
     double hurtTimer;
     bool drawHero;
+    bool isDead;
+    GameObject* standingOnObject;
 
     State_Idle stateIdle;
     State_Running stateRunning;

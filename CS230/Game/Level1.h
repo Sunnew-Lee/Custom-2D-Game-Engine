@@ -25,10 +25,10 @@ public:
 	void Unload() override;
 	std::string GetName() override { return "Level 1"; }
 
-	static constexpr double floor = 126.0f;
 	void Draw() override;
 private:
 	int lives;
+	static constexpr double floor = 126.0f;
 	CS230::Texture livesTexture;
 
 	CS230::InputKey mainMenu;

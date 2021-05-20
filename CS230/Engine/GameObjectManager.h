@@ -8,7 +8,7 @@ Author: Kevin Wright
 Creation date: 2/14/2021
 -----------------------------------------------------------------*/
 #pragma once
-#include <vector>			// vector
+#include <list>			// list
 #include "Component.h"
 
 namespace math { class TransformMatrix; }
@@ -24,7 +24,8 @@ namespace CS230 {
 		void Update(double dt) override;
 		void DrawAll(math::TransformMatrix& cameraMatrix);
 		void CollideTest();
+		const std::list<GameObject*>& Objects() { return gameObjects; }
 	private:
-		std::vector<GameObject*> gameObjects;
+		std::list<GameObject*> gameObjects;
 	};
 }

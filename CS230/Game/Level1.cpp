@@ -21,8 +21,10 @@ Creation date: 03/08/2021
 #include "Score.h"							// Score
 #include "Timer.h"							// Timer
 #include "..\Engine\ShowCollision.h"		// ShowCollision
+#include "Floor.h"							// Floor
+#include "Exit.h"							// Exit
 
-Level1::Level1() : levelReload(CS230::InputKey::Keyboard::R), mainMenu(CS230::InputKey::Keyboard::Escape), slowMotion(CS230::InputKey::Keyboard::Space), 
+Level1::Level1() : levelReload(CS230::InputKey::Keyboard::R), mainMenu(CS230::InputKey::Keyboard::Escape), slowMotion(CS230::InputKey::Keyboard::Q),
 					heroPtr(nullptr), lives(3)
 {}
 
@@ -36,9 +38,6 @@ void Level1::Load() {
 	CS230::GameObjectManager* GOM = GetGSComponent<CS230::GameObjectManager>();
 	Background* BG = GetGSComponent<Background>();
 
-	heroPtr = new Hero({ 150, Level1::floor });
-	GOM->Add(heroPtr);
-
 	GOM->Add(new Ball({ 600, Level1::floor }));
 	GOM->Add(new Ball({ 2700, Level1::floor }));
 	GOM->Add(new Ball({ 4800, Level1::floor }));
@@ -51,6 +50,12 @@ void Level1::Load() {
 	GOM->Add(new TreeStump({ 2200, Level1::floor }, 1));
 	GOM->Add(new TreeStump({ 2800, Level1::floor }, 5));
 	GOM->Add(new TreeStump({ 5100, Level1::floor }, 5));
+	GOM->Add(new Floor({ {0, 0}, {1471, static_cast<int>(Level1::floor)} }));
+	GOM->Add(new Floor({ {1602, 0}, {4262, static_cast<int>(Level1::floor)} }));
+	GOM->Add(new Floor({ {4551, 0}, {5760, static_cast<int>(Level1::floor)} }));
+	GOM->Add(new Exit({ {5550, static_cast<int>(Level1::floor)}, {5760, 683} }));
+	heroPtr = new Hero({ 150, Level1::floor - 1 });
+	GOM->Add(heroPtr);
 
 	BG->Add("assets/clouds.png", 4);
 	BG->Add("assets/Moutains.png", 2);
@@ -73,7 +78,7 @@ void Level1::Update(double dt) {
 	GetGSComponent<ShowCollision>()->Update(dt);
 #endif
 	GetGSComponent<Timer>()->Update(dt);
-	if (GetGSComponent<Timer>()->hasEnded() == true)
+	if ((GetGSComponent<Timer>()->hasEnded() == true) || heroPtr->IsDead() == true)
 	{
 		lives--;
 		if (lives == 0)
@@ -102,6 +107,7 @@ void Level1::Update(double dt) {
 }
 void Level1::Unload() {
 	ClearGSComponent();
+	heroPtr = nullptr;
 }
 
 void Level1::Draw()

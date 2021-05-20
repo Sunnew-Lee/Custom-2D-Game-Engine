@@ -8,17 +8,19 @@ Author: sunwoo.lee
 Creation date: 03/15/2021
 -----------------------------------------------------------------*/
 #include "Ship.h"
-#include "..\Engine\Engine.h"			// GetWindow(), GetGSComponent()
-#include "Flame_Anims.h"				// Flame_Anim
-#include "ScreenWrap.h"					// ScreenWrap
-#include "..\Engine\Collision.h"		// CircleCollision
-#include "..\Engine\ShowCollision.h"	// ShowCollision
-#include "GameObjectTypes.h"			// GameObjectType::Ship
-#include "Ship_Anims.h"					// Ship_Anim::Explode_Anim
+#include "..\Engine\Engine.h"				// GetWindow(), GetGSComponent()
+#include "Flame_Anims.h"					// Flame_Anim
+#include "ScreenWrap.h"						// ScreenWrap
+#include "..\Engine\Collision.h"			// CircleCollision
+#include "..\Engine\ShowCollision.h"		// ShowCollision
+#include "GameObjectTypes.h"				// GameObjectType::Ship
+#include "Ship_Anims.h"						// Ship_Anim::Explode_Anim
+#include "Laser.h"							// Laser
+#include "..\Engine\GameObjectManager.h"	// CS230::GameObjectManager
 
 Ship::Ship(math::vec2 startPos)
 	:GameObject(startPos, 0, {0.75,0.75}), is_accelerating{ false }, sprite_flame_1("assets/flame.spt", this), sprite_flame_2("assets/flame.spt", this), isDead(false),
-	rotateCounterKey(CS230::InputKey::Keyboard::A), rotateClockKey(CS230::InputKey::Keyboard::D), accelerateKey(CS230::InputKey::Keyboard::W)
+	rotateCounterKey(CS230::InputKey::Keyboard::A), rotateClockKey(CS230::InputKey::Keyboard::D), accelerateKey(CS230::InputKey::Keyboard::W), shootLaserKey(CS230::InputKey::Keyboard::Space)
 {
 	AddGOComponent(new CS230::Sprite("assets/Ship.spt", this));
 	AddGOComponent(new ScreenWrap(*this));
@@ -28,6 +30,15 @@ void Ship::Update(double dt)
 {
 	if (IsDead() == false)
 	{
+		if (shootLaserKey.IsKeyReleased() == true)
+		{
+			Laser* laser1 = new Laser(this->GetMatrix() * this->GetGOComponent<CS230::Sprite>()->GetHotSpot(3), this->GetRotation(), this->GetScale(), math::RotateMatrix::RotateMatrix(this->GetRotation()) * Laser::LaserVelocity);
+			Laser* laser2 = new Laser(this->GetMatrix() * this->GetGOComponent<CS230::Sprite>()->GetHotSpot(4), this->GetRotation(), this->GetScale(), math::RotateMatrix::RotateMatrix(this->GetRotation()) * Laser::LaserVelocity);
+
+			Engine::GetGSComponent<CS230::GameObjectManager>()->Add(laser1);
+			Engine::GetGSComponent<CS230::GameObjectManager>()->Add(laser2);
+		}
+
 		if (rotateCounterKey.IsKeyDown() == true)
 		{
 			UpdateRotation(rotate_speed * dt);
@@ -90,12 +101,8 @@ std::string Ship::GetObjectTypeName()
 	return std::string("Ship");
 }
 
-bool Ship::CanCollideWith(GameObjectType objectBType)
+bool Ship::CanCollideWith(GameObjectType )
 {
-	if (this->GetObjectType() == objectBType)
-	{
-		return false;
-	}
 	return true;
 }
 

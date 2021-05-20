@@ -17,7 +17,7 @@ Creation date: 03/08/2021
 #include "..\Engine\ShowCollision.h"	// ShowCollision
 
 Level2::Level2() 
-	: shipPtr(nullptr), mainMenu(CS230::InputKey::Keyboard::Escape), levelReload(CS230::InputKey::Keyboard::R), slowMotion(CS230::InputKey::Keyboard::Space)
+	: shipPtr(nullptr), mainMenu(CS230::InputKey::Keyboard::Escape), levelReload(CS230::InputKey::Keyboard::R), slowMotion(CS230::InputKey::Keyboard::Q)
 {}
 
 void Level2::Load() {
@@ -64,6 +64,7 @@ void Level2::Update(double dt) {
 }
 void Level2::Unload() {
 	ClearGSComponent();
+	shipPtr = nullptr;
 }
 
 void Level2::Draw()

@@ -30,7 +30,7 @@ namespace CS230 {
         void PlayAnimation(int anim);
         void Update(double dt) override;
         bool IsAnimationDone();
-
+        int GetCurrentAnim();
 
         math::ivec2 GetHotSpot(int index);
         math::ivec2 GetFrameSize() const;

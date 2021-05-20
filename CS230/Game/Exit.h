@@ -2,26 +2,25 @@
 Copyright (C) 2021 DigiPen Institute of Technology.
 Reproduction or disclosure of this file or its contents without the prior
 written consent of DigiPen Institute of Technology is prohibited.
-File Name: Meteor.h
+File Name: Exit.h
 Project: CS230
 Author: Kevin Wright
-Creation date: 2/15/2021
+Creation date: 2/20/2021
 -----------------------------------------------------------------*/
-
 #pragma once
 
 #include "..\Engine\GameObject.h"
+#include "GameObjectTypes.h"        // GameObjectType::Trigger
 
-class Meteor : public CS230::GameObject {
+namespace math {
+    struct irect2;
+}
+
+class Exit : public CS230::GameObject {
 public:
-	Meteor();
-	Meteor(Meteor& original);
-	void Update(double dt) override;
-	GameObjectType GetObjectType() override;
-	std::string GetObjectTypeName() override;
-	void ResolveCollision(GameObject* objectB) override;
+    Exit(math::irect2 rect);
+    void ResolveCollision(GameObject* objectA) override;
+    std::string GetObjectTypeName() { return "Exit"; }
 private:
-	static constexpr double PI{ 3.1415926535 };
-	int health;
-	int size;
+    virtual GameObjectType GetObjectType() override { return GameObjectType::Trigger; }
 };

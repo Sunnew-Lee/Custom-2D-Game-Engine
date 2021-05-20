@@ -17,7 +17,7 @@ CS230::GameObject::GameObject(math::vec2 position) : GameObject(position, 0, { 1
 
 CS230::GameObject::GameObject(math::vec2 position, double rotation, math::vec2 scale)
     : velocity{ 0,0 }, position(position), updateMatrix(true),
-    scale(scale), rotation(rotation), currState(&state_nothing) {
+    scale(scale), rotation(rotation), currState(&state_nothing), is_using_object(true) {
 }
 
 bool CS230::GameObject::CanCollideWith(GameObjectType )
@@ -27,12 +27,22 @@ bool CS230::GameObject::CanCollideWith(GameObjectType )
 
 bool CS230::GameObject::DoesCollideWith(GameObject* objectB)
 {
-    if (GetGOComponent<Collision>() == nullptr)
+    if (GetGOComponent<Collision>() == nullptr || objectB->GetGOComponent<Collision>()==nullptr)
     {
         return false;
     }
 
     return GetGOComponent<Collision>()->DoesCollideWith(objectB);
+}
+
+bool CS230::GameObject::DoesCollideWith(math::vec2 point)
+{
+    if (GetGOComponent<Collision>() == nullptr)
+    {
+        return false;
+    }
+
+    return GetGOComponent<Collision>()->DoesCollideWith(point);
 }
 
 void CS230::GameObject::ResolveCollision(GameObject*)
@@ -95,6 +105,16 @@ double CS230::GameObject::GetRotation() const
 void CS230::GameObject::SetPosition(math::vec2 newPosition) {
     position = newPosition;
     updateMatrix = true;
+}
+
+bool CS230::GameObject::Is_Using_Object()
+{
+    return is_using_object;
+}
+
+void CS230::GameObject::Set_Using_Object(bool set_object)
+{
+    is_using_object = set_object;
 }
 
 void CS230::GameObject::UpdatePosition(math::vec2 adjustPosition) {

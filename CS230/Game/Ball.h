@@ -15,7 +15,8 @@ public:
     Ball(math::vec2 startPos);
     GameObjectType GetObjectType() override;
     std::string GetObjectTypeName() override;
-
+    bool CanCollideWith(GameObjectType objectBType) override;
+    void ResolveCollision(GameObject* objectB) override;
 private:
     class State_Bounce : public State {
     public:

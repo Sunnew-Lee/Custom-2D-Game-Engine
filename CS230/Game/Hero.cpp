@@ -128,18 +128,19 @@ void Hero::ResolveCollision(GameObject* objectB)
 		break;
 	case GameObjectType::Bunny:
 
-		if (this->currState == &stateFalling)
+		if (this->currState == &stateFalling && this->GetPosition().y >= objectB->GetPosition().y)
 		{
 			this->SetPosition(math::vec2{ this->GetPosition().x , this->GetPosition().y + (collideRect.Top() - heroRect.Bottom()) });
 			this->SetVelocity(math::vec2{ this->GetVelocity().x,this->Jump_Velocity / 2 });
 			objectB->ResolveCollision(this);
 		}
-		else if (this->currState == &stateSkidding && objectB->DoesCollideWith(this))
-		{
-			objectB->ResolveCollision(this);
-		}
 		else if (this->GetPosition().x <= objectB->GetPosition().x)
 		{
+			if (this->currState == &stateSkidding && objectB->DoesCollideWith(this))
+			{
+				objectB->ResolveCollision(this);
+				break;
+			}
 			this->ChangeState(&this->stateJumping);
 			this->SetPosition(math::vec2{ this->GetPosition().x + (collideRect.Left() - heroRect.Right()), this->GetPosition().y });
 			this->SetVelocity(math::vec2{ -Acceleration_x, Jump_Velocity });
@@ -147,6 +148,11 @@ void Hero::ResolveCollision(GameObject* objectB)
 		}
 		else if (this->GetPosition().x >= objectB->GetPosition().x)
 		{
+			if (this->currState == &stateSkidding && objectB->DoesCollideWith(this))
+			{
+				objectB->ResolveCollision(this);
+				break;
+			}
 			this->ChangeState(&this->stateJumping);
 			this->SetPosition(math::vec2{ this->GetPosition().x + (collideRect.Right() - heroRect.Left()),this->GetPosition().y });
 			this->SetVelocity(math::vec2{ Acceleration_x, Jump_Velocity });
@@ -156,7 +162,7 @@ void Hero::ResolveCollision(GameObject* objectB)
 	case GameObjectType::Floor:
 		[[fallthrough]];
 	case GameObjectType::TreeStump:
-		if (this->currState == &stateFalling && objectB->DoesCollideWith(this->GetPosition()))
+		if (this->currState == &stateFalling && objectB->DoesCollideWith(this->GetPosition())&&this->GetPosition().y >= objectB->GetPosition().y)
 		{
 			this->SetPosition(math::vec2{ this->GetPosition().x,objectB->GetGOComponent<CS230::RectCollision>()->GetWorldCoorRect().Top() });
 			this->standingOnObject = objectB;

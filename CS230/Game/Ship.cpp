@@ -65,7 +65,7 @@ void Ship::Update(double dt)
 		}
 	}
 
-	UpdateVelocity(-(GetVelocity() * Ship::drag * dt));
+	UpdateVelocity(-(GetVelocity() * this->drag * dt));
 	UpdatePosition(GetVelocity() * dt);
 
 	sprite_flame_1.Update(dt);
@@ -101,8 +101,12 @@ std::string Ship::GetObjectTypeName()
 	return std::string("Ship");
 }
 
-bool Ship::CanCollideWith(GameObjectType )
+bool Ship::CanCollideWith(GameObjectType objectBType)
 {
+	if (objectBType == GameObjectType::Particle)
+	{
+		return false;
+	}
 	return true;
 }
 

@@ -94,13 +94,16 @@ namespace math
 		return x * x + y * y;
 	}
 
-	inline vec2& vec2::Normalize() noexcept
+	inline vec2 vec2::Normalize() const noexcept
 	{
 		const double len = sqrt(x * x + y * y);
-		*this = *this / len;
-		return *this;
+		return *this / len;
 	}
 
+	constexpr double vec2::Cross(const vec2& v) const noexcept
+	{
+		return this->x * v.y - v.x * this->y;
+	}
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	constexpr ivec2 operator+(const ivec2 left, const ivec2 right) noexcept

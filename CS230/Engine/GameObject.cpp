@@ -13,6 +13,8 @@ Creation date: 04/18/2021
 #include "Collision.h"          // RectCollision, CircleCollision
 #include "Engine.h"             // GetGSComponent()
 
+CS230::GameObject::GameObject() :GameObject({ 0 }, 0, { 1 }) {}//?
+
 CS230::GameObject::GameObject(math::vec2 position) : GameObject(position, 0, { 1, 1 }) {}
 
 CS230::GameObject::GameObject(math::vec2 position, double rotation, math::vec2 scale)

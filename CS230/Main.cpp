@@ -21,7 +21,7 @@ int main(void) {
 	try {
 		Engine& engine = Engine::Instance();
 
-		engine.Init("Week 11");
+		engine.Init("Week 12");
 
 		Splash splash;
 		MainMenu mainmenu;

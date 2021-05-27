@@ -38,7 +38,8 @@ namespace math
         constexpr vec2& operator/=(const double scale) noexcept;
 
         [[nodiscard]] constexpr double LengthSquared() noexcept;
-        inline vec2& Normalize() noexcept;
+        vec2 Normalize() const noexcept;
+        constexpr double Cross(const vec2& v) const noexcept;
 
     };
 

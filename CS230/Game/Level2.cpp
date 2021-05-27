@@ -15,6 +15,8 @@ Creation date: 03/08/2021
 #include "Screens.h"					// Screens::MainMenu
 #include "Score.h"						// Score
 #include "..\Engine\ShowCollision.h"	// ShowCollision
+#include "GameParticles.h"				// HitEmitter, MeteorBitEmitter
+#include "EnemyShip.h"					// EnemyShip
 
 Level2::Level2() 
 	: shipPtr(nullptr), mainMenu(CS230::InputKey::Keyboard::Escape), levelReload(CS230::InputKey::Keyboard::R), slowMotion(CS230::InputKey::Keyboard::Q)
@@ -34,6 +36,9 @@ void Level2::Load() {
 	GOM->Add(new Meteor());
 	shipPtr = new Ship({ Engine::GetWindow().GetSize() / 2.0 });
 	GOM->Add(shipPtr);
+	GOM->Add(new EnemyShip(shipPtr));
+	AddGSComponent(new HitEmitter());
+	AddGSComponent(new MeteorBitEmitter());
 	
 	GameOverTexture=Engine::GetSpriteFont(static_cast<int>(Fonts::Font2)).DrawTextToTexture("Game Over", 0xFFFFFFFF, false);
 	RestartTexture = Engine::GetSpriteFont(static_cast<int>(Fonts::Font2)).DrawTextToTexture("Press r to restart", 0xFFFFFFFF, false);

@@ -23,6 +23,7 @@ Creation date: 03/08/2021
 #include "..\Engine\ShowCollision.h"		// ShowCollision
 #include "Floor.h"							// Floor
 #include "Exit.h"							// Exit
+#include "GameParticles.h"					// SmokeEmitter
 
 Level1::Level1() : levelReload(CS230::InputKey::Keyboard::R), mainMenu(CS230::InputKey::Keyboard::Escape), slowMotion(CS230::InputKey::Keyboard::Q),
 					heroPtr(nullptr), lives(3)
@@ -41,10 +42,6 @@ void Level1::Load() {
 	GOM->Add(new Ball({ 600, Level1::floor }));
 	GOM->Add(new Ball({ 2700, Level1::floor }));
 	GOM->Add(new Ball({ 4800, Level1::floor }));
-	GOM->Add(new Bunny({ 1000, Level1::floor }));
-	GOM->Add(new Bunny({ 2000, Level1::floor }));
-	GOM->Add(new Bunny({ 3200, Level1::floor }));
-	GOM->Add(new Bunny({ 3800, Level1::floor }));
 	GOM->Add(new TreeStump({ 300, Level1::floor }, 3));
 	GOM->Add(new TreeStump({ 1200, Level1::floor }, 2));
 	GOM->Add(new TreeStump({ 2200, Level1::floor }, 1));
@@ -56,6 +53,12 @@ void Level1::Load() {
 	GOM->Add(new Exit({ {5550, static_cast<int>(Level1::floor)}, {5760, 683} }));
 	heroPtr = new Hero({ 150, Level1::floor - 1 });
 	GOM->Add(heroPtr);
+	GOM->Add(new Bunny({ 1000, floor }, { 674, 1132 }, heroPtr));
+	GOM->Add(new Bunny({ 2000, floor }, { 1635, 2135 }, heroPtr));
+	GOM->Add(new Bunny({ 3200, floor }, { 2860, 4250 }, heroPtr));
+	GOM->Add(new Bunny({ 3800, floor }, { 2860, 4250 }, heroPtr));
+	AddGSComponent(new SmokeEmitter());
+
 
 	BG->Add("assets/clouds.png", 4);
 	BG->Add("assets/Moutains.png", 2);

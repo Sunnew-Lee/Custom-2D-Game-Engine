@@ -18,6 +18,7 @@ Creation date: 03/15/2021
 #include "GameObjectTypes.h"				// GameObjectType::Hero
 #include "..\Engine\Collision.h"			// RectCollision
 #include "..\Engine\GameObjectManager.h"	// CS230::GameObjectManager
+#include "GameParticles.h"					// SmokeEmitter
 
 Hero::Hero(math::vec2 startPos)
 	:GameObject(startPos), hurtTimer(0), drawHero(true), isDead(false), standingOnObject(nullptr),
@@ -91,8 +92,12 @@ std::string Hero::GetObjectTypeName()
 	return std::string("Hero");
 }
 
-bool Hero::CanCollideWith(GameObjectType )
+bool Hero::CanCollideWith(GameObjectType objectBType)
 {
+	if (objectBType == GameObjectType::Particle)
+	{
+		return false;
+	}
 	return true;
 }
 
@@ -128,18 +133,23 @@ void Hero::ResolveCollision(GameObject* objectB)
 		break;
 	case GameObjectType::Bunny:
 
-		if (this->currState == &stateFalling)
+		if (this->currState == &stateFalling && this->GetPosition().y >= objectB->GetPosition().y)
 		{
+			math::vec2 particle_pos{ 0, (collideRect.Top() - heroRect.Bottom()) / 2 };
+			Engine::GetGSComponent<SmokeEmitter>()->Emit(1, GetPosition() + particle_pos, { 0 }, { 0 }, 0);
 			this->SetPosition(math::vec2{ this->GetPosition().x , this->GetPosition().y + (collideRect.Top() - heroRect.Bottom()) });
 			this->SetVelocity(math::vec2{ this->GetVelocity().x,this->Jump_Velocity / 2 });
 			objectB->ResolveCollision(this);
 		}
-		else if (this->currState == &stateSkidding && objectB->DoesCollideWith(this))
-		{
-			objectB->ResolveCollision(this);
-		}
 		else if (this->GetPosition().x <= objectB->GetPosition().x)
 		{
+			if (this->currState == &stateSkidding && objectB->DoesCollideWith(this))
+			{
+				math::vec2 particle_pos{ (collideRect.Left() - heroRect.Right()) / 2,0 };
+				Engine::GetGSComponent<SmokeEmitter>()->Emit(1, this->GetPosition() + particle_pos, { 0 }, { 0 }, 0);
+				objectB->ResolveCollision(this);
+				break;
+			}
 			this->ChangeState(&this->stateJumping);
 			this->SetPosition(math::vec2{ this->GetPosition().x + (collideRect.Left() - heroRect.Right()), this->GetPosition().y });
 			this->SetVelocity(math::vec2{ -Acceleration_x, Jump_Velocity });
@@ -147,6 +157,13 @@ void Hero::ResolveCollision(GameObject* objectB)
 		}
 		else if (this->GetPosition().x >= objectB->GetPosition().x)
 		{
+			if (this->currState == &stateSkidding && objectB->DoesCollideWith(this))
+			{
+				math::vec2 particle_pos{ (heroRect.Left() - collideRect.Right()) / 2, 0 };
+				Engine::GetGSComponent<SmokeEmitter>()->Emit(1, this->GetPosition() + particle_pos, { 0 }, { 0 }, 0);
+				objectB->ResolveCollision(this);
+				break;
+			}
 			this->ChangeState(&this->stateJumping);
 			this->SetPosition(math::vec2{ this->GetPosition().x + (collideRect.Right() - heroRect.Left()),this->GetPosition().y });
 			this->SetVelocity(math::vec2{ Acceleration_x, Jump_Velocity });
@@ -156,9 +173,13 @@ void Hero::ResolveCollision(GameObject* objectB)
 	case GameObjectType::Floor:
 		[[fallthrough]];
 	case GameObjectType::TreeStump:
-		if (this->currState == &stateFalling && objectB->DoesCollideWith(this->GetPosition()))
+		if (this->currState == &stateFalling && objectB->DoesCollideWith(this->GetPosition()) && this->GetPosition().y >= objectB->GetPosition().y)
 		{
 			this->SetPosition(math::vec2{ this->GetPosition().x,objectB->GetGOComponent<CS230::RectCollision>()->GetWorldCoorRect().Top() });
+			if (-this->GetVelocity().y > this->Jump_Velocity)
+			{
+				Engine::GetGSComponent<SmokeEmitter>()->Emit(1, this->GetPosition(), { 0 }, { 0 }, 0);
+			}
 			this->standingOnObject = objectB;
 			currState->TestForExit(this);
 		}

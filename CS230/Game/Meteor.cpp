@@ -16,6 +16,7 @@ Creation date: 4/18/2021
 #include "Meteor_Anims.h"					// Meteor_Anim::Fade_Anim
 #include "..\Engine\Collision.h"			// CS230::Collision
 #include "Score.h"							// Score
+#include "GameParticles.h"					// HitEmitter, MeteorBitEmitter
 
 Meteor::Meteor() : GameObject({ 0, 0 }), health(100), size(1)
 {
@@ -80,7 +81,14 @@ void Meteor::ResolveCollision(GameObject* objectB)
 {
 	if (objectB->GetObjectType() == GameObjectType::Laser)
 	{
+
 		this->health -= 10;
+		math::vec2 vecToObject{ objectB->GetPosition() - this->GetPosition() };
+		vecToObject = vecToObject.Normalize();
+		math::vec2 collision_pos{ vecToObject * this->GetGOComponent<CS230::CircleCollision>()->GetRadius() };
+		math::vec2 emit_vec{ (vecToObject * 2 + objectB->GetVelocity().Normalize()) };
+		Engine::GetGSComponent<HitEmitter>()->Emit(1, collision_pos + this->GetPosition(), this->GetVelocity(), { 0 }, 0);
+		Engine::GetGSComponent<MeteorBitEmitter>()->Emit(10, collision_pos + this->GetPosition(), this->GetVelocity(), emit_vec * 50, PI / 2);
 
 		if (this->health <= 0)
 		{

@@ -10,5 +10,7 @@ enum class GameObjectType {
     Floor,
     Trigger,
     Laser,
+    Particle,
+    EnemyShip,
     Count,
 };

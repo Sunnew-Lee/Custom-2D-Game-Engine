@@ -2,16 +2,16 @@
 Copyright (C) 2021 DigiPen Institute of Technology.
 Reproduction or disclosure of this file or its contents without the prior
 written consent of DigiPen Institute of Technology is prohibited.
-File Name: SpriteFont.h
+File Name: SpriteFont.cpp
 Project: CS230
 Author: Kevin Wright
 Creation date: 2/15/2021
 -----------------------------------------------------------------*/
 #pragma once
-#include <string>		// string
-#include "Texture.h"	// Texture
-#include "Vec2.h"		// math::ivec2
-#include "Rect.h"		// math::irvec2
+#include <string>
+#include "Texture.h"
+#include "Vec2.h"
+#include "Rect.h"
 
 namespace CS230 {
 	class SpriteFont {

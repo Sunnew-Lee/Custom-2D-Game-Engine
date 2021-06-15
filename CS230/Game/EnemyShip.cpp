@@ -2,107 +2,94 @@
 Copyright (C) 2021 DigiPen Institute of Technology.
 Reproduction or disclosure of this file or its contents without the prior
 written consent of DigiPen Institute of Technology is prohibited.
-File Name: EnemyShip.cpp
+File Name: Enemy.cpp
 Project: CS230
-Author: sunwoo.lee
-Creation date: 05/26/2021
+Author: Kevin Wright
+Creation date: 3/1/2021
 -----------------------------------------------------------------*/
+#include "..\Engine\Engine.h"	//Logger, Window
+#include "..\Engine\GameObject.h"		//GetCollision
+#include "..\Engine\Collision.h"		
+#include "..\Engine\ShowCollision.h"
+#include "ScreenWrap.h"
 #include "EnemyShip.h"
-#include "GameObjectTypes.h"			// GameObjectType::EnemyShip
-#include "..\Engine\Collision.h"		// Collision
-#include "..\Engine\Sprite.h"			// Spite
-#include "..\Engine\Engine.h"			// GetGSComponent
-#include "Ship_Anims.h"					// Ship_Anim::None_Anim
-#include "Flame_Anims.h"				// Flame_Anim::Flame_Anim
-#include "..\Engine\ShowCollision.h"	// ShowCollision
-#include "Score.h"						// Score
+#include "Score.h"
+#include "Flame_Anims.h"
+#include "Ship_Anims.h"
+#include "GameObjectTypes.h"
 
-EnemyShip::EnemyShip(GameObject* player): GameObject(), player(player), flameLeft("assets/flame.spt", this), flameRight("assets/flame.spt", this),isDead(false)
-{
-	static constexpr double PI{ 3.1415926535 };
+constexpr double PI = 3.1415926535897932384626433832795;
 
-	double rotate{ (rand() % (1024 + 1) / 512.0) * PI };
-	this->SetRotation(rotate);
-	this->SetPosition(player->GetPosition() + math::RotateMatrix(rotate) * math::vec2{ 0,(rand() % (1024 + 1) - 2048.0) });
+EnemyShip::EnemyShip(GameObject* player) : player(player), isDead(false),
+							flameLeft("assets/flame.spt", this), flameRight("assets/flame.spt", this) {
+	SetRotation((rand() % 1024 / 1024.0) * 2 * PI);
+	SetPosition(math::RotateMatrix(GetRotation()) * math::vec2{ 0, -(rand() % 1024 + 1024.0) } + player->GetPosition());
 	AddGOComponent(new CS230::Sprite("assets/EnemyShip.spt", this));
-	this->GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Ship_Anim::None_Anim));
+	GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Ship_Anim::None_Anim));
 	flameLeft.PlayAnimation(static_cast<int>(Flame_Anim::Flame_Anim));
 	flameRight.PlayAnimation(static_cast<int>(Flame_Anim::Flame_Anim));
 }
 
-void EnemyShip::Update(double dt)
-{
-	math::vec2 vecToObject{ this->GetPosition() - player->GetPosition() };
-	vecToObject = vecToObject.Normalize();
-	math::vec2 enemyship = math::RotateMatrix::RotateMatrix(GetRotation()) * math::vec2{0,1};
-
-	if(vecToObject.Cross(enemyship) > 0.05)
-	{
-		UpdateRotation(rotationRate * dt);
-	}
-	else if(vecToObject.Cross(enemyship) < -0.05)
-	{
-		UpdateRotation(-rotationRate * dt);
-	}
-	
-	UpdateVelocity(math::RotateMatrix::RotateMatrix(GetRotation()) * math::vec2(0, accel * dt));
-
-	UpdateVelocity(-(GetVelocity() * this->drag * dt));
-	UpdatePosition(GetVelocity() * dt);
-
+void EnemyShip::Update(double dt) {
 	flameLeft.Update(dt);
 	flameRight.Update(dt);
+	if (IsDead() == false) {
+		math::vec2 facingDir = math::RotateMatrix(GetRotation()) * math::vec2 { 0, 1 };
+		math::vec2 diffVector = (player->GetPosition() - GetPosition()).Normalize();
+
+		double cross = facingDir.Cross(diffVector);
+		Engine::GetLogger().LogDebug("Cross result = " + std::to_string(cross));
+		if (cross <= -0.05) {
+			UpdateRotation(-EnemyShip::rotationRate * dt);
+		}
+		if (cross >= 0.05) {
+			UpdateRotation(EnemyShip::rotationRate * dt);
+		}
+		SetVelocity(GetVelocity() + math::RotateMatrix(GetRotation()) * math::vec2{ 0, accel * dt });
+	}
+	SetVelocity(GetVelocity() - GetVelocity() * EnemyShip::drag * dt);
+	UpdatePosition(GetVelocity() * dt);
+
 	UpdateGOComponents(dt);
 }
 
-void EnemyShip::Draw(math::TransformMatrix displayMatrix)
-{
-	this->flameLeft.Draw(displayMatrix * GetMatrix() * math::TranslateMatrix::TranslateMatrix(GetGOComponent<CS230::Sprite>()->GetHotSpot(1)));
-	this->flameRight.Draw(displayMatrix * GetMatrix() * math::TranslateMatrix::TranslateMatrix(GetGOComponent<CS230::Sprite>()->GetHotSpot(2)));
-	this->GetGOComponent<CS230::Sprite>()->Draw(displayMatrix * GetMatrix());
+void EnemyShip::Draw(math::TransformMatrix cameraMatrix) {
+	math::TransformMatrix shipScreenMatrix = cameraMatrix * GetMatrix();
+	flameRight.Draw(shipScreenMatrix * math::TranslateMatrix(GetGOComponent<CS230::Sprite>()->GetHotSpot(1)));
+	flameLeft.Draw(shipScreenMatrix * math::TranslateMatrix(GetGOComponent<CS230::Sprite>()->GetHotSpot(2)));
+	GetGOComponent<CS230::Sprite>()->Draw(shipScreenMatrix);
 
-	if (Engine::GetGSComponent<ShowCollision>() != nullptr)
-	{
-		if (Engine::GetGSComponent<ShowCollision>()->IsEnabled() == true)
-		{
-			if (GetGOComponent<CS230::Collision>() != nullptr)
-			{
-				GetGOComponent<CS230::Collision>()->Draw(displayMatrix);
-			}
+	ShowCollision* showCollisionPtr = Engine::GetGSComponent<ShowCollision>();
+	if (showCollisionPtr != nullptr && showCollisionPtr->IsEnabled() == true) {
+		CS230::Collision* collisionPtr = GetGOComponent<CS230::Collision>();
+		if (collisionPtr != nullptr) {
+			collisionPtr->Draw(cameraMatrix);
 		}
 	}
 }
 
-
-GameObjectType EnemyShip::GetObjectType()
-{
+GameObjectType EnemyShip::GetObjectType() {
 	return GameObjectType::EnemyShip;
 }
 
-std::string EnemyShip::GetObjectTypeName()
-{
-	return std::string("EnemyShip");
+std::string EnemyShip::GetObjectTypeName() {
+	return "Enemy";
 }
 
-bool EnemyShip::CanCollideWith(GameObjectType collideAgainstType)
-{
-	if (collideAgainstType == GameObjectType::Laser || collideAgainstType == GameObjectType::Ship)
-	{
-		return true;
-	}
-
+bool EnemyShip::CanCollideWith(GameObjectType) {
 	return false;
 }
 
-void EnemyShip::ResolveCollision(GameObject* collidedWith)
-{
-	if (collidedWith->GetObjectType() == GameObjectType::Laser)
-	{
-		this->RemoveGOComponent<CS230::Collision>();
-		this->GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Ship_Anim::Explode_Anim));
-		flameLeft.PlayAnimation(static_cast<int>(Flame_Anim::None_Anim));
-		flameRight.PlayAnimation(static_cast<int>(Flame_Anim::None_Anim));
+void EnemyShip::ResolveCollision(GameObject* collidedWith) {
+	switch (collidedWith->GetObjectType()) {
+	case GameObjectType::Laser:
 		Engine::GetGSComponent<Score>()->AddScore(300);
-		collidedWith->Set_Using_Object(false);
+		GetGOComponent<CS230::Sprite>()->PlayAnimation(static_cast<int>(Ship_Anim::Explode_Anim));
+		flameRight.PlayAnimation(static_cast<int>(Flame_Anim::None_Anim));
+		flameLeft.PlayAnimation(static_cast<int>(Flame_Anim::None_Anim));
+		isDead = true;
+		collidedWith->Destroy();
+		RemoveGOComponent<CS230::Collision>();
+		break;
 	}
 }

@@ -4,71 +4,49 @@ Reproduction or disclosure of this file or its contents without the prior
 written consent of DigiPen Institute of Technology is prohibited.
 File Name: Camera.cpp
 Project: CS230
-Author: sunwoo.lee
-Creation date: 03/26/2021
+Author: Kevin Wright
+Creation date: 2/11/2021
 -----------------------------------------------------------------*/
+#include "Engine.h"
+#include "TransformMatrix.h"
 #include "Camera.h"
-#include "TransformMatrix.h"	// math::TransformMatrix, math::TranslateMatrix
 
-CS230::Camera::Camera(math::rect2 movableRange) : extent(math::irect2{ math::ivec2(0) }), position(math::vec2(0)), movableRange(movableRange)
-{}//카메라 익스텐트 고치기!extent is the area in which the camera can move.  The camera should not go beyond this range (it's minimum and maximum values)
+CS230::Camera::Camera(math::rect2 movableRange) : movableRange(movableRange), position({ 0,0 }) {}
 
-void CS230::Camera::SetPosition(math::vec2 newPosition)
-{
+void CS230::Camera::SetPosition(math::vec2 newPosition) {
 	position = newPosition;
 }
 
-const math::vec2& CS230::Camera::GetPosition() const
-{
+const math::vec2 &CS230::Camera::GetPosition() const {
 	return position;
 }
 
-void CS230::Camera::SetExtent(math::irect2 newExtent)
-{
+void CS230::Camera::SetExtent(math::irect2 newExtent) {
 	extent = newExtent;
 }
 
-void CS230::Camera::Update(const math::vec2& followObjPos)
-{
-	if (followObjPos.x-position.x < movableRange.Left())
-	{
-		position.x = followObjPos.x - movableRange.Left();
-	}
-	else if (followObjPos.x - position.x > movableRange.Right())
-	{
+void CS230::Camera::Update(const math::vec2& followObjPos) {
+	if (followObjPos.x > movableRange.Right() + position.x) {
 		position.x = followObjPos.x - movableRange.Right();
 	}
-
-	if (followObjPos.y - position.y < movableRange.Bottom())
-	{
-		position.y = followObjPos.y - movableRange.Bottom();
-	}
-	else if (followObjPos.y - position.y > movableRange.Top())
-	{
-		position.y = followObjPos.y - movableRange.Top();
+	if (followObjPos.x - position.x < movableRange.Left()) {
+		position.x = followObjPos.x - movableRange.Left();
 	}
 
-
-	if (position.x < extent.Left())
-	{
+	if (position.x < extent.Left()) {
 		position.x = extent.Left();
 	}
-	else if (position.x > extent.Right())
-	{
+	if (position.x > extent.Right()) {
 		position.x = extent.Right();
 	}
-
-	if (position.y < extent.Bottom())
-	{
+	if (position.y < extent.Bottom()) {
 		position.y = extent.Bottom();
 	}
-	else if (position.y > extent.Top())
-	{
+	if (position.y > extent.Top()) {
 		position.y = extent.Top();
 	}
 }
 
-math::TransformMatrix CS230::Camera::GetMatrix()
-{
-	return math::TranslateMatrix::TranslateMatrix(-position);
+math::TransformMatrix CS230::Camera::GetMatrix() {
+	return math::TranslateMatrix(-position);
 }

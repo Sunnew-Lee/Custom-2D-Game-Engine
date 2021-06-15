@@ -1,9 +1,7 @@
 assets/Ball.png
+HotSpot 43 0
+FrameSize 87 88
+NumFrames 3
 Anim assets/none.anm
 Anim assets/ballSquish.anm
-FrameSize 87 88
-HotSpot 44 0
-Frame 0 0
-Frame 87 0
-Frame 174 0
-CollisionRect -35 0 36 76
+CollisionRect -35 0 35 74 

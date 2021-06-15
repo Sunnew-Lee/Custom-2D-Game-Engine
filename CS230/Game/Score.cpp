@@ -4,29 +4,29 @@ Reproduction or disclosure of this file or its contents without the prior
 written consent of DigiPen Institute of Technology is prohibited.
 File Name: Score.cpp
 Project: CS230
-Author: sunwoo.lee
-Creation date: 5/03/2021
+Author: Kevin Wright
+Creation date: 2/17/2021
 -----------------------------------------------------------------*/
+#include "../Engine/Engine.h"		//DrawTextToTexture
+#include "../Engine/TransformMatrix.h"
+#include "../Engine/Vec2.h"
 #include "Score.h"
-#include "..\Engine\Engine.h"	// GetSpriteFont()
+#include "Fonts.h"
 
-Score::Score(int startingScore, Fonts fontToUse): score(startingScore),fontToUse(fontToUse)
-{}
-
-void Score::AddScore(int newPoints)
-{
-	score += newPoints;
-}
-
-void Score::Draw(math::ivec2 location)
-{
+Score::Score(int startingScore, Fonts fontToUse) : fontToUse(fontToUse), score(startingScore) {
 	RenderText();
-	location.y -= scoreTexture.GetSize().y + 5;
-	scoreTexture.Draw(math::TranslateMatrix(location));
 }
 
-void Score::RenderText()
-{
+void Score::AddScore(int newPoints) { 
+	score += newPoints;
+	RenderText();
+}
+
+void Score::Draw(math::ivec2 location) {
+	scoreTexture.Draw(math::TranslateMatrix(location - math::ivec2{0, scoreTexture.GetSize().y}));
+}
+
+void Score::RenderText() {
 	std::string scoreString = "Score: " + std::to_string(score / 100) + std::to_string((score % 100) / 10) + std::to_string(score % 10);
 	scoreTexture = Engine::GetSpriteFont(static_cast<int>(fontToUse)).DrawTextToTexture(scoreString, 0xFFFFFFFF, true);
 }

@@ -4,102 +4,79 @@ Reproduction or disclosure of this file or its contents without the prior
 written consent of DigiPen Institute of Technology is prohibited.
 File Name: GameStateManager.cpp
 Project: CS230
-Author: sunwoo.lee
-Creation date: 03/07/2021
+Author: Kevin Wright
+Creation date: 2/10/2021
 -----------------------------------------------------------------*/
+#include "Engine.h"			//logger
 #include "GameStateManager.h"
-#include "GameState.h"			// GetName(), Load(), Update(), Unload()
-#include "Engine.h"				// GetLogger(), GetTextureManager()
-#include "GameObjectManager.h"	// GameObjectManager
+#include "GameState.h"
+#include "GameObjectManager.h"
 
-CS230::GameStateManager::GameStateManager()
-{
-	GameStateManager::currGameState = nullptr;
-	GameStateManager::nextGameState = nullptr;
-	GameStateManager::state = State::START;
+CS230::GameStateManager::GameStateManager() : currGameState(nullptr), nextGameState(nullptr), state(State::START) {}
+
+void CS230::GameStateManager::AddGameState(GameState& gameState) {
+	gameStates.push_back(&gameState);
 }
-void CS230::GameStateManager::AddGameState(GameState& gameState)
-{
-	GameStateManager::gameStates.push_back(&gameState);
-}
-void CS230::GameStateManager::SetNextState(int initState)
-{
-	GameStateManager::nextGameState = GameStateManager::gameStates[initState];
-}
-void CS230::GameStateManager::Shutdown()
-{
-	GameStateManager::nextGameState = nullptr;
-}
-void CS230::GameStateManager::ReloadState()
-{
-	GameStateManager::state = State::UNLOAD;
-}
-void CS230::GameStateManager::Update(double dt)
-{
-	switch (GameStateManager::state)
-	{
+
+void CS230::GameStateManager::Update(double dt) {
+	switch (state) {
 	case State::START:
-		if (GameStateManager::gameStates.empty() == true)
-		{
-			Engine::GetLogger().LogError("No States!");
-			GameStateManager::state = State::SHUTDOWN;
-		}
-		else
-		{
-			GameStateManager::nextGameState = GameStateManager::gameStates[0];
-			GameStateManager::state = State::LOAD;
+		if (gameStates.size() == 0) {
+			Engine::GetLogger().LogError("No States have been loaded");
+			state = State::SHUTDOWN;
+		} else {
+			nextGameState = gameStates[0];
+			state = State::LOAD;
 		}
 		break;
-
 	case State::LOAD:
-		GameStateManager::currGameState = GameStateManager::nextGameState;
+		currGameState = nextGameState;
 		Engine::GetLogger().LogEvent("Load " + currGameState->GetName());
-		GameStateManager::currGameState->Load();
+		currGameState->Load();
 		Engine::GetLogger().LogEvent("Load Complete");
-		GameStateManager::state = State::UPDATE;
+		state = State::UPDATE;
 		break;
-
 	case State::UPDATE:
-		if (GameStateManager::currGameState != GameStateManager::nextGameState)
-		{
-			GameStateManager::state = State::UNLOAD;
-		}
-		else
-		{
+		if (currGameState != nextGameState) {
+			state = State::UNLOAD;
+		} else {
 			Engine::GetLogger().LogVerbose("Update " + currGameState->GetName());
-			GameStateManager::currGameState->Update(dt);
-			if (currGameState->GetGSComponent<GameObjectManager>() != nullptr)
-			{
-				currGameState->GetGSComponent<GameObjectManager>()->CollideTest();
+			currGameState->Update(dt);
+			if (GetGSComponent<CS230::GameObjectManager>() != nullptr) {
+				GetGSComponent<CS230::GameObjectManager>()->CollideTest();
 			}
-			GameStateManager::currGameState->Draw();
+			currGameState->Draw();
 		}
 		break;
-
 	case State::UNLOAD:
 		Engine::GetLogger().LogEvent("Unload " + currGameState->GetName());
-		GameStateManager::currGameState->Unload();
-
-		if (GameStateManager::currGameState != GameStateManager::nextGameState)
-		{
+		currGameState->Unload();
+		if (nextGameState != currGameState) {
 			Engine::GetTextureManager().Unload();
 		}
-
-		if (GameStateManager::nextGameState == nullptr)
-		{
-			GameStateManager::state = State::SHUTDOWN;
+		if (nextGameState == nullptr) {
+			state = State::SHUTDOWN;
+			break;
 		}
-		else
-		{
-			GameStateManager::state = State::LOAD;
-		}
+		state = State::LOAD;
 		break;
-
 	case State::SHUTDOWN:
-		GameStateManager::state = State::EXIT; break;
-
-	case State::EXIT:break;
-
-	default:break;
+		state = State::EXIT;
+		break;
+	case State::EXIT:
+		break;
 	}
+}
+
+void CS230::GameStateManager::SetNextState(int initState) {
+	nextGameState = gameStates[initState];
+}
+
+void CS230::GameStateManager::ReloadState() {
+	state = State::UNLOAD;
+}
+
+void CS230::GameStateManager::Shutdown() {
+	state = State::UNLOAD;
+	nextGameState = nullptr;
 }

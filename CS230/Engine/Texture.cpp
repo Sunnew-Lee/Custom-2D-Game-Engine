@@ -2,27 +2,21 @@
 Copyright (C) 2021 DigiPen Institute of Technology.
 Reproduction or disclosure of this file or its contents without the prior
 written consent of DigiPen Institute of Technology is prohibited.
-File Name: Texture.cpp
-Purpose: Wrapper class for doodle::Image
+File Name: Texture.h
 Project: CS230
 Author: Kevin Wright
 Creation date: 2/11/2021
 -----------------------------------------------------------------*/
-#include <doodle/drawing.hpp>	// draw_image()
+#include <doodle/drawing.hpp>	//draw_image
 #include "Texture.h"
+#include "TransformMatrix.h"
+#include "MemManager.h"
 
-CS230::Texture::Texture(const std::filesystem::path& filePath) :image{ doodle::Image{ filePath } } {}
-
+CS230::Texture::Texture(const std::filesystem::path& filePath) {
+	image = doodle::Image{ filePath };
+}
 CS230::Texture::Texture(doodle::Image&& doodleImage) {
 	image = std::move(doodleImage);
-}
-
-void CS230::Texture::Draw(math::TransformMatrix displayMatrix)
-{
-	doodle::push_settings();
-	doodle::apply_matrix(displayMatrix[0][0], displayMatrix[1][0], displayMatrix[0][1], displayMatrix[1][1], displayMatrix[0][2], displayMatrix[1][2]);
-	doodle::draw_image(image, 0, 0);
-	doodle::pop_settings();
 }
 
 void CS230::Texture::Draw(math::TransformMatrix displayMatrix, math::ivec2 texelPos, math::ivec2 frameSize) {
@@ -32,13 +26,17 @@ void CS230::Texture::Draw(math::TransformMatrix displayMatrix, math::ivec2 texel
 	doodle::pop_settings();
 }
 
-math::ivec2 CS230::Texture::GetSize() 
-{ 
-	return { image.GetWidth(), image.GetHeight() }; 
+void CS230::Texture::Draw(math::TransformMatrix displayMatrix) {
+	doodle::push_settings();
+	doodle::apply_matrix(displayMatrix[0][0], displayMatrix[1][0], displayMatrix[0][1], displayMatrix[1][1], displayMatrix[0][2], displayMatrix[1][2]);
+	doodle::draw_image(image, 0, 0);
+	doodle::pop_settings();
 }
 
-unsigned int CS230::Texture::GetPixel(math::ivec2 texel) {
-	int index = texel.y * GetSize().x + texel.x;
+math::ivec2 CS230::Texture::GetSize() { return { image.GetWidth(), image.GetHeight() }; }
+
+unsigned int CS230::Texture::GetPixel(math::ivec2 pos) {
+	int index = pos.y * GetSize().x + pos.x;
 	return (static_cast<int>(image[index].red)) << 24 |
 		(static_cast<int>(image[index].green)) << 16 |
 		(static_cast<int>(image[index].blue)) << 8 |

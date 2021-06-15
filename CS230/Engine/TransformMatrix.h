@@ -8,7 +8,7 @@ Author: Kevin Wright
 Creation date: 2/12/2021
 -----------------------------------------------------------------*/
 #pragma once
-#include "Vec2.h"   // math::vec2, math::ivec2
+#include "Vec2.h"
 
 namespace math {
     class TransformMatrix {
@@ -19,7 +19,6 @@ namespace math {
         TransformMatrix operator * (TransformMatrix rhs) const;
         TransformMatrix& operator *= (TransformMatrix rhs);
         vec2 operator * (vec2 rhs) const;
-
         void Reset();
     protected:
         double matrix[3][3];

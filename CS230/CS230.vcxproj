@@ -21,9 +21,10 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{f1c958d1-131d-4b0b-91b5-25a8c853a675}</ProjectGuid>
-    <RootNamespace>CS230</RootNamespace>
+    <ProjectGuid>{871a11d8-ad36-4293-8ba6-a37c59e1f2aa}</ProjectGuid>
+    <RootNamespace>CS2302021</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>CS230</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -88,7 +89,6 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <TreatWarningAsError>true</TreatWarningAsError>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
     </ClCompile>
     <Link>
@@ -99,10 +99,6 @@
       <Command>if not exist "$(OutputPath)Assets" mkdir "$(OutputPath)Assets"
 xcopy /d /y Assets\* "$(OutputPath)Assets"</Command>
     </PostBuildEvent>
-    <PreBuildEvent>
-      <Command>
-      </Command>
-    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -112,7 +108,6 @@ xcopy /d /y Assets\* "$(OutputPath)Assets"</Command>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <TreatWarningAsError>true</TreatWarningAsError>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
     </ClCompile>
     <Link>
@@ -125,10 +120,6 @@ xcopy /d /y Assets\* "$(OutputPath)Assets"</Command>
       <Command>if not exist "$(OutputPath)Assets" mkdir "$(OutputPath)Assets"
 xcopy /d /y Assets\* "$(OutputPath)Assets"</Command>
     </PostBuildEvent>
-    <PreBuildEvent>
-      <Command>
-      </Command>
-    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -136,7 +127,6 @@ xcopy /d /y Assets\* "$(OutputPath)Assets"</Command>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <TreatWarningAsError>true</TreatWarningAsError>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
     </ClCompile>
     <Link>
@@ -147,10 +137,6 @@ xcopy /d /y Assets\* "$(OutputPath)Assets"</Command>
       <Command>if not exist "$(OutputPath)Assets" mkdir "$(OutputPath)Assets"
 xcopy /d /y Assets\* "$(OutputPath)Assets"</Command>
     </PostBuildEvent>
-    <PreBuildEvent>
-      <Command>
-      </Command>
-    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -160,7 +146,6 @@ xcopy /d /y Assets\* "$(OutputPath)Assets"</Command>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <TreatWarningAsError>true</TreatWarningAsError>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
     </ClCompile>
     <Link>
@@ -173,10 +158,6 @@ xcopy /d /y Assets\* "$(OutputPath)Assets"</Command>
       <Command>if not exist "$(OutputPath)Assets" mkdir "$(OutputPath)Assets"
 xcopy /d /y Assets\* "$(OutputPath)Assets"</Command>
     </PostBuildEvent>
-    <PreBuildEvent>
-      <Command>
-      </Command>
-    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Engine\Animation.cpp" />
@@ -189,6 +170,7 @@ xcopy /d /y Assets\* "$(OutputPath)Assets"</Command>
     <ClCompile Include="Engine\Input.cpp" />
     <ClCompile Include="Engine\Input_Doodle.cpp" />
     <ClCompile Include="Engine\Logger.cpp" />
+    <ClCompile Include="Engine\MemManager.cpp" />
     <ClCompile Include="Engine\ParticleEmitter.cpp" />
     <ClCompile Include="Engine\ShowCollision.cpp" />
     <ClCompile Include="Engine\Sprite.cpp" />
@@ -199,23 +181,17 @@ xcopy /d /y Assets\* "$(OutputPath)Assets"</Command>
     <ClCompile Include="Engine\Window.cpp" />
     <ClCompile Include="Game\Background.cpp" />
     <ClCompile Include="Game\Ball.cpp" />
-    <ClCompile Include="Game\Bunny.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="Game\EnemyShip.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
-    </ClCompile>
+    <ClCompile Include="Game\Bunny.cpp" />
+    <ClCompile Include="Game\EnemyShip.cpp" />
     <ClCompile Include="Game\Exit.cpp" />
     <ClCompile Include="Game\Floor.cpp" />
-    <ClCompile Include="Game\GameParticles.cpp" />
     <ClCompile Include="Game\Hero.cpp" />
     <ClCompile Include="Game\Laser.cpp" />
     <ClCompile Include="Game\Level1.cpp" />
     <ClCompile Include="Game\Level2.cpp" />
     <ClCompile Include="Game\MainMenu.cpp" />
     <ClCompile Include="Game\Meteor.cpp" />
+    <ClCompile Include="Game\GameParticles.cpp" />
     <ClCompile Include="Game\Score.cpp" />
     <ClCompile Include="Game\ScreenWrap.cpp" />
     <ClCompile Include="Game\Ship.cpp" />
@@ -237,6 +213,7 @@ xcopy /d /y Assets\* "$(OutputPath)Assets"</Command>
     <ClInclude Include="Engine\GameStateManager.h" />
     <ClInclude Include="Engine\Input.h" />
     <ClInclude Include="Engine\Logger.h" />
+    <ClInclude Include="Engine\MemManager.h" />
     <ClInclude Include="Engine\ParticleEmitter.h" />
     <ClInclude Include="Engine\Rect.h" />
     <ClInclude Include="Engine\ShowCollision.h" />
@@ -258,7 +235,6 @@ xcopy /d /y Assets\* "$(OutputPath)Assets"</Command>
     <ClInclude Include="Game\Floor.h" />
     <ClInclude Include="Game\Fonts.h" />
     <ClInclude Include="Game\GameObjectTypes.h" />
-    <ClInclude Include="Game\GameParticles.h" />
     <ClInclude Include="Game\Gravity.h" />
     <ClInclude Include="Game\Hero.h" />
     <ClInclude Include="Game\Hero_Anims.h" />
@@ -268,6 +244,7 @@ xcopy /d /y Assets\* "$(OutputPath)Assets"</Command>
     <ClInclude Include="Game\MainMenu.h" />
     <ClInclude Include="Game\Meteor.h" />
     <ClInclude Include="Game\Meteor_Anims.h" />
+    <ClInclude Include="Game\GameParticles.h" />
     <ClInclude Include="Game\Score.h" />
     <ClInclude Include="Game\Screens.h" />
     <ClInclude Include="Game\ScreenWrap.h" />

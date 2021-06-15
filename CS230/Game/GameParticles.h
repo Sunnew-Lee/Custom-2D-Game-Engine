@@ -8,7 +8,7 @@ Author: Kevin Wright
 Creation date: 2/26/2021
 -----------------------------------------------------------------*/
 #include "../Engine/ParticleEmitter.h"
-#include "GameObjectTypes.h"                // GameObjectType::Particle
+#include "GameObjectTypes.h"
 
 class SmokeEmitter : public CS230::ParticleEmitter {
 public:

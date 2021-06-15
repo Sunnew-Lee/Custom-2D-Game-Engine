@@ -8,7 +8,7 @@ Author: Kevin Wright
 Creation date: 2/17/2021
 -----------------------------------------------------------------*/
 #pragma once
-#include "..\Engine\Texture.h"      // Texture
+#include "..\Engine\Texture.h" 
 #include "..\Engine\Component.h" 
 
 class Timer : public CS230::Component {

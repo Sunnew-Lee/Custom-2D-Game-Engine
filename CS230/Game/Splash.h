@@ -24,7 +24,8 @@ public:
 
 	std::string GetName() override { return "Splash"; }
 private:
-	double Dt{ 0. };
-	
+	double timer;
+	const int DISPLAY_TIME = 3;
 	CS230::Texture* texturePtr;
 };
+

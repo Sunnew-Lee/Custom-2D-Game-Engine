@@ -4,22 +4,27 @@ Reproduction or disclosure of this file or its contents without the prior
 written consent of DigiPen Institute of Technology is prohibited.
 File Name: MainMenu.cpp
 Project: CS230
-Author: sunwoo.lee
-Creation date: 4/27/2021
+Author: Kevin Wright
+Creation date: 2/16/2021
 -----------------------------------------------------------------*/
+#include <doodle/drawing.hpp>
+#include "../Engine/Engine.h"	//GetGameStateManager GetSpriteFont
+#include "../Engine/TransformMatrix.h"
+#include "Screens.h"
 #include "MainMenu.h"
-#include "..\Engine\Engine.h"	// GetSpriteFont(), GetGameStateManager()
-#include "Fonts.h"				// Fonts::Font1
-#include "Screens.h"			// Screens::Level1
+#include "Fonts.h"
 
-MainMenu::MainMenu():selectedIndex(0), upKey(CS230::InputKey::Keyboard::Up), downKey(CS230::InputKey::Keyboard::Down), selectKey(CS230::InputKey::Keyboard::Enter)
-{}
+
 
 MainMenu::OptionData MainMenu::optionsData[static_cast<int>(MainMenu::Options::Count)] = {
 	{"Side Scroller", {0.5, 0.45}, {} },
 	{"Space Shooter", {0.5, 0.35}, {} },
 	{"Quit", {0.5, 0.25}, {} },
 };
+
+MainMenu::MainMenu() : selectedIndex(0), upKey(CS230::InputKey::Keyboard::Up),
+							downKey(CS230::InputKey::Keyboard::Down), selectKey(CS230::InputKey::Keyboard::Enter) {
+}
 
 void MainMenu::Load() {
 	title = Engine::GetSpriteFont(static_cast<int>(Fonts::Font2)).DrawTextToTexture("CS230 Project", 0xFFFFFFFF, true);
@@ -30,56 +35,53 @@ void MainMenu::Load() {
 	RenderOption(optionsData[selectedIndex], true);
 }
 
-void MainMenu::Update(double )
-{
-	if (upKey.IsKeyReleased() == true)
-	{
-		if (selectedIndex > 0)
-		{
-			RenderOption(optionsData[selectedIndex], false);
+void MainMenu::Update(double) {
+	if (upKey.IsKeyReleased() == true) {
+		RenderOption(optionsData[selectedIndex], false);
+		if (selectedIndex != 0) {
 			selectedIndex--;
-			RenderOption(optionsData[selectedIndex], true);
 		}
+		RenderOption(optionsData[selectedIndex], true);
 	}
-	if (downKey.IsKeyReleased() == true)
-	{
-		if (selectedIndex < 2)
-		{
-			RenderOption(optionsData[selectedIndex], false);
+	if (downKey.IsKeyReleased() == true) {
+		RenderOption(optionsData[selectedIndex], false);
+		if (selectedIndex != static_cast<int>(Options::Count) -1) {
 			selectedIndex++;
-			RenderOption(optionsData[selectedIndex], true);
 		}
+		RenderOption(optionsData[selectedIndex], true);
 	}
-	if (selectKey.IsKeyReleased() == true)
-	{
-		switch (selectedIndex)
-		{
-		case 0:
-			Engine::GetGameStateManager().SetNextState(static_cast<int>(Screens::Level1)); break;
-		case 1:
-			Engine::GetGameStateManager().SetNextState(static_cast<int>(Screens::Level2)); break;
-		case 2:
-			Engine::GetGameStateManager().Shutdown(); break;
+	if (selectKey.IsKeyReleased() == true) {
+		switch (static_cast<Options>(selectedIndex)) {
+		case Options::Level1:
+			Engine::Instance().GetGameStateManager().SetNextState(static_cast<int>(Screens::Level1));
+			break;
+		case Options::Level2:
+			Engine::Instance().GetGameStateManager().SetNextState(static_cast<int>(Screens::Level2));
+			break;
+		case Options::Quit:
+			Engine::GetGameStateManager().Shutdown();
+			break;
 		}
 	}
 }
 
-void MainMenu::Unload()
-{}
+void MainMenu::Unload() {}
 
-void MainMenu::Draw()
-{
-	math::ivec2 Win_Size = Engine::GetWindow().GetSize();
+void MainMenu::Draw() {
+	Engine::GetWindow().Clear(0x3399DAFF);
+	math::ivec2 winSize = Engine::GetWindow().GetSize();
 
-	Engine::GetWindow().Clear(0x3399daff);
-	title.Draw(math::TranslateMatrix(math::vec2{ Win_Size.x / 2. - title.GetSize().x,Win_Size.y * 0.7 }) * math::ScaleMatrix(math::vec2{ 2,2 }));
-	for (MainMenu::OptionData text : optionsData)
-	{
-		text.texture.Draw(math::TranslateMatrix(math::vec2{ Win_Size.x * text.positionPercent.x - text.texture.GetSize().x / 2,Win_Size.y * text.positionPercent.y }));
+	math::ivec2 position = math::ivec2{ winSize.x / 2 - title.GetSize().x, winSize.y / 2 + 130 };
+	title.Draw(math::TranslateMatrix(position) * math::ScaleMatrix({ 2,2 }));
+
+	for (OptionData& data : optionsData) {
+		position = { static_cast<int>(winSize.x * data.positionPercent.x),
+						static_cast<int>(winSize.y * data.positionPercent.y) };
+		data.texture.Draw(math::TranslateMatrix(position - data.texture.GetSize() / 2));
 	}
 }
 
 void MainMenu::RenderOption(OptionData& data, bool isHighlighted) {
 	data.texture = Engine::GetSpriteFont(static_cast<int>(Fonts::Font1)).DrawTextToTexture(
-		data.text, (isHighlighted == true) ? MainMenu::onColor : MainMenu::offColor, true);
+								data.text, (isHighlighted == true) ? MainMenu::onColor : MainMenu::offColor, true);
 }

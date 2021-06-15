@@ -11,7 +11,7 @@ Creation date: 2/21/2021
 #pragma once
 
 #include "..\Engine\GameObject.h"
-#include "GameObjectTypes.h"        // GameObjectType::Laser
+#include "GameObjectTypes.h"
 
 class GameObjectManager;
 enum class GameObjectType;

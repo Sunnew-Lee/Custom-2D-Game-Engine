@@ -4,34 +4,25 @@ Reproduction or disclosure of this file or its contents without the prior
 written consent of DigiPen Institute of Technology is prohibited.
 File Name: TextureManager.cpp
 Project: CS230
-Author: sunwoo.lee
-Creation date: 4/19/2021
+Author: Kevin Wright
+Creation date: 2/19/2021
 -----------------------------------------------------------------*/
+#include "Engine.h"
+#include "Texture.h"
 #include "TextureManager.h"
-#include "Texture.h"		// Texture
-#include "Engine.h"			// GetLogger()
 
-CS230::Texture* CS230::TextureManager::Load(const std::filesystem::path& filePath)
-{
-	for (std::pair<const std::filesystem::path, CS230::Texture*> &p : pathToTexture)
-	{
-		if (p.first == filePath)
-		{
-			return p.second;
-		}
-	}
 
-	pathToTexture.insert(std::pair<std::filesystem::path, Texture*>(filePath, new Texture(filePath)));
-	return pathToTexture.find(filePath)->second;
+CS230::Texture* CS230::TextureManager::Load(const std::filesystem::path& filePath) {
+    if (pathToTexture.find(filePath) == pathToTexture.end()) {
+        pathToTexture[filePath] = new Texture(filePath);
+    }
+    return pathToTexture[filePath];
 }
 
-void CS230::TextureManager::Unload()
-{
-	Engine::GetLogger().LogEvent("Clear Textures");
-
-	for (std::pair<const std::filesystem::path, CS230::Texture*> &p : pathToTexture)
-	{
-		delete p.second;
-	}
-	pathToTexture.clear();
+void CS230::TextureManager::Unload() {
+    Engine::GetLogger().LogEvent("Clear Textures");
+    for (std::pair<std::filesystem::path, Texture*> pathTexturePair : pathToTexture) {
+        delete pathTexturePair.second;
+    }
+    pathToTexture.clear();
 }

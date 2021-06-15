@@ -1,6 +1,6 @@
 assets/flame.png
-Anim assets/none.anm
-Anim assets/flame.anm
 FrameSize 16 16
 HotSpot 8 15
 NumFrames 5
+Anim assets/none.anm
+Anim assets/flame.anm

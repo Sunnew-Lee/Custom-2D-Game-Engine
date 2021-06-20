@@ -81,7 +81,7 @@ void My_Game::Update(double dt) {
 		Engine::GetGameStateManager().ReloadState();
 	}
 #else
-	if (shipPtr != nullptr && shipPtr->IsDead() == true && levelReload.IsKeyReleased() == true) {
+	if (playerPtr != nullptr && playerPtr->IsDead() == true && levelReload.IsKeyReleased() == true) {
 		Engine::GetGameStateManager().ReloadState();
 	}
 #endif

@@ -90,6 +90,9 @@ void My_Game::Update(double dt) {
 void My_Game::Unload() {
 	ClearGSComponent();
 	screenwrap = 0;
+	block_timer = 0;
+	badrobot_timer = 0;
+	speed = 1;
 	playerPtr = nullptr;
 }
 

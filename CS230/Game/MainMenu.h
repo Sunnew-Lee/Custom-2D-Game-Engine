@@ -19,6 +19,7 @@ public:
 	enum class Options {
 		Level1,
 		Level2,
+		MY_GAME,
 		Quit,
 		Count,
 	};

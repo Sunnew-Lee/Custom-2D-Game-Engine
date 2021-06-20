@@ -1,0 +1,7 @@
+assets/BallRobot.png
+HotSpot 16 19
+FrameSize 32 38
+NumFrames 9
+CollisionRect -16 -19 16 19
+Anim assets/BallRobot.anm
+Anim assets/BallRobot_explosion.anm

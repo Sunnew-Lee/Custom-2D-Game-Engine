@@ -48,3 +48,16 @@ private:
     };
     static constexpr int NumParticles = 150;
 };
+
+class BlockBitEmitter : public CS230::ParticleEmitter {
+public:
+    BlockBitEmitter();
+private:
+    class BlockBit : public CS230::ParticleEmitter::Particle {
+    public:
+        BlockBit(std::string spriteFile) : CS230::ParticleEmitter::Particle(spriteFile) {}
+        GameObjectType GetObjectType() { return GameObjectType::Particle; }
+        std::string GetObjectTypeName() { return "Block Bit Particle"; }
+    };
+    static constexpr int NumParticles = 150;
+};

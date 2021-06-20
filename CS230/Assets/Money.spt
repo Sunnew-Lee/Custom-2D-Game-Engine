@@ -1,0 +1,6 @@
+assets/Money.png
+HotSpot 9 7
+FrameSize 18 14
+NumFrames 10
+CollisionRect -5 -7 9 7
+Anim assets/Money.anm

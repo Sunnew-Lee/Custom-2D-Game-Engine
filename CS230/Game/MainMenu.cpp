@@ -17,9 +17,10 @@ Creation date: 2/16/2021
 
 
 MainMenu::OptionData MainMenu::optionsData[static_cast<int>(MainMenu::Options::Count)] = {
-	{"Side Scroller", {0.5, 0.45}, {} },
-	{"Space Shooter", {0.5, 0.35}, {} },
-	{"Quit", {0.5, 0.25}, {} },
+	{"Side Scroller", {0.5, 0.55}, {} },
+	{"Space Shooter", {0.5, 0.45}, {} },
+	{"My Game", {0.5,0.35},{} },
+	{"Quit", {0.5, 0.25}, {} }
 };
 
 MainMenu::MainMenu() : selectedIndex(0), upKey(CS230::InputKey::Keyboard::Up),
@@ -57,6 +58,9 @@ void MainMenu::Update(double) {
 			break;
 		case Options::Level2:
 			Engine::Instance().GetGameStateManager().SetNextState(static_cast<int>(Screens::Level2));
+			break;
+		case Options::MY_GAME:
+			Engine::Instance().GetGameStateManager().SetNextState(static_cast<int>(Screens::MY_GAME));
 			break;
 		case Options::Quit:
 			Engine::GetGameStateManager().Shutdown();

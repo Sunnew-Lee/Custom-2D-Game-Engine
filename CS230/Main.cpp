@@ -14,6 +14,7 @@ Creation date: 2/10/2021
 #include "Game/Splash.h"
 #include "Game/Level1.h"
 #include "Game/Level2.h"
+#include "Game/My_Game.h"
 #include "Game/Screens.h"
 #include "Game/MainMenu.h"
 
@@ -26,11 +27,13 @@ int main(void) {
 		MainMenu mainmenu;
 		Level1 level1;
 		Level2 level2;
+		My_Game my_game;
 
 		engine.GetGameStateManager().AddGameState(splash);
 		engine.GetGameStateManager().AddGameState(mainmenu);
 		engine.GetGameStateManager().AddGameState(level1);
 		engine.GetGameStateManager().AddGameState(level2);
+		engine.GetGameStateManager().AddGameState(my_game);
 		engine.AddSpriteFont("assets/font.png");
 		engine.AddSpriteFont("assets/font2.png");
 

@@ -13,16 +13,17 @@ Creation date: 2/17/2021
 
 enum class Fonts;
 
-class Score : public CS230::Component {
+class Life : public CS230::Component {
 public:
-    Score(int startingScore, Fonts fontToUse);
-    void AddScore(int newPoints);
-    void MinusScore(int newPoints);
+    Life(int startingLife, Fonts fontToUse);
+    void IncreseLife();
+    void DecreseLife();
+    int GetLife();
     void Draw(math::ivec2 location);
 private:
     void RenderText();
 
     Fonts fontToUse;
-    unsigned int score;
-    CS230::Texture scoreTexture;
+    unsigned int life;
+    CS230::Texture lifeTexture;
 };

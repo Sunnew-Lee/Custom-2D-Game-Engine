@@ -1,0 +1,6 @@
+assets/PowerUp.png
+HotSpot 9 9
+FrameSize 18 18
+NumFrames 10
+CollisionRect -9 -9 9 9
+Anim assets/PowerUp.anm

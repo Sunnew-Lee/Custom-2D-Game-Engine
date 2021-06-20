@@ -126,6 +126,36 @@
     <ClCompile Include="Game\EnemyShip.cpp">
       <Filter>Game</Filter>
     </ClCompile>
+    <ClCompile Include="Game\My_Game.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\My_Player.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\BadRobot.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\BallRobot.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Life.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Ammo.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Block.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\PowerUp.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Money.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Heart.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Logger.h">
@@ -285,6 +315,36 @@
       <Filter>Engine</Filter>
     </ClInclude>
     <ClInclude Include="Game\EnemyShip.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\My_Game.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\My_Player.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\BadRobot.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\BallRobot.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Life.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Ammo.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Block.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\PowerUp.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Money.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Heart.h">
       <Filter>Game</Filter>
     </ClInclude>
   </ItemGroup>

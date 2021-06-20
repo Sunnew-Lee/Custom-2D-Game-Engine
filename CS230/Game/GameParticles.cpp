@@ -27,3 +27,9 @@ MeteorBitEmitter::MeteorBitEmitter() : CS230::ParticleEmitter(1.5) {
 		AddParticle(new MeteorBit("assets/MeteorBit.spt"));
 	}
 }
+
+BlockBitEmitter::BlockBitEmitter() : CS230::ParticleEmitter(1.5) {
+	for (int i = 0; i < BlockBitEmitter::NumParticles; i++) {
+		AddParticle(new BlockBit("assets/BlockBit.spt"));
+	}
+}

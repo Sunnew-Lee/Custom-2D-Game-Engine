@@ -1,0 +1,6 @@
+assets/Heart.png
+HotSpot 9 7
+FrameSize 18 14
+NumFrames 8
+CollisionRect -5 -7 9 7
+Anim assets/Heart.anm

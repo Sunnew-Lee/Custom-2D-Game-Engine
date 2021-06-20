@@ -13,5 +13,6 @@ enum class Screens {
 	Splash,
 	MainMenu,
 	Level1,
-	Level2
+	Level2,
+	MY_GAME
 };

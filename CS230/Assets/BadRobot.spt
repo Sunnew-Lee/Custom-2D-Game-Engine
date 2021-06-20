@@ -1,0 +1,8 @@
+assets/BadRobot.png
+HotSpot 33 24
+HotSpot -25 -20
+HotSpot 25 -20
+FrameSize 66 48
+NumFrames 4
+CollisionRect -33 -24 33 24
+Anim assets/BadRobot.anm

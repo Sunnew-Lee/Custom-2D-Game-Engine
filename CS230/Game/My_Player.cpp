@@ -2,10 +2,10 @@
 Copyright (C) 2021 DigiPen Institute of Technology.
 Reproduction or disclosure of this file or its contents without the prior
 written consent of DigiPen Institute of Technology is prohibited.
-File Name: Ship.cpp
+File Name: My_Player.cpp
 Project: CS230
-Author: Kevin Wright
-Creation date: 2/11/2021
+Author: sunwoo.lee
+Creation date: 06/19/2021
 -----------------------------------------------------------------*/
 #include "../Engine/Engine.h"    //Engine::GetWindow
 #include "../Engine/TransformMatrix.h"

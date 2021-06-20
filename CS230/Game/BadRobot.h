@@ -2,10 +2,10 @@
 Copyright (C) 2021 DigiPen Institute of Technology.
 Reproduction or disclosure of this file or its contents without the prior
 written consent of DigiPen Institute of Technology is prohibited.
-File Name: EnemyShip.h
+File Name: BadRobot.h
 Project: CS230
-Author: Kevin Wright
-Creation date: 6/14/2021
+Author: sunwoo.lee
+Creation date: 06/19/2021
 -----------------------------------------------------------------*/
 
 #pragma once

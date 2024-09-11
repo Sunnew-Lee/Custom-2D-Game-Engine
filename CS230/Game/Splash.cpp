@@ -7,29 +7,31 @@ Project: CS230
 Author: Kevin Wright
 Creation date: 2/10/2021
 -----------------------------------------------------------------*/
-#include "../Engine/Engine.h"		// GetGameStateManager(), GetWindow()
-#include "Screens.h"				// Screens::Level1
+#include <filesystem>
+#include "../Engine/Engine.h"	//GetGameStateManager	GetTextureManager
+#include "../Engine/Texture.h"
+#include "../Engine/TransformMatrix.h"
+#include "Screens.h"
 #include "Splash.h"
-#include "..\Engine\Texture.h"		// texturePtr
 
-Splash::Splash() :texturePtr(nullptr)
-{}
+Splash::Splash() {}
 
 void Splash::Load() {
 	texturePtr = Engine::GetTextureManager().Load("assets/DigiPen_BLACK_1024px.png");
+	timer = 0;
 }
-void Splash::Update(double dt) {
-	Dt += dt;
 
-	if (Dt >= 3) {
-		Engine::GetGameStateManager().SetNextState(static_cast<int>(Screens::MainMenu));
+void Splash::Update(double dt) {
+	timer += dt;
+	if (timer >= DISPLAY_TIME) {
+		Engine::Instance().GetGameStateManager().SetNextState(static_cast<int>(Screens::MainMenu));
 	}
 }
+
 void Splash::Unload() {
 }
+void Splash::Draw() {
+	Engine::GetWindow().Clear(0xFFFFFFFF);
 
-void Splash::Draw()
-{
-	Engine::GetWindow().Clear(0xffffffff);
-	texturePtr->Draw(math::TranslateMatrix::TranslateMatrix(math::ivec2(Engine::GetWindow().GetSize() / 2 - texturePtr->GetSize() / 2)));
+	texturePtr->Draw(math::TranslateMatrix({ (Engine::GetWindow().GetSize() - texturePtr->GetSize()) / 2.0 }));
 }

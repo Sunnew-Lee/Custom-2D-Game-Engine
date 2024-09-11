@@ -8,7 +8,7 @@ Author: Kevin Wright
 Creation date: 2/17/2021
 -----------------------------------------------------------------*/
 #pragma once
-#include "..\Engine\Texture.h"      // Texture
+#include "..\Engine\Texture.h" 
 #include "..\Engine\Component.h" 
 
 enum class Fonts;
@@ -17,6 +17,7 @@ class Score : public CS230::Component {
 public:
     Score(int startingScore, Fonts fontToUse);
     void AddScore(int newPoints);
+    void MinusScore(int newPoints);
     void Draw(math::ivec2 location);
 private:
     void RenderText();

@@ -8,13 +8,13 @@ Author: Kevin Wright
 Creation date: 4/29/2021
 -----------------------------------------------------------------*/
 #pragma once
-#include "Input.h"          // CS230::InputKey::Keyboard
+#include "Input.h"
 #include "Component.h"
 
 class ShowCollision : public CS230::Component {
 public:
     ShowCollision(CS230::InputKey::Keyboard keyToUse);
-    void Update(double) override;
+    void Update(double dt) override;
     bool IsEnabled();
 private:
     bool enabled;

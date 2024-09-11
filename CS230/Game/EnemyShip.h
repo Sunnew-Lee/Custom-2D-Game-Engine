@@ -10,27 +10,29 @@ Creation date: 6/14/2021
 
 #pragma once
 #include "..\Engine\GameObject.h"
-#include "..\Engine\Sprite.h"       // Sprite
+#include "..\Engine\Sprite.h"
+
+enum class GameObjectType;
 
 class EnemyShip : public CS230::GameObject {
 public:
-    EnemyShip(GameObject* player);
-    void Update(double dt);
-    void Draw(math::TransformMatrix displayMatrix);
+	EnemyShip(GameObject* player);
+	void Update(double dt);
+	void Draw(math::TransformMatrix displayMatrix);
 
-    GameObjectType GetObjectType() override;
-    std::string GetObjectTypeName() override;
-    bool CanCollideWith(GameObjectType collideAgainstType) override;
-    void ResolveCollision(GameObject* collidedWith);
+	GameObjectType GetObjectType() override;
+	std::string GetObjectTypeName() override;
+	bool CanCollideWith(GameObjectType collideAgainstType) override;
+	void ResolveCollision(GameObject* collidedWith);
 
-    bool IsDead() { return isDead; }
+	bool IsDead() { return isDead; }
 private:
-    GameObject* player;
-    CS230::Sprite flameLeft;
-    CS230::Sprite flameRight;
-    bool isDead;
+	GameObject* player;
+	CS230::Sprite flameLeft;
+	CS230::Sprite flameRight;
+	bool isDead;
 
-    static constexpr double accel = 200;
-    static constexpr double drag = 1;
-    static constexpr double rotationRate = 3;
+	static constexpr double accel = 200;
+	static constexpr double drag = 1;
+	static constexpr double rotationRate = 3;
 };

@@ -8,41 +8,43 @@ Author: Kevin Wright
 Creation date: 2/11/2021
 -----------------------------------------------------------------*/
 #pragma once
-#include "Vec2.h"               // math::vec2, math::ivec2
-#include "TransformMatrix.h"    // math::TransformMatrix
-#include <filesystem>           // filesystem::path
+#include <string>
+#include <vector>
+#include <filesystem>
+#include "Vec2.h"
 #include "Component.h"
 
-namespace CS230 {
-    class Texture;
-    class Animation;
-    class GameObject;
+namespace math {
+	class TransformMatrix;
 }
 
 namespace CS230 {
-    class Sprite :public Component {
-    public:
-        Sprite(const std::filesystem::path& spriteInfoFile, GameObject* object);
-        ~Sprite();
+	class Texture;
+	class Animation;
+	class GameObject;
+}
 
-        void Load(const std::filesystem::path& spriteInfoFile, GameObject* object);
-        void Draw(math::TransformMatrix displayMatrix);
-        void PlayAnimation(int anim);
-        void Update(double dt) override;
-        bool IsAnimationDone();
-        int GetCurrentAnim();
+namespace CS230 {
+	class Sprite : public Component {
+	public:
+		Sprite(const std::filesystem::path& spriteInfoFile, GameObject* object);
+		~Sprite();
+		void Load(const std::filesystem::path& spriteInfoFile, GameObject* object);
+		void Update(double dt) override;
+		void Draw(math::TransformMatrix displayMatrix);
+		void PlayAnimation(int anim);
+		int GetCurrentAnim();
+		bool IsAnimationDone();
+		math::ivec2 GetHotSpot(int index);
+		math::ivec2 GetFrameSize() const;
+	private:
+		math::ivec2 GetFrameTexel(int frameNum) const;
 
-        math::ivec2 GetHotSpot(int index);
-        math::ivec2 GetFrameSize() const;
-
-    private:
-        math::ivec2 GetFrameTexel(int frameNum) const;
-
-        Texture* texturePtr;
-        int currAnim;
-        std::vector<Animation*> animations;
-        math::ivec2 frameSize;
-        std::vector<math::ivec2> frameTexel;
-        std::vector<math::ivec2> hotSpotList;
-    };
+		Texture *texturePtr;    
+		int currAnim;
+		math::ivec2 frameSize;
+		std::vector<math::ivec2> frameTexel;
+		std::vector<Animation*> animations;
+		std::vector<math::ivec2> hotSpotList;
+	};
 }

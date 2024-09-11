@@ -3,15 +3,15 @@ Copyright (C) 2021 DigiPen Institute of Technology.
 Reproduction or disclosure of this file or its contents without the prior
 written consent of DigiPen Institute of Technology is prohibited.
 File Name: Rect.h
-Author: sunwoo.lee
-Creation date: 03/26/2021
+Project: CS230
+Author: Kevin Wright
+Creation date: 2/12/2021
 -----------------------------------------------------------------*/
 #pragma once
-#include "Vec2.h"       // math::vec2, math::ivec2
-#include <algorithm>    // min(), max()
+#include <utility>
+#include "Vec2.h"
 
-namespace math
-{
+namespace math {
     struct [[nodiscard]] rect2 {
         vec2 point1{ 0.0, 0.0 };
         vec2 point2{ 0.0, 0.0 };

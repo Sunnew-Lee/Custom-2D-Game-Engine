@@ -1,0 +1,7 @@
+assets/Block.png
+HotSpot 90 90
+FrameSize 180 180
+NumFrames 6
+CollisionRect -90 -90 90 90
+Anim assets/none.anm
+Anim assets/Block_explosion.anm

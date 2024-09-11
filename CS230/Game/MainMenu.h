@@ -8,17 +8,18 @@ Author: Kevin Wright
 Creation date: 2/16/2021
 -----------------------------------------------------------------*/
 #pragma once
-#include <string>					// string
+#include <string>
 #include "..\Engine\GameState.h"
-#include "..\Engine\Vec2.h"			// math::vec2
-#include "..\Engine\Input.h"		// CS230::InputKey
-#include "..\Engine\Texture.h"		// CS230::Texture
+#include "..\Engine\Vec2.h"
+#include "..\Engine\Input.h"
+#include "..\Engine\Texture.h"
 
 class MainMenu : public CS230::GameState {
 public:
 	enum class Options {
 		Level1,
 		Level2,
+		MY_GAME,
 		Quit,
 		Count,
 	};
@@ -48,6 +49,7 @@ private:
 	CS230::InputKey downKey;
 	CS230::InputKey selectKey;
 
-	static const unsigned int offColor = 0x404040FF;
-	static const unsigned int onColor = 0xFFFFFFFF;
+	static constexpr unsigned int offColor = 0x404040FF;
+	static constexpr unsigned int onColor = 0xFFFFFFFF;
 };
+

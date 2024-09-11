@@ -4,73 +4,53 @@ Reproduction or disclosure of this file or its contents without the prior
 written consent of DigiPen Institute of Technology is prohibited.
 File Name: GameObjectManager.cpp
 Project: CS230
-Author: sunwoo.lee
-Creation date: 04/18/2021
+Author: Kevin Wright
+Creation date: 2/14/2021
 -----------------------------------------------------------------*/
+#include "Engine.h"        //LogEvent
+#include "TransformMatrix.h"
 #include "GameObjectManager.h"
-#include "..\Engine\TransformMatrix.h"  // math::TransformMatrix
-#include "GameObject.h"					// GameObject
-#include "Engine.h"						// GetLogger()
+#include "GameObject.h"
+#include "Collision.h"
 
-CS230::GameObjectManager::~GameObjectManager()
-{
-	for (GameObject* gameobject : gameObjects)
-	{
-		delete gameobject;
-	}
-
-	gameObjects.clear();
-}
-
-void CS230::GameObjectManager::Add(GameObject* obj)
-{
+void CS230::GameObjectManager::Add(GameObject* obj) {
 	gameObjects.push_back(obj);
 }
 
-void CS230::GameObjectManager::Update(double dt)
-{
-	std::list<GameObject*> to_remove;
+CS230::GameObjectManager::~GameObjectManager() {
+	for (GameObject* obj : gameObjects) {
+		delete obj;
+	}
+	gameObjects.clear();
+}
 
-	for (GameObject* gameobject : gameObjects)
-	{
-		if (gameobject->Is_Using_Object() == false)
-		{
-			to_remove.push_back(gameobject);
+void CS230::GameObjectManager::Update(double dt) {
+	std::vector<GameObject*> destroyList;
+	for (GameObject* object : gameObjects) { 
+		object->Update(dt); 
+		if (object->ShouldDestroy() == true) {
+			destroyList.push_back(object);
 		}
 	}
-
-	for (GameObject* gameobject : to_remove)
-	{
-		gameObjects.remove(gameobject);
-		delete gameobject;
-	}
-
-	for (GameObject* gameobject : gameObjects)
-	{
-		gameobject->Update(dt);
+	for (GameObject* object : destroyList) {
+		gameObjects.remove(object);
+		delete object;
 	}
 }
 
-void CS230::GameObjectManager::DrawAll(math::TransformMatrix& cameraMatrix)
-{
-	for (GameObject* gameobject : gameObjects)
-	{
-		gameobject->Draw(cameraMatrix);
-	}
+void CS230::GameObjectManager::DrawAll(math::TransformMatrix& cameraMatrix) {
+	for (GameObject* object : gameObjects) { 
+		object->Draw(cameraMatrix);
+	} 
 }
 
-void CS230::GameObjectManager::CollideTest()
-{
-	for (GameObject* gameobjectA : gameObjects)
-	{
-		for (GameObject* gameobjectB : gameObjects)
-		{
-			if (gameobjectA != gameobjectB && gameobjectA->CanCollideWith(gameobjectB->GetObjectType()) == true)
-			{
-				if (gameobjectA->DoesCollideWith(gameobjectB) == true)
-				{
-					Engine::GetLogger().LogEvent("Collision Detected: " + gameobjectA->GetObjectTypeName() + " and " + gameobjectB->GetObjectTypeName());
-					gameobjectA->ResolveCollision(gameobjectB);
+void CS230::GameObjectManager::CollideTest() {
+	for (GameObject* objectA : gameObjects) {
+		for (GameObject* objectB : gameObjects) {
+			if (objectA != objectB && objectA->CanCollideWith(objectB->GetObjectType()) && objectB->GetGOComponent<CS230::Collision>() != nullptr) {
+				if (objectA->DoesCollideWith(objectB)) {
+  					Engine::GetLogger().LogEvent("Collision Detected: " + objectA->GetObjectTypeName() + " and " + objectB->GetObjectTypeName());
+					objectA->ResolveCollision(objectB);
 				}
 			}
 		}

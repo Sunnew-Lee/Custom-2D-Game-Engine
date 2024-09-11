@@ -2,7 +2,7 @@
 Copyright (C) 2021 DigiPen Institute of Technology.
 Reproduction or disclosure of this file or its contents without the prior
 written consent of DigiPen Institute of Technology is prohibited.
-File Name: Exit.h
+File Name: Exit.cpp
 Project: CS230
 Author: Kevin Wright
 Creation date: 2/20/2021
@@ -10,7 +10,7 @@ Creation date: 2/20/2021
 #pragma once
 
 #include "..\Engine\GameObject.h"
-#include "GameObjectTypes.h"        // GameObjectType::Trigger
+#include "GameObjectTypes.h"
 
 namespace math {
     struct irect2;

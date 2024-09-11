@@ -2,41 +2,35 @@
 Copyright (C) 2021 DigiPen Institute of Technology.
 Reproduction or disclosure of this file or its contents without the prior
 written consent of DigiPen Institute of Technology is prohibited.
-File Name: Timer.cpp
+File Name: Score.cpp
 Project: CS230
-Author: sunwoo.lee
-Creation date: 5/03/2021
+Author: Kevin Wright
+Creation date: 2/17/2021
 -----------------------------------------------------------------*/
+#include "../Engine/Engine.h"		//DrawTextToTexture
+#include "../Engine/TransformMatrix.h"
+#include "../Engine/Vec2.h"
 #include "Timer.h"
-#include "..\Engine\Engine.h"	// GetSpriteFont()
-#include "Fonts.h"	// Fonts::Font1
+#include "Fonts.h"
 
-Timer::Timer(int time) :timer(time)
-{}
+Timer::Timer(int time) : timer(time) {
+	std::string scoreString = "Time: " + std::to_string(static_cast<int>(timer));
+	timeTexture = Engine::GetSpriteFont(static_cast<int>(Fonts::Font1)).DrawTextToTexture(scoreString, 0xFFFFFFFF, true);
+}
 
-void Timer::Update(double dt)
-{
-	int passed_time = static_cast<int>(timer);
+void Timer::Update(double dt) {
+	int oldTimerInt = static_cast<int>(timer);
 	timer -= dt;
-	if (passed_time != static_cast<int>(timer))
-	{
-		std::string timerString = "Time: " + std::to_string(passed_time);
-		timeTexture = Engine::GetSpriteFont(static_cast<int>(Fonts::Font1)).DrawTextToTexture(timerString, 0xFFFFFFFF, true);
+	if (oldTimerInt != static_cast<int>(timer)) {
+		std::string scoreString = "Time: " + std::to_string(static_cast<int>(timer) + 1);
+		timeTexture = Engine::GetSpriteFont(static_cast<int>(Fonts::Font1)).DrawTextToTexture(scoreString, 0xFFFFFFFF, true);
 	}
-
 }
 
-void Timer::Draw(math::ivec2 location)
-{
-	location -= math::ivec2{ timeTexture.GetSize().x + 10,timeTexture.GetSize().y + 5 };
-	timeTexture.Draw(math::TranslateMatrix(location));
+void Timer::Draw(math::ivec2 location) {
+	timeTexture.Draw(math::TranslateMatrix(location - timeTexture.GetSize()));
 }
 
-bool Timer::hasEnded()
-{
-	if (timer < 0)
-	{
-		return true;
-	}
-	return false;
+bool Timer::hasEnded() {
+	return timer <= 0;
 }

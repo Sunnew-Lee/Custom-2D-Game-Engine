@@ -2,47 +2,49 @@
 Copyright (C) 2021 DigiPen Institute of Technology.
 Reproduction or disclosure of this file or its contents without the prior
 written consent of DigiPen Institute of Technology is prohibited.
-File Name: Laser.cpp
+File Name: Laser.h
 Project: CS230
-Author: sunwoo.lee
-Creation date: 05/20/2021
+Author: Kevin Wright
+Creation date: 2/21/2021
 -----------------------------------------------------------------*/
 
+#include "../Engine/Engine.h"
+#include "../Engine/Sprite.h"
 #include "Laser.h"
-#include "..\Engine\Sprite.h"		// Sprite
-#include "..\Engine\Engine.h"		// GetWindow()
 
-Laser::Laser(math::vec2 pos, double rotation, math::vec2 scale, math::vec2 laserVelocity) :GameObject(pos, rotation, scale)
-{
-	AddGOComponent(new CS230::Sprite("assets/Laser.spt", this));
-	this->SetVelocity( laserVelocity );
+Laser::Laser(math::vec2 pos, double rotation, math::vec2 scale, math::vec2 velocity) : GameObject(pos, rotation, scale) {
+    SetVelocity(velocity);
+    AddGOComponent(new CS230::Sprite("assets/Laser.spt", this));
 }
 
-void Laser::Update(double dt)
-{
-	GameObject::Update(dt);
-	const double hotspot_x = this->GetGOComponent<CS230::Sprite>()->GetFrameSize().x / 2;
-	const double hotspot_y = this->GetGOComponent<CS230::Sprite>()->GetFrameSize().y / 2;
+void Laser::Update(double dt) {
+    GameObject::Update(dt);
 
-	if (this->GetPosition().x + hotspot_x < 0 || this->GetPosition().x > Engine::GetWindow().GetSize().x + hotspot_x ||
-		this->GetPosition().y + hotspot_y < 0 || this->GetPosition().y > Engine::GetWindow().GetSize().y + hotspot_y)
-	{
-		this->Set_Using_Object(false);
-	}
-
+    if (GetPosition().y > Engine::GetWindow().GetSize().y + GetGOComponent<CS230::Sprite>()->GetFrameSize().y / 2.0) {
+        Destroy();
+        return;
+    } else if (GetPosition().y < 0 - GetGOComponent<CS230::Sprite>()->GetFrameSize().y / 2.0) {
+        Destroy();
+        return;
+    }
+    if (GetPosition().x > Engine::GetWindow().GetSize().x + GetGOComponent<CS230::Sprite>()->GetFrameSize().x / 2.0) {
+        Destroy();
+        return;
+    } else if (GetPosition().x < 0 - GetGOComponent<CS230::Sprite>()->GetFrameSize().x / 2.0) {
+        Destroy();
+        return;
+    }
 }
 
-bool Laser::CanCollideWith(GameObjectType objectBType)
-{
-	if (objectBType == GameObjectType::Meteor || objectBType == GameObjectType::EnemyShip)
-	{
-		return true;
-	}
-	return false;
+bool Laser::CanCollideWith(GameObjectType objectBType) {
+    if (objectBType == GameObjectType::Meteor || objectBType == GameObjectType::EnemyShip) {
+        return true;
+    } else {
+        return false;
+    }
 }
 
-void Laser::ResolveCollision(GameObject* objectB)
-{
-	objectB->ResolveCollision(this);
-	this->Set_Using_Object(false);
+void Laser::ResolveCollision(GameObject* objectB) {
+    Destroy();
+    objectB->ResolveCollision(this);
 }

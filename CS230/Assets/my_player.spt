@@ -1,0 +1,9 @@
+assets/my_player.png
+FrameSize 98 100
+HotSpot 49 50
+HotSpot -29 39
+HotSpot 28 39
+NumFrames 7
+CollisionRect -36 -28 36 36
+Anim assets/none.anm
+Anim assets/my_explosion.anm

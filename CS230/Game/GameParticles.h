@@ -8,7 +8,7 @@ Author: Kevin Wright
 Creation date: 2/26/2021
 -----------------------------------------------------------------*/
 #include "../Engine/ParticleEmitter.h"
-#include "GameObjectTypes.h"                // GameObjectType::Particle
+#include "GameObjectTypes.h"
 
 class SmokeEmitter : public CS230::ParticleEmitter {
 public:
@@ -45,6 +45,19 @@ private:
         MeteorBit(std::string spriteFile) : CS230::ParticleEmitter::Particle(spriteFile) {}
         GameObjectType GetObjectType() { return GameObjectType::Particle; }
         std::string GetObjectTypeName() { return "Meteor Bit Particle"; }
+    };
+    static constexpr int NumParticles = 150;
+};
+
+class BlockBitEmitter : public CS230::ParticleEmitter {
+public:
+    BlockBitEmitter();
+private:
+    class BlockBit : public CS230::ParticleEmitter::Particle {
+    public:
+        BlockBit(std::string spriteFile) : CS230::ParticleEmitter::Particle(spriteFile) {}
+        GameObjectType GetObjectType() { return GameObjectType::Particle; }
+        std::string GetObjectTypeName() { return "Block Bit Particle"; }
     };
     static constexpr int NumParticles = 150;
 };

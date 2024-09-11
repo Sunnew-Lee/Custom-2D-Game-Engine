@@ -9,16 +9,16 @@ Creation date: 2/10/2021
 -----------------------------------------------------------------*/
 #pragma once
 #include <string>
-#include "Vec2.h"   // math::ivec2
+#include "Vec2.h"
 
 namespace CS230 {
     class Window {
     public:
         void Init(std::string windowName);
-        void Update();
         void Resize(int newWidth, int newHeight);
         math::ivec2 GetSize();
         void Clear(unsigned int color);
+        void Update();
     private:
         math::ivec2 windowSize;
     };

@@ -1,6 +1,6 @@
 # Custom 2D Game Engine Project
 
-- Designed and implemented a simple 2D game engine.
+- Designed and implemented C++ based simple 2D game engine.
 - Used the [Doodle Library](https://github.com/rudy-digipen/doodle-release) to render and interact with Windows.
 
 ## Key Features Implemented:
